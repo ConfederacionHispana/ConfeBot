@@ -17,7 +17,7 @@ class ReadyListener extends Listener {
       },
       status: 'online'
     })
-    .catch(this.client.rollbar.error);
+      .catch(this.client.rollbar.error);
   }
 }
 

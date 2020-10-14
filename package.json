@@ -1,10 +1,11 @@
 {
   "name": "ConfeBot",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Bot de la Confederación de Fandom Hispano",
   "main": "index.js",
   "module": "src/index.js",
   "scripts": {
+    "lint": "eslint .",
     "start": "node index.js"
   },
   "author": "TheNozomi <13172293+TheNozomi@users.noreply.github.com>",
@@ -22,5 +23,10 @@
   "optionalDependencies": {
     "bufferutil": "^4.0.1",
     "utf-8-validate": "^5.0.2"
+  },
+  "devDependencies": {
+    "eslint": "^7.11.0",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-plugin-import": "2.22.1"
   }
 }

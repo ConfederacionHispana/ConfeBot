@@ -1,13 +1,15 @@
 import { AkairoClient, ListenerHandler } from 'discord-akairo';
 import { Signale } from 'signale';
 import Rollbar from 'rollbar';
-import { name as packageName,
-  version as packageVersion } from '../package.json';
+import {
+  name as packageName,
+  version as packageVersion
+} from '../package.json';
 
 class ConfeBot extends AkairoClient {
   constructor() {
     super({
-      ownerID: process.env.OWNER_ID,
+      ownerID: process.env.OWNER_ID
     }, {
       disableMentions: 'everyone'
     });

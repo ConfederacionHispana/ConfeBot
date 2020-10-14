@@ -10,8 +10,9 @@ class MemberAddListener extends Listener {
 
   exec(member) {
     if (member.guild.id !== process.env.GUILD_ID) return;
+    if (member.user.bot) return;
     this.client.rollbar.debug('Nuevo miembro', {
-      member: member
+      member
     });
     const welcomeChannel = member.guild.channels.resolve(process.env.WELCOME_CHANNEL),
       logsChannel = member.guild.channels.resolve(process.env.LOGS_CHANNEL);
@@ -35,19 +36,15 @@ class MemberAddListener extends Listener {
           ]
         }
       }).then((sentMessage) => {
-        const filter = (reaction, user) => {
-          return ['🌐'].includes(reaction.emoji.name) && user.id === member.id;
-        };
+        const filter = (reaction, user) => ['🌐'].includes(reaction.emoji.name) && user.id === member.id;
         sentMessage.awaitReactions(filter, {
           max: 1,
           time: 3600000, // 1h
           errors: ['time']
         }).then((collected) => {
           const reaction = collected.first();
-          if (reaction.emoji.name === '🌐') {
-            logsChannel.send(`<@&${process.env.STAFF_ROLE}>: se requiere verificación manual para <@!${member.user.id}>`).catch(this.client.rollbar.error);
-          }
-        }).catch(collected => {
+          if (reaction.emoji.name === '🌐') logsChannel.send(`<@&${process.env.STAFF_ROLE}>: se requiere verificación manual para <@!${member.user.id}>`).catch(this.client.rollbar.error);
+        }).catch(() => {
           // idk lol
         });
       }).catch((err) => {
