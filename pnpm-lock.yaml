@@ -1,5 +1,6 @@
 dependencies:
   axios: 0.20.0
+  cron: 1.8.2
   discord-akairo: 8.1.0
   discord.js: 12.3.1_5290a7aab7631971258e1bd11475725e
   dotenv: 8.2.0
@@ -268,6 +269,12 @@ packages:
       node: '>=0.10.0'
     resolution:
       integrity: sha1-/ozxhP9mcLa67wGp1IYaXL7EEgo=
+  /cron/1.8.2:
+    dependencies:
+      moment-timezone: 0.5.31
+    dev: false
+    resolution:
+      integrity: sha512-Gk2c4y6xKEO8FSAUTklqtfSr7oTq0CiPQeLBG5Fl0qoXpZyMcj1SG59YL+hqq04bu6/IuEA7lMkYDAplQNKkyg==
   /cross-spawn/7.0.3:
     dependencies:
       path-key: 3.1.1
@@ -986,6 +993,16 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-NKmAlESf6jMGym1++R0Ra7wvhV+wFW63FaSOFPwRahvea0gMUcGUhVeAg/0BC0wiv9ih5NYPB1Wn1UEI1/L+xQ==
+  /moment-timezone/0.5.31:
+    dependencies:
+      moment: 2.29.1
+    dev: false
+    resolution:
+      integrity: sha512-+GgHNg8xRhMXfEbv81iDtrVeTcWt0kWmTEY1XQK14dICTXnWJnT0dxdlPspwqF3keKMVPXwayEsk1DI0AA/jdA==
+  /moment/2.29.1:
+    dev: false
+    resolution:
+      integrity: sha512-kHmoybcPV8Sqy59DwNDY3Jefr64lK/by/da0ViFcuA4DH0vQg5Q6Ze5VimxkfQNSC+Mls/Kx53s7TjP1RhFEDQ==
   /ms/2.0.0:
     dev: true
     resolution:
@@ -1563,6 +1580,7 @@ packages:
 specifiers:
   axios: ^0.20.0
   bufferutil: ^4.0.1
+  cron: ^1.8.2
   discord-akairo: ^8.1.0
   discord.js: ^12.3.1
   dotenv: ^8.2.0

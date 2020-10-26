@@ -1,6 +1,6 @@
 {
   "name": "ConfeBot",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Bot de la Confederación de Fandom Hispano",
   "main": "index.js",
   "module": "src/index.js",
@@ -12,6 +12,7 @@
   "license": "MIT",
   "dependencies": {
     "axios": "^0.20.0",
+    "cron": "^1.8.2",
     "discord-akairo": "^8.1.0",
     "discord.js": "^12.3.1",
     "dotenv": "^8.2.0",
