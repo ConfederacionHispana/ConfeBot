@@ -1,4 +1,6 @@
 import { Listener } from 'discord-akairo';
+import { CronJob } from 'cron';
+import KickNonVerifiedMembers from '../tasks/KickNonVerifiedMembers';
 
 class ReadyListener extends Listener {
   constructor() {
@@ -16,8 +18,10 @@ class ReadyListener extends Listener {
         name: `${this.client.users.cache.size} usuarios | version ${this.client.version}`
       },
       status: 'online'
-    })
-      .catch(this.client.rollbar.error);
+    }).catch(this.client.rollbar.error);
+    const sched = new CronJob('0 * * * *', () => KickNonVerifiedMembers(this.client), null, true);
+    sched.start();
+    sched.fireOnTick();
   }
 }
 
