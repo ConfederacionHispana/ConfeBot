@@ -11,7 +11,7 @@
   "author": "TheNozomi <13172293+TheNozomi@users.noreply.github.com>",
   "license": "MIT",
   "dependencies": {
-    "axios": "^0.20.0",
+    "axios": "^0.21.0",
     "discord-akairo": "^8.1.0",
     "discord.js": "^12.3.1",
     "dotenv": "^8.2.0",
