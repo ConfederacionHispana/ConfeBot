@@ -1,16 +1,17 @@
 dependencies:
-  axios: 0.20.0
+  axios: 0.21.0
+  cron: 1.8.2
   discord-akairo: 8.1.0
-  discord.js: 12.3.1_5290a7aab7631971258e1bd11475725e
+  discord.js: 12.4.1_5290a7aab7631971258e1bd11475725e
   dotenv: 8.2.0
   esm: 3.2.25
-  rollbar: 2.19.3
+  rollbar: 2.19.4
   signale: 1.4.0
   string-similarity-js: 2.1.2
 devDependencies:
-  eslint: 7.11.0
-  eslint-config-airbnb-base: 14.2.0_b0107ac66144325cec64acec0bc152ec
-  eslint-plugin-import: 2.22.1_eslint@7.11.0
+  eslint: 7.12.0
+  eslint-config-airbnb-base: 14.2.0_acd551cc6893b451f960bf6aa8597937
+  eslint-plugin-import: 2.22.1_eslint@7.12.0
 lockfileVersion: 5.1
 optionalDependencies:
   bufferutil: 4.0.1
@@ -48,7 +49,7 @@ packages:
       node: '>= 6'
     resolution:
       integrity: sha512-ZfFsbgEXW71Rw/6EtBdrP5VxBJy4dthyC0tpQKGKmYFImlmmrykO14Za+BiIVduwjte0jXEBlhSKf0MWbFp9Eg==
-  /@eslint/eslintrc/0.1.3:
+  /@eslint/eslintrc/0.2.0:
     dependencies:
       ajv: 6.12.6
       debug: 4.2.0
@@ -64,7 +65,7 @@ packages:
     engines:
       node: ^10.12.0 || >=12.0.0
     resolution:
-      integrity: sha512-4YVwPkANLeNtRjMekzux1ci8hIaH5eGKktGqR0d3LWsKNn5B2X/1Z6Trxy7jQXl9EBGE6Yj02O+t09FMeRllaA==
+      integrity: sha512-+cIGPCBdLCzqxdtwppswP+zTsH9BOIGzAeKfBIbtb4gW/giMlfMwP0HUSFfhzh20f9u8uZ8hOp62+4GPquTbwQ==
   /@types/json5/0.0.29:
     dev: true
     resolution:
@@ -173,12 +174,12 @@ packages:
     dev: false
     resolution:
       integrity: sha1-x57Zf380y48robyXkLzDZkdLS3k=
-  /axios/0.20.0:
+  /axios/0.21.0:
     dependencies:
       follow-redirects: 1.13.0
     dev: false
     resolution:
-      integrity: sha512-ANA4rr2BDcmmAQLOKft2fufrtuvlqR+cXNNinUmvfeSNCOF98PZL+7M/v1zIdGo7OLjEA9J2gXJL+j4zGsl0bA==
+      integrity: sha512-fmkJBknJKoZwem3/IKSSLpkdNXZeBu5Q7GA/aRsr2btgrptmSCxi2oFjZHqGdK9DoTil9PIHlPIZw2EcRJXRvw==
   /balanced-match/1.0.0:
     dev: true
     resolution:
@@ -268,6 +269,12 @@ packages:
       node: '>=0.10.0'
     resolution:
       integrity: sha1-/ozxhP9mcLa67wGp1IYaXL7EEgo=
+  /cron/1.8.2:
+    dependencies:
+      moment-timezone: 0.5.31
+    dev: false
+    resolution:
+      integrity: sha512-Gk2c4y6xKEO8FSAUTklqtfSr7oTq0CiPQeLBG5Fl0qoXpZyMcj1SG59YL+hqq04bu6/IuEA7lMkYDAplQNKkyg==
   /cross-spawn/7.0.3:
     dependencies:
       path-key: 3.1.1
@@ -326,7 +333,7 @@ packages:
     dev: false
     resolution:
       integrity: sha512-INWYmHo6NgyYx1ZKGSCmgznVfvkXpWGj4fGCGjO8IPkZ06Bidb9YKr4rXy2lwG0kprCjvqY0qbbhcw6N050abQ==
-  /discord.js/12.3.1_5290a7aab7631971258e1bd11475725e:
+  /discord.js/12.4.1_5290a7aab7631971258e1bd11475725e:
     dependencies:
       '@discordjs/collection': 0.1.6
       '@discordjs/form-data': 3.0.1
@@ -343,7 +350,7 @@ packages:
       bufferutil: '*'
       utf-8-validate: '*'
     resolution:
-      integrity: sha512-mSFyV/mbvzH12UXdS4zadmeUf8IMQOo/YdunubG1wWt1xjWvtaJz/s9CGsFD2B5pTw1W/LXxxUbrQjIZ/xlUdw==
+      integrity: sha512-KxOB8LOAN3GmrvkD6a6Fr1nlfArIFZ+q7Uqg4T/5duB90GZy9a0/Py2E+Y+eHKP6ZUCR2mbNMLCcHGjahiaNqA==
   /doctrine/1.5.0:
     dependencies:
       esutils: 2.0.3
@@ -442,11 +449,11 @@ packages:
       node: '>=0.8.0'
     resolution:
       integrity: sha1-G2HAViGQqN/2rjuyzwIAyhMLhtQ=
-  /eslint-config-airbnb-base/14.2.0_b0107ac66144325cec64acec0bc152ec:
+  /eslint-config-airbnb-base/14.2.0_acd551cc6893b451f960bf6aa8597937:
     dependencies:
       confusing-browser-globals: 1.0.9
-      eslint: 7.11.0
-      eslint-plugin-import: 2.22.1_eslint@7.11.0
+      eslint: 7.12.0
+      eslint-plugin-import: 2.22.1_eslint@7.12.0
       object.assign: 4.1.1
       object.entries: 1.1.2
     dev: true
@@ -473,14 +480,14 @@ packages:
       node: '>=4'
     resolution:
       integrity: sha512-6j9xxegbqe8/kZY8cYpcp0xhbK0EgJlg3g9mib3/miLaExuuwc3n5UEfSnU6hWMbT0FAYVvDbL9RrRgpUeQIvA==
-  /eslint-plugin-import/2.22.1_eslint@7.11.0:
+  /eslint-plugin-import/2.22.1_eslint@7.12.0:
     dependencies:
       array-includes: 3.1.1
       array.prototype.flat: 1.2.3
       contains-path: 0.1.0
       debug: 2.6.9
       doctrine: 1.5.0
-      eslint: 7.11.0
+      eslint: 7.12.0
       eslint-import-resolver-node: 0.3.4
       eslint-module-utils: 2.6.0
       has: 1.0.3
@@ -525,10 +532,10 @@ packages:
       node: '>=10'
     resolution:
       integrity: sha512-QudtT6av5WXels9WjIM7qz1XD1cWGvX4gGXvp/zBn9nXG02D0utdU3Em2m/QjTnrsk6bBjmCygl3rmj118msQQ==
-  /eslint/7.11.0:
+  /eslint/7.12.0:
     dependencies:
       '@babel/code-frame': 7.10.4
-      '@eslint/eslintrc': 0.1.3
+      '@eslint/eslintrc': 0.2.0
       ajv: 6.12.6
       chalk: 4.1.0
       cross-spawn: 7.0.3
@@ -569,7 +576,7 @@ packages:
       node: ^10.12.0 || >=12.0.0
     hasBin: true
     resolution:
-      integrity: sha512-G9+qtYVCHaDi1ZuWzBsOWo2wSwd70TXnU6UHA3cTYHp7gCTXZcpggWFoUVAMRarg68qtPoNfFbzPh+VdOgmwmw==
+      integrity: sha512-n5pEU27DRxCSlOhJ2rO57GDLcNsxO0LPpAbpFdh7xmcDmjmlGUfoyrsB3I7yYdQXO5N3gkSTiDrPSPNFiiirXA==
   /esm/3.2.25:
     dev: false
     engines:
@@ -986,6 +993,16 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-NKmAlESf6jMGym1++R0Ra7wvhV+wFW63FaSOFPwRahvea0gMUcGUhVeAg/0BC0wiv9ih5NYPB1Wn1UEI1/L+xQ==
+  /moment-timezone/0.5.31:
+    dependencies:
+      moment: 2.29.1
+    dev: false
+    resolution:
+      integrity: sha512-+GgHNg8xRhMXfEbv81iDtrVeTcWt0kWmTEY1XQK14dICTXnWJnT0dxdlPspwqF3keKMVPXwayEsk1DI0AA/jdA==
+  /moment/2.29.1:
+    dev: false
+    resolution:
+      integrity: sha512-kHmoybcPV8Sqy59DwNDY3Jefr64lK/by/da0ViFcuA4DH0vQg5Q6Ze5VimxkfQNSC+Mls/Kx53s7TjP1RhFEDQ==
   /ms/2.0.0:
     dev: true
     resolution:
@@ -1268,7 +1285,7 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-mwqeW5XsA2qAejG46gYdENaxXjx9onRNCfn7L0duuP4hCuTIi/QO7PDK07KJfp1d+izWPrzEJDcSqBa0OZQriA==
-  /rollbar/2.19.3:
+  /rollbar/2.19.4:
     dependencies:
       async: 1.2.1
       console-polyfill: 0.3.0
@@ -1282,7 +1299,7 @@ packages:
     optionalDependencies:
       decache: 3.1.0
     resolution:
-      integrity: sha512-SBGEN999+wAlE2Q25pfzqUCqNiplpRPbgv/oYn4eW3Kk4CJox/mMGaSB9BWidX2Vep5TGpxxuyWCHrqklS+s/w==
+      integrity: sha512-8ErcMfJE2zkhgrFtpGRyejHBhyO0hU7dZ3EvG2ylNZ7qSu4yw5PZfhGx+Qyq3ksKshLFeQh9Y/Bh2S1TOPIhvw==
   /semver/5.7.1:
     dev: true
     hasBin: true
@@ -1561,16 +1578,17 @@ packages:
     resolution:
       integrity: sha512-D3RuNkynyHmEJIpD2qrgVkc9DQ23OrN/moAwZX4L8DfvszsJxpjQuUq3LMx6HoYji9fbIOBY18XWBsAux1ZZUA==
 specifiers:
-  axios: ^0.20.0
+  axios: ^0.21.0
   bufferutil: ^4.0.1
+  cron: ^1.8.2
   discord-akairo: ^8.1.0
-  discord.js: ^12.3.1
+  discord.js: ^12.4.1
   dotenv: ^8.2.0
-  eslint: ^7.11.0
+  eslint: ^7.12.0
   eslint-config-airbnb-base: ^14.2.0
   eslint-plugin-import: 2.22.1
   esm: ^3.2.25
-  rollbar: ^2.19.3
+  rollbar: ^2.19.4
   signale: ^1.4.0
   string-similarity-js: ^2.1.2
   utf-8-validate: ^5.0.2
