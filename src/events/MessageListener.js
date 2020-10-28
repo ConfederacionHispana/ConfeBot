@@ -1,5 +1,4 @@
 import { Listener } from 'discord-akairo';
-import { stringify } from 'querystring';
 import axios from 'axios';
 import { stringSimilarity } from 'string-similarity-js';
 
@@ -33,13 +32,15 @@ class MessageListener extends Listener {
     if (data.usuario && data.wikis && data.wikis.length && data.invitacion) {
       try {
         const discordTag = `${msg.author.username}#${msg.author.discriminator}`;
-        const { data: mwResponse } = await axios.get(`https://loonatheworld.fandom.com/es/api.php?${stringify({
-          action: 'query',
-          list: 'users',
-          usprop: 'registration|implicitgroups|groups',
-          ususers: data.usuario,
-          format: 'json'
-        })}`);
+        const { data: mwResponse } = await axios.get('https://loonatheworld.fandom.com/es/api.php', {
+          params: {
+            action: 'query',
+            list: 'users',
+            usprop: 'registration|implicitgroups|groups',
+            ususers: data.usuario,
+            format: 'json'
+          }
+        });
         if (mwResponse.error || !mwResponse.query.users[0] || typeof mwResponse.query.users[0].implicitgroups === 'undefined' || mwResponse.query.users[0].missing !== undefined) {
           this.client.rollbar.info('Usuario inició la verificación, usuario de Fandom no existe', {
             discordTag,
