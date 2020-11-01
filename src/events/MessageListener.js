@@ -23,7 +23,7 @@ class MessageListener extends Listener {
       if (!(parts[0] && parts[1])) return;
       let key = parts[0].normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase(),
         value = parts[1];
-      key = key.replace(/^\d{1,2}[\.-]*\s?/, '');
+      key = key.replace(/^\d{1,2}[.-]*\s?/, '');
       if (key === 'user') key = 'usuario';
       if (key === 'wiki') key = 'wikis';
       if (key === 'wikis') value = value.split(',').map((n) => n.trim()).filter((n) => n.trim());
