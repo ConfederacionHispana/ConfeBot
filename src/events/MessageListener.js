@@ -1,6 +1,7 @@
 import { Listener } from 'discord-akairo';
 import axios from 'axios';
 import { stringSimilarity } from 'string-similarity-js';
+import { formatDate, parseBlockExpiry } from '../Util';
 
 class MessageListener extends Listener {
   constructor() {
@@ -31,13 +32,14 @@ class MessageListener extends Listener {
     });
 
     if (data.usuario && data.wikis && data.wikis.length && data.invitacion) {
+      const logsChannel = msg.guild.channels.resolve(process.env.LOGS_CHANNEL);
       try {
         const discordTag = `${msg.author.username}#${msg.author.discriminator}`;
-        const { data: mwResponse } = await axios.get('https://loonatheworld.fandom.com/es/api.php', {
+        const { data: mwResponse } = await axios.get(process.env.MW_API, {
           params: {
             action: 'query',
             list: 'users',
-            usprop: 'registration|implicitgroups|groups',
+            usprop: 'blockinfo|registration|implicitgroups|groups',
             ususers: data.usuario,
             format: 'json'
           }
@@ -62,10 +64,19 @@ class MessageListener extends Listener {
           });
         }
         const mwUser = mwResponse.query.users[0];
+        if (mwUser.blockreason && mwUser.blockexpiry) {
+          const blockExpiry = mwUser.blockexpiry !== 'infinity' ? parseBlockExpiry(mwUser.blockexpiry) : null;
+          msg.channel.send({
+            embed: {
+              color: 14889515,
+              description: `❌ No es posible completar tu verificación porque la cuenta de Fandom **${data.usuario}** está actualmente bloqueada.\nPor favor vuelve a intentarlo cuando el bloqueo haya expirado.\n\nEl bloqueo fue realizado por ${mwUser.blockedby}${mwUser.blockreason ? ` con la razón _${mwUser.blockreason}_` : ''}, y expira ${mwUser.blockexpiry === 'infinity' ? '**nunca**' : `el ${formatDate(blockExpiry)}`}.`
+            }
+          }).catch(this.client.rollbar.error);
+          return logsChannel.send(`⚠️ <@!${msg.author.id}> intentó autenticarse con la cuenta de Fandom bloqueada **${mwUser.name}**.`).catch(this.client.rollbar.error);
+        }
         const { data: fdServicesResponse } = await axios.get(`https://services.fandom.com/user-attribute/user/${mwUser.userid}/attr/discordHandle?cb=${Date.now()}`);
         if (fdServicesResponse.name && fdServicesResponse.value) {
           if (fdServicesResponse.value.trim() === discordTag) {
-            const logsChannel = msg.guild.channels.resolve(process.env.LOGS_CHANNEL);
             msg.member.roles.add(process.env.USER_ROLE).then(() => {
               msg.member.roles.remove(process.env.NEWUSER_ROLE).catch(this.client.rollbar.error);
               logsChannel.send(`✅ Se verificó a <@!${msg.author.id}> con la cuenta de Fandom **${mwUser.name}**`).catch(this.client.rollbar.error);
