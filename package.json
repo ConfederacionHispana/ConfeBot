@@ -1,6 +1,6 @@
 {
   "name": "ConfeBot",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Bot de la Confederación de Fandom Hispano",
   "main": "index.js",
   "module": "src/index.js",
@@ -14,7 +14,7 @@
     "axios": "^0.21.0",
     "cron": "^1.8.2",
     "discord-akairo": "^8.1.0",
-    "discord.js": "^12.4.1",
+    "discord.js": "^12.5.1",
     "dotenv": "^8.2.0",
     "esm": "^3.2.25",
     "rollbar": "^2.19.4",
@@ -23,10 +23,12 @@
   },
   "optionalDependencies": {
     "bufferutil": "^4.0.2",
-    "utf-8-validate": "^5.0.3"
+    "erlpack": "github:discord/erlpack",
+    "utf-8-validate": "^5.0.3",
+    "zlib-sync": "^0.1.7"
   },
   "devDependencies": {
-    "eslint": "^7.13.0",
+    "eslint": "^7.14.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-import": "2.22.1"
   }
