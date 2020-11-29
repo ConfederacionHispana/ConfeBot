@@ -74,67 +74,81 @@ class MessageListener extends Listener {
           }).catch(this.client.rollbar.error);
           return logsChannel.send(`⚠️ <@!${msg.author.id}> intentó autenticarse con la cuenta de Fandom bloqueada **${mwUser.name}**.`).catch(this.client.rollbar.error);
         }
-        const { data: fdServicesResponse } = await axios.get(`https://services.fandom.com/user-attribute/user/${mwUser.userid}/attr/discordHandle?cb=${Date.now()}`);
-        if (fdServicesResponse.name && fdServicesResponse.value) {
-          if (fdServicesResponse.value.trim() === discordTag) {
-            msg.member.roles.add(process.env.USER_ROLE).then(() => {
-              msg.member.roles.remove(process.env.NEWUSER_ROLE).catch(this.client.rollbar.error);
-              logsChannel.send(`✅ Se verificó a <@!${msg.author.id}> con la cuenta de Fandom **${mwUser.name}**`).catch(this.client.rollbar.error);
-              const guildRoles = msg.guild.roles.cache,
-                wikiIndexRole = msg.guild.roles.resolve(process.env.WIKI_ROLE_GROUP),
-                assignedRoles = [];
-              guildRoles.each((role) => {
-                if (role.position >= wikiIndexRole.position) return;
-                if (role.position === 0) return; // @everyone role
-                data.wikis.forEach((wikiName) => {
-                  const similarityScore = stringSimilarity(wikiName, role.name);
-                  if (similarityScore > 0.75) {
-                    msg.member.roles.add(role).catch(this.client.rollbar.error);
-                    assignedRoles.push(role);
-                  }
+        axios.get(`https://services.fandom.com/user-attribute/user/${mwUser.userid}/attr/discordHandle?cb=${Date.now()}`).then((response) => {
+          const fdServicesResponse = response.data;
+          if (fdServicesResponse.name && fdServicesResponse.value) {
+            const expectedTag = fdServicesResponse.value.trim(),
+              expectedName = expectedTag.substring(0, expectedTag.lastIndexOf('#')).trim(),
+              expectedDisc = expectedTag.substring(expectedTag.lastIndexOf('#') + 1, expectedTag.length).trim();
+            if (msg.author.username === expectedName && msg.author.discriminator === expectedDisc) {
+              msg.member.roles.add(process.env.USER_ROLE).then(() => {
+                msg.member.roles.remove(process.env.NEWUSER_ROLE).catch(this.client.rollbar.error);
+                logsChannel.send(`✅ Se verificó a <@!${msg.author.id}> con la cuenta de Fandom **${mwUser.name}**`).catch(this.client.rollbar.error);
+                const guildRoles = msg.guild.roles.cache,
+                  wikiIndexRole = msg.guild.roles.resolve(process.env.WIKI_ROLE_GROUP),
+                  assignedRoles = [];
+                guildRoles.each((role) => {
+                  if (role.position >= wikiIndexRole.position) return;
+                  if (role.position === 0) return; // @everyone role
+                  data.wikis.forEach((wikiName) => {
+                    const similarityScore = stringSimilarity(wikiName, role.name);
+                    if (similarityScore > 0.75) {
+                      msg.member.roles.add(role).catch(this.client.rollbar.error);
+                      assignedRoles.push(role);
+                    }
+                  });
                 });
+                // eslint-disable-next-line max-len
+                if (assignedRoles.length) msg.member.roles.add(process.env.WIKI_ROLE_GROUP).catch(this.client.rollbar.error);
+                msg.channel.send({
+                  embed: {
+                    color: 4575254,
+                    title: '¡Verificación completada!',
+                    description: `✅ Te has autenticado correctamente con la cuenta de Fandom **${mwUser.name}** y ahora tienes acceso a todos los canales del servidor.${assignedRoles.length ? `\n\nDe acuerdo a tus wikis, se te han asignado los siguientes roles: ${assignedRoles.map((role) => `<@&${role.id}>`).join(', ')}` : ''}\n\n¡Recuerda visitar <#${process.env.SELFROLES_CHANNEL}> si deseas elegir más roles de tu interés!`
+                  }
+                }).catch(this.client.rollbar.error);
+              }).catch(this.client.rollbar.error);
+            } else {
+              this.client.rollbar.info('Usuario inició la verificación, discordHandle no coincide', {
+                discordTag,
+                servicesApiResponse: fdServicesResponse
               });
-              // eslint-disable-next-line max-len
-              if (assignedRoles.length) msg.member.roles.add(process.env.WIKI_ROLE_GROUP).catch(this.client.rollbar.error);
               msg.channel.send({
                 embed: {
-                  color: 4575254,
-                  title: '¡Verificación completada!',
-                  description: `✅ Te has autenticado correctamente con la cuenta de Fandom **${mwUser.name}** y ahora tienes acceso a todos los canales del servidor.${assignedRoles.length ? `\n\nDe acuerdo a tus wikis, se te han asignado los siguientes roles: ${assignedRoles.map((role) => `<@&${role.id}>`).join(', ')}` : ''}\n\n¡Recuerda visitar <#${process.env.SELFROLES_CHANNEL}> si deseas elegir más roles de tu interés!`
+                  color: 14889515,
+                  description: `❌ No es posible completar tu verificación porque tu Discord Tag no coincide con el que se indica en tu perfil de Fandom (tu tag es **${discordTag}**, mientras que tu perfil de Fandom ${fdServicesResponse.value.trim() ? `indica **${fdServicesResponse.value}**` : 'no tiene ningún tag asociado'}). ¿Tal vez olvidaste actualizarlo?\n\nDirígete a [tu perfil de Fandom](https://comunidad.fandom.com/wiki/Usuario:${mwUser.name.replace(/ /g, '_')}) y verifica que tu tag esté correcto y actualizado, luego envía tu formulario nuevamente.`,
+                  fields: [
+                    {
+                      name: '¿Tienes algún inconveniente para completar la verificación?',
+                      value: `Menciona a algún miembro del <@&${process.env.STAFF_ROLE}> e intentaremos ayudarte.`
+                    }
+                  ]
                 }
-              }).catch(this.client.rollbar.error);
-            }).catch(this.client.rollbar.error);
+              });
+            }
           } else {
-            this.client.rollbar.info('Usuario inició la verificación, discordHandle no coincide', {
+            this.client.rollbar.warning('La API de Fandom devolvió cualquier cosa', {
               discordTag,
+              mwUser,
               servicesApiResponse: fdServicesResponse
             });
             msg.channel.send({
               embed: {
                 color: 14889515,
-                description: `❌ No es posible completar tu verificación porque tu Discord Tag no coincide con el que se indica en tu perfil de Fandom (tu tag es **${discordTag}**, mientras que tu perfil de Fandom ${fdServicesResponse.value.trim() ? `indica **${fdServicesResponse.value}**` : 'no tiene ningún tag asociado'}). ¿Tal vez olvidaste actualizarlo?\n\nDirígete a [tu perfil de Fandom](https://comunidad.fandom.com/wiki/Usuario:${mwUser.name.replace(/ /g, '_')}) y verifica que tu tag esté correcto y actualizado, luego envía tu formulario nuevamente.`,
-                fields: [
-                  {
-                    name: '¿Tienes algún inconveniente para completar la verificación?',
-                    value: `Menciona a algún miembro del <@&${process.env.STAFF_ROLE}> e intentaremos ayudarte.`
-                  }
-                ]
+                description: `❌ No es posible completar tu verificación porque parece no haber ninguna información asociada a tu perfil de Fandom.\n\nDirígete a [tu perfil de Fandom](https://comunidad.fandom.com/wiki/Usuario:${mwUser.name.replace(/ /g, '_')}) y verifica que tu tag esté correcto y actualizado, luego envía tu formulario nuevamente.\n\nSi sigues recibiendo este mensaje, probablemente esto sea un bug. Menciona a un miembro del <@&${process.env.STAFF_ROLE}> para verificarte manualmente.`
               }
             });
           }
-        } else {
-          this.client.rollbar.warning('La API de Fandom devolvió cualquier cosa', {
-            discordTag,
-            mwUser,
-            servicesApiResponse: fdServicesResponse
-          });
-          msg.channel.send({
-            embed: {
-              color: 14889515,
-              description: `❌ No es posible completar tu verificación porque parece no haber ninguna información asociada a tu perfil de Fandom.\n\nDirígete a [tu perfil de Fandom](https://comunidad.fandom.com/wiki/Usuario:${mwUser.name.replace(/ /g, '_')}) y verifica que tu tag esté correcto y actualizado, luego envía tu formulario nuevamente.\n\nSi sigues recibiendo este mensaje, probablemente esto sea un bug. Menciona a un miembro del <@&${process.env.STAFF_ROLE}> para verificarte manualmente.`
-            }
-          });
-        }
+        }).catch((err) => {
+          if (err.response && err.response.status === 404) {
+            msg.channel.send({
+              embed: {
+                color: 14889515,
+                description: `❌ No es posible completar tu verificación porque parece no haber ninguna información asociada a tu perfil de Fandom.\n\nDirígete a [tu perfil de Fandom](https://comunidad.fandom.com/wiki/Usuario:${mwUser.name.replace(/ /g, '_')}) y verifica que tu tag esté correcto y actualizado, luego envía tu formulario nuevamente.\n\nSi sigues recibiendo este mensaje, probablemente esto sea un bug. Menciona a un miembro del <@&${process.env.STAFF_ROLE}> para verificarte manualmente.`
+              }
+            });
+          } else throw err;
+        });
       } catch (err) {
         this.client.rollbar.error(err);
         msg.channel.send({
