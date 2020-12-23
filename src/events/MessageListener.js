@@ -1,7 +1,13 @@
 import { Listener } from 'discord-akairo';
 import axios from 'axios';
 import { stringSimilarity } from 'string-similarity-js';
-import { formatDate, parseBlockExpiry } from '../Util';
+import {
+  addDays,
+  differenceInDays,
+  format as formatDate,
+  parse as parseDate
+} from 'date-fns';
+import { es } from 'date-fns/locale';
 
 class MessageListener extends Listener {
   constructor() {
@@ -63,17 +69,33 @@ class MessageListener extends Listener {
             }
           });
         }
-        const mwUser = mwResponse.query.users[0];
-        if (mwUser.blockreason && mwUser.blockexpiry) {
-          const blockExpiry = mwUser.blockexpiry !== 'infinity' ? parseBlockExpiry(mwUser.blockexpiry) : null;
+        const mwUser = mwResponse.query.users[0],
+          registrationDate = new Date(mwUser.registration);
+
+        if (differenceInDays(Date.now(), registrationDate) < 5) {
+          const allowedDate = formatDate(addDays(registrationDate, 5), "d 'de' MMMM 'de' yyyy, h:mm:ss aa", {
+            locale: es
+          });
           msg.channel.send({
             embed: {
               color: 14889515,
-              description: `❌ No es posible completar tu verificación porque la cuenta de Fandom **${data.usuario}** está actualmente bloqueada.\nPor favor vuelve a intentarlo cuando el bloqueo haya expirado.\n\nEl bloqueo fue realizado por ${mwUser.blockedby}${mwUser.blockreason ? ` con la razón _${mwUser.blockreason}_` : ''}, y expira ${mwUser.blockexpiry === 'infinity' ? '**nunca**' : `el ${formatDate(blockExpiry)}`}.`
+              description: `❌ No es posible completar tu verificación porque la cuenta de Fandom **${data.usuario}** fue registrada hace menos de 5 días.\nPor favor vuelve a intentarlo después del ${allowedDate}.`
+            }
+          }).catch(this.client.rollbar.error);
+          return logsChannel.send(`⚠️ <@!${msg.author.id}> intentó autenticarse con la cuenta de Fandom demasiado nueva **${mwUser.name}**.`).catch(this.client.rollbar.error);
+        }
+
+        if (mwUser.blockreason && mwUser.blockexpiry) {
+          const blockExpiry = mwUser.blockexpiry !== 'infinity' ? parseDate(mwUser.blockexpiry, 'yyyyMMddHHmmss', new Date()) : null;
+          msg.channel.send({
+            embed: {
+              color: 14889515,
+              description: `❌ No es posible completar tu verificación porque la cuenta de Fandom **${data.usuario}** está actualmente bloqueada.\nPor favor vuelve a intentarlo cuando el bloqueo haya expirado.\n\nEl bloqueo fue realizado por ${mwUser.blockedby}${mwUser.blockreason ? ` con la razón _${mwUser.blockreason}_` : ''}, y expira ${mwUser.blockexpiry === 'infinity' ? '**nunca**' : `el ${formatDate(blockExpiry, 'dd/MM/yyyy')}`}.`
             }
           }).catch(this.client.rollbar.error);
           return logsChannel.send(`⚠️ <@!${msg.author.id}> intentó autenticarse con la cuenta de Fandom bloqueada **${mwUser.name}**.`).catch(this.client.rollbar.error);
         }
+
         axios.get(`https://services.fandom.com/user-attribute/user/${mwUser.userid}/attr/discordHandle?cb=${Date.now()}`).then((response) => {
           const fdServicesResponse = response.data;
           if (fdServicesResponse.name && fdServicesResponse.value) {
