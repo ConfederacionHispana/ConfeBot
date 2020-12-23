@@ -1,6 +1,6 @@
 {
   "name": "ConfeBot",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Bot de la Confederación de Fandom Hispano",
   "main": "index.js",
   "module": "src/index.js",
@@ -11,7 +11,7 @@
   "author": "TheNozomi <13172293+TheNozomi@users.noreply.github.com>",
   "license": "MIT",
   "dependencies": {
-    "axios": "^0.21.0",
+    "axios": "^0.21.1",
     "cron": "^1.8.2",
     "date-fns": "^2.16.1",
     "discord-akairo": "^8.1.0",
@@ -29,7 +29,7 @@
     "zlib-sync": "^0.1.7"
   },
   "devDependencies": {
-    "eslint": "^7.14.0",
+    "eslint": "^7.16.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-import": "2.22.1"
   }
