@@ -1,12 +1,14 @@
 {
   "name": "ConfeBot",
-  "version": "0.1.5",
+  "version": "1.0.0",
   "description": "Bot de la Confederación de Fandom Hispano",
   "main": "index.js",
   "module": "src/index.js",
   "scripts": {
-    "lint": "eslint .",
-    "start": "node index.js"
+    "build": "tsc",
+    "dev": "cd src && ts-node-dev --transpile-only --respawn index.ts",
+    "lint": "eslint src/ --ext .js,.ts",
+    "start": "cd dist && node index.js"
   },
   "author": "TheNozomi <13172293+TheNozomi@users.noreply.github.com>",
   "license": "MIT",
@@ -16,11 +18,12 @@
     "date-fns": "^2.16.1",
     "discord-akairo": "^8.1.0",
     "discord.js": "^12.5.1",
-    "dotenv": "^8.2.0",
     "esm": "^3.2.25",
     "rollbar": "^2.19.4",
     "signale": "^1.4.0",
-    "string-similarity-js": "^2.1.2"
+    "string-similarity-js": "^2.1.2",
+    "ts-dotenv": "^0.8.3",
+    "winston": "^3.3.3"
   },
   "optionalDependencies": {
     "bufferutil": "^4.0.2",
@@ -29,8 +32,13 @@
     "zlib-sync": "^0.1.7"
   },
   "devDependencies": {
-    "eslint": "^7.16.0",
-    "eslint-config-airbnb-base": "^14.2.1",
-    "eslint-plugin-import": "2.22.1"
+    "@types/node": "^14.14.20",
+    "@typescript-eslint/eslint-plugin": "^4.14.0",
+    "@typescript-eslint/parser": "^4.14.0",
+    "eslint": "^7.18.0",
+    "eslint-config-airbnb-typescript": "^12.0.0",
+    "eslint-plugin-import": "2.22.1",
+    "ts-node-dev": "^1.1.1",
+    "typescript": "^4.1.3"
   }
 }
