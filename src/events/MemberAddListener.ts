@@ -10,7 +10,11 @@ class MemberAddListener extends Listener {
   }
 
   exec(member: GuildMember): void {
-    console.log('member join', member);
+    this.client.logger.info('Nuevo miembro', {
+      userId: member.user.id,
+      userTag: `${member.user.username}#${member.user.discriminator}`,
+      source: 'user-log'
+    });
   }
 }
 
