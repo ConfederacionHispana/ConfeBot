@@ -116,7 +116,7 @@ class MessageListener extends Listener {
               expectedDisc = expectedTag.substring(expectedTag.lastIndexOf('#') + 1, expectedTag.length).trim();
             if (message.author.username === expectedName
                 && message.author.discriminator === expectedDisc) {
-              member.roles.add(env.USER_ROLE).then(() => {
+              member.roles.add([env.USER_ROLE, env.FDUSER_ROLE], `Verificado como ${mwUser.name}`).then(() => {
                 member.roles.remove(env.NEWUSER_ROLE).catch((err) => this.client.logger.error('Unable to remove new user role', { err }));
                 logsChannel.send(`✅ Se verificó a <@!${message.author.id}> con la cuenta de Fandom **${mwUser.name}**`).catch((err) => this.client.logger.error('Unable to send message', { err }));
                 const guildRoles = guild.roles.cache,
