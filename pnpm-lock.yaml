@@ -7,7 +7,8 @@ dependencies:
   discord.js: github.com/discordjs/discord.js/c4c817116f868cedb4ec20bcbf90b9b3d382621e_c70f8fc5586dd378b8c866035dbe710b
   esm: 3.2.25
   mongoose: 5.11.13
-  rollbar: 2.19.4
+  node-cron: 2.0.3
+  rollbar: 2.20.0
   string-similarity-js: 2.1.2
   ts-dotenv: 0.8.3
   tslib: 2.1.0
@@ -16,6 +17,7 @@ dependencies:
   winston-logzio: 5.1.2
 devDependencies:
   '@types/node': 14.14.22
+  '@types/node-cron': 2.0.3
   '@typescript-eslint/eslint-plugin': 4.14.0_980e7d90d2d08155204a38366bd3b934
   '@typescript-eslint/parser': 4.14.0_eslint@7.18.0+typescript@4.1.3
   eslint: 7.18.0
@@ -132,6 +134,12 @@ packages:
     dev: false
     resolution:
       integrity: sha512-6YNqGP1hk5bjUFaim+QoFFuI61WjHiHE1BNeB41TA00Xd2K7zG4lcWyLLq/XtIp36uMavvS5hoAUJ+1u/GcX2Q==
+  /@types/node-cron/2.0.3:
+    dependencies:
+      '@types/tz-offset': 0.0.0
+    dev: true
+    resolution:
+      integrity: sha512-gwBBGeY2XeYBLE0R01K9Sm2hvNcPGmoloL6aqthA3QmBB1GYXTHIJ42AGZL7bdXBRiwbRV8b6NB5iKpl20R3gw==
   /@types/node/14.14.22:
     resolution:
       integrity: sha512-g+f/qj/cNcqKkc3tFqlXOYjrmZA+jNBiDzbP3kH+B+otKFqAdPgVTGP1IeKRdMml/aE69as5S4FqtxAbl+LaMw==
@@ -143,6 +151,10 @@ packages:
     dev: true
     resolution:
       integrity: sha512-7NQmHra/JILCd1QqpSzl8+mJRc8ZHz3uDm8YV1Ks9IhK0epEiTw8aIErbvH9PI+6XbqhyIQy3462nEsn7UVzjQ==
+  /@types/tz-offset/0.0.0:
+    dev: true
+    resolution:
+      integrity: sha512-XLD/llTSB6EBe3thkN+/I0L+yCTB6sjrcVovQdx2Cnl6N6bTzHmwe/J8mWnsXFgxLrj/emzdv8IR4evKYG2qxQ==
   /@types/ws/7.4.0:
     dependencies:
       '@types/node': 14.14.22
@@ -2005,6 +2017,16 @@ packages:
     dev: true
     resolution:
       integrity: sha1-Sr6/7tdUHywnrPspvbvRXI1bpPc=
+  /node-cron/2.0.3:
+    dependencies:
+      opencollective-postinstall: 2.0.3
+      tz-offset: 0.0.1
+    dev: false
+    engines:
+      node: '>=6.0.0'
+    requiresBuild: true
+    resolution:
+      integrity: sha512-eJI+QitXlwcgiZwNNSRbqsjeZMp5shyajMR81RZCqeW0ZDEj4zU9tpd4nTh/1JsBiKbF8d08FCewiipDmVIYjg==
   /node-fetch/2.6.1:
     dev: false
     engines:
@@ -2111,6 +2133,11 @@ packages:
     dev: false
     resolution:
       integrity: sha512-5DXOiRKwuSEcQ/l0kGCF6Q3jcADFv5tSmRaJck/OqkVFcOzutB134KRSfF0xDrL39MNnqxbHBbUUcjZIhTgb2g==
+  /opencollective-postinstall/2.0.3:
+    dev: false
+    hasBin: true
+    resolution:
+      integrity: sha512-8AV/sCtuzUeTo8gQK5qDZzARrulB3egtLzFgteqB2tcT4Mw7B8Kt7JcDHmltjz6FOAHsvTevk70gZEbhM4ZS9Q==
   /optionator/0.9.1:
     dependencies:
       deep-is: 0.1.3
@@ -2278,10 +2305,10 @@ packages:
         optional: true
     resolution:
       integrity: sha512-I+nkWY212lJ500jLe4tN9tWO7nRiBAVdMv76P9kffZjYhw20raMlW1HSSvS+MLXC9MmbNZCazMrAr+5jEEgTuw==
-  /prism-media/1.2.3:
+  /prism-media/1.2.5:
     dev: false
     peerDependencies:
-      '@discordjs/opus': ^0.3.3
+      '@discordjs/opus': ^0.4.0
       ffmpeg-static: ^4.2.7 || ^3.0.0 || ^2.4.0
       node-opus: ^0.3.3
       opusscript: ^0.0.7
@@ -2295,7 +2322,7 @@ packages:
       opusscript:
         optional: true
     resolution:
-      integrity: sha512-fSrR66n0l6roW9Rx4rSLMyTPTjRTiXy5RVqDOurACQ6si1rKHHKDU5gwBJoCsIV0R3o9gi+K50akl/qyw1C74A==
+      integrity: sha512-YqSnMCugv+KUNE9PQec48Dq22jSxB/B6UcfD9jTpPN1Mbuh+RqELdTJmRPj106z3aa8ZuXrWGQllXPeIGmKbvw==
   /process-nextick-args/2.0.1:
     dev: false
     resolution:
@@ -2535,7 +2562,7 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-JZkJMZkAGFFPP2YqXZXPbMlMBgsxzE8ILs4lMIX/2o0L9UBw9O/Y3o6wFw/i9YLapcUJWwqbi3kdxIPdC62TIA==
-  /rollbar/2.19.4:
+  /rollbar/2.20.0:
     dependencies:
       async: 1.2.1
       console-polyfill: 0.3.0
@@ -2549,7 +2576,7 @@ packages:
     optionalDependencies:
       decache: 3.1.0
     resolution:
-      integrity: sha512-8ErcMfJE2zkhgrFtpGRyejHBhyO0hU7dZ3EvG2ylNZ7qSu4yw5PZfhGx+Qyq3ksKshLFeQh9Y/Bh2S1TOPIhvw==
+      integrity: sha512-xPSJIfkP4scBCpt1gEiFAcaeAHutvGbz0xF7Kr7JS2bloBC3G8ufua9iKXu8cpATPD4rFDqCWD7cngPaICCTwA==
   /run-parallel/1.1.10:
     dev: true
     resolution:
@@ -3011,6 +3038,10 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-B3ZIOf1IKeH2ixgHhj6la6xdwR9QrLC5d1VKeCSY4tvkqhF2eqd9O7txNlS0PO3GrBAFIdr3L1ndNwteUbZLYg==
+  /tz-offset/0.0.1:
+    dev: false
+    resolution:
+      integrity: sha512-kMBmblijHJXyOpKzgDhKx9INYU4u4E1RPMB0HqmKSgWG8vEcf3exEfLh4FFfzd3xdQOw9EuIy/cP0akY6rHopQ==
   /uri-js/4.4.1:
     dependencies:
       punycode: 2.1.1
@@ -3157,7 +3188,7 @@ packages:
         optional: true
     resolution:
       integrity: sha512-kyFwXuV/5ymf+IXhS6f0+eAFvydbaBW3zjpT6hUdAh/hbVjTIB5EHBGi0bPoCLSK2wcuz3BrEkB9LrYv1Nm4NQ==
-  /ws/7.4.2_c70f8fc5586dd378b8c866035dbe710b:
+  /ws/7.4.3_c70f8fc5586dd378b8c866035dbe710b:
     dependencies:
       bufferutil: 4.0.3
       utf-8-validate: 5.0.4
@@ -3173,7 +3204,7 @@ packages:
       utf-8-validate:
         optional: true
     resolution:
-      integrity: sha512-T4tewALS3+qsrpGI/8dqNMLIVdq/g/85U98HPMa6F0m6xTbvhXU6RCQLqPH3+SlomNV/LdY6RXEbBpMH6EOJnA==
+      integrity: sha512-hr6vCR76GsossIRsr8OLR9acVVm1jyfEWvhbNjtgPOrfvAlKzvyeg/P6r8RuDjRyrcQoPQT7K0DGEPc7Ae6jzA==
   /xtend/4.0.2:
     dev: true
     engines:
@@ -3215,9 +3246,9 @@ packages:
       '@discordjs/form-data': 3.0.1
       abort-controller: 3.0.0
       node-fetch: 2.6.1
-      prism-media: 1.2.3
+      prism-media: 1.2.5
       tweetnacl: 1.0.3
-      ws: 7.4.2_c70f8fc5586dd378b8c866035dbe710b
+      ws: 7.4.3_c70f8fc5586dd378b8c866035dbe710b
     dev: false
     engines:
       node: '>=14.0.0'
@@ -3231,6 +3262,7 @@ packages:
     version: 12.5.0
 specifiers:
   '@types/node': ^14.14.22
+  '@types/node-cron': ^2.0.3
   '@typescript-eslint/eslint-plugin': ^4.14.0
   '@typescript-eslint/parser': ^4.14.0
   axios: ^0.21.1
@@ -3246,7 +3278,8 @@ specifiers:
   eslint-plugin-import: 2.22.1
   esm: ^3.2.25
   mongoose: ^5.11.13
-  rollbar: ^2.19.4
+  node-cron: ^2.0.3
+  rollbar: ^2.20.0
   string-similarity-js: ^2.1.2
   ts-dotenv: ^0.8.3
   ts-node-dev: ^1.1.1

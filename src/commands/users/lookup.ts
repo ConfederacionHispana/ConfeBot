@@ -42,7 +42,7 @@ class LookupUserCommand extends Command {
           },
           {
             name: 'Roles',
-            value: member.roles.cache.map((role) => role.id === '@everyone' ? role.id : `<@&${role.id}>`).join(', ')
+            value: member.roles.cache.map((role) => (role.id === '@everyone' ? role.id : `<@&${role.id}>`)).join(', ')
           },
           {
             name: 'ID',
