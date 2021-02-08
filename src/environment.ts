@@ -5,7 +5,7 @@ export type Env = EnvType<typeof schema>;
 
 export const schema = {
   DISCORD_TOKEN: String,
-  ROLLBAR_TOKEN: {
+  HONEYBADGER_API_KEY: {
     type: String,
     optional: true
   },

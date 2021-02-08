@@ -1,13 +1,8 @@
 // eslint-disable-next-line import/order
 import { env, loadEnv } from './environment';
-import { hostname } from 'os';
 
-import {
-  Logger, createLogger, format as logFormat, transports as logTransports
-} from 'winston';
-
-import Rollbar from 'rollbar';
-
+import { Signale } from 'signale';
+import Honeybadger from '@honeybadger-io/js';
 import {
   AkairoClient,
   CommandHandler,
@@ -20,7 +15,8 @@ declare module 'discord-akairo' {
   interface AkairoClient {
     commandHandler: CommandHandler,
     listenerHandler: ListenerHandler,
-    logger: Logger,
+    logger: Signale,
+    logException(err: Error, context?: any): void,
     version: string
   }
 }
@@ -30,28 +26,42 @@ class ConfeBot extends AkairoClient {
     super({
       ownerID: env.OWNER_ID
     }, {
-      disableMentions: 'everyone',
+      allowedMentions: {
+        parse: ['roles', 'users']
+      },
       ws: {
         intents: ['GUILDS', 'GUILD_PRESENCES', 'GUILD_MEMBERS', 'GUILD_MESSAGES', 'GUILD_MESSAGE_REACTIONS']
       }
     });
 
-    this.version = '1.0.0';
+    this.version = process.env.npm_package_version || '1.0.0';
 
-    this.logger = createLogger({
-      level: 'info',
-      format: logFormat.json(),
-      defaultMeta: {
+    const loggerConfig = {
+      secrets: [env.DISCORD_TOKEN]
+    };
+
+    if (env.HONEYBADGER_API_KEY) loggerConfig.secrets.push(env.HONEYBADGER_API_KEY);
+
+    this.logger = new Signale(loggerConfig);
+
+    if (env.HONEYBADGER_API_KEY) {
+      Honeybadger.configure({
+        apiKey: env.HONEYBADGER_API_KEY,
         environment: process.env.NODE_ENV === 'production' ? 'prod' : 'dev',
-        hostname: hostname(),
-        version: this.version
-      },
-      transports: [
-        new logTransports.Console({
-          format: logFormat.cli()
-        })
-      ]
-    });
+        logger: this.logger,
+        revision: this.version
+      });
+    } else this.logger.warn('HONEYBADGER_API_KEY not set, error reporting disabled.');
+
+    this.logException = (err: Error, context: any = {}): void => {
+      if (Object.keys(context).length) this.logger.error(err, '\nContext:', context);
+      else this.logger.error(err);
+
+      if (env.HONEYBADGER_API_KEY) {
+        Honeybadger.resetContext(context);
+        Honeybadger.notify(err);
+      }
+    };
 
     this.listenerHandler = new ListenerHandler(this, {
       directory: './events',
@@ -61,14 +71,14 @@ class ConfeBot extends AkairoClient {
     this.commandHandler = new CommandHandler(this, {
       directory: './commands',
       extensions: process.env.TS_NODE_DEV ? ['.js', '.ts'] : ['.js'],
-      prefix: '!'
+      prefix: 'c!'
     });
   }
 
   async start() {
     this.logger.info(`ConfeBot v${this.version} is starting`);
 
-    console.log(env);
+    this.logger.info('Environment:', env);
     this.listenerHandler.loadAll();
     this.commandHandler.loadAll();
     this.login(env.DISCORD_TOKEN);
@@ -77,3 +87,5 @@ class ConfeBot extends AkairoClient {
 
 const client = new ConfeBot();
 client.start();
+
+export default ConfeBot;

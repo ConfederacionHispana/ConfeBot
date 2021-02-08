@@ -31,7 +31,7 @@ class MessageListener extends Listener {
     const { guild, member } = message;
 
     const lines = message.content.split(/[\r\n]+/).filter((n) => n.trim()),
-      data: {[k: string]: any} = {
+      data: { [k: string]: any } = {
         usuario: '',
         wikis: [],
         invitacion: ''
@@ -93,8 +93,8 @@ class MessageListener extends Listener {
               color: 14889515,
               description: `❌ No es posible completar tu verificación porque la cuenta de Fandom **${data.usuario}** fue registrada hace menos de 5 días.\nPor favor vuelve a intentarlo después del ${allowedDate}.`
             }
-          }).catch((err) => this.client.logger.error('Unable to send message', { err }));
-          return logsChannel.send(`⚠️ <@!${message.author.id}> intentó autenticarse con la cuenta de Fandom demasiado nueva **${mwUser.name}**.`).catch((err) => this.client.logger.error('Unable to send message', { err }));
+          }).catch(this.client.logException);
+          return logsChannel.send(`⚠️ <@!${message.author.id}> intentó autenticarse con la cuenta de Fandom demasiado nueva **${mwUser.name}**.`).catch(this.client.logException);
         }
 
         if (mwUser.blockreason && mwUser.blockexpiry) {
@@ -104,8 +104,8 @@ class MessageListener extends Listener {
               color: 14889515,
               description: `❌ No es posible completar tu verificación porque la cuenta de Fandom **${data.usuario}** está actualmente bloqueada.\nPor favor vuelve a intentarlo cuando el bloqueo haya expirado.\n\nEl bloqueo fue realizado por ${mwUser.blockedby}${mwUser.blockreason ? ` con la razón _${mwUser.blockreason}_` : ''}, y expira ${mwUser.blockexpiry === 'infinity' ? '**nunca**' : `el ${formatDate(blockExpiry, 'dd/MM/yyyy')}`}.`
             }
-          }).catch((err) => this.client.logger.error('Unable to send message', { err }));
-          return logsChannel.send(`⚠️ <@!${message.author.id}> intentó autenticarse con la cuenta de Fandom bloqueada **${mwUser.name}**.`).catch((err) => this.client.logger.error('Unable to send message', { err }));
+          }).catch(this.client.logException);
+          return logsChannel.send(`⚠️ <@!${message.author.id}> intentó autenticarse con la cuenta de Fandom bloqueada **${mwUser.name}**.`).catch(this.client.logException);
         }
 
         axios.get(`https://services.fandom.com/user-attribute/user/${mwUser.userid}/attr/discordHandle?cb=${Date.now()}`).then((response) => {
@@ -117,8 +117,8 @@ class MessageListener extends Listener {
             if (message.author.username === expectedName
                 && message.author.discriminator === expectedDisc) {
               member.roles.add([env.USER_ROLE, env.FDUSER_ROLE], `Verificado como ${mwUser.name}`).then(() => {
-                member.roles.remove(env.NEWUSER_ROLE).catch((err) => this.client.logger.error('Unable to remove new user role', { err }));
-                logsChannel.send(`✅ Se verificó a <@!${message.author.id}> con la cuenta de Fandom **${mwUser.name}**`).catch((err) => this.client.logger.error('Unable to send message', { err }));
+                member.roles.remove(env.NEWUSER_ROLE).catch(this.client.logException);
+                logsChannel.send(`✅ Se verificó a <@!${message.author.id}> con la cuenta de Fandom **${mwUser.name}**`).catch(this.client.logException);
                 const guildRoles = guild.roles.cache,
                   wikiIndexRole = guild.roles.resolve(env.WIKI_ROLE_GROUP) as Role,
                   assignedRoles: Role[] = [];
@@ -128,21 +128,21 @@ class MessageListener extends Listener {
                   data.wikis.forEach((wikiName: string) => {
                     const similarityScore = stringSimilarity(wikiName, role.name);
                     if (similarityScore > 0.75) {
-                      member.roles.add(role).catch((err) => this.client.logger.error('Unable to add wiki role', { err }));
+                      member.roles.add(role).catch(this.client.logException);
                       assignedRoles.push(role);
                     }
                   });
                 });
                 // eslint-disable-next-line max-len
-                if (assignedRoles.length) member.roles.add(env.WIKI_ROLE_GROUP).catch((err) => this.client.logger.error('Unable to add wiki role', { err }));
+                if (assignedRoles.length) member.roles.add(env.WIKI_ROLE_GROUP).catch(this.client.logException);
                 message.channel.send({
                   embed: {
                     color: 4575254,
                     title: '¡Verificación completada!',
                     description: `✅ Te has autenticado correctamente con la cuenta de Fandom **${mwUser.name}** y ahora tienes acceso a todos los canales del servidor.${assignedRoles.length ? `\n\nDe acuerdo a tus wikis, se te han asignado los siguientes roles: ${assignedRoles.map((role) => `<@&${role.id}>`).join(', ')}` : ''}\n\n¡Recuerda visitar <#${env.SELFROLES_CHANNEL}> si deseas elegir más roles de tu interés!`
                   }
-                }).catch((err) => this.client.logger.error('Unable to send message', { err }));
-              }).catch((err) => this.client.logger.error('Unable to add user role', { err }));
+                }).catch(this.client.logException);
+              }).catch(this.client.logException);
             } else {
               this.client.logger.info('Usuario inició la verificación, discordHandle no coincide', {
                 discordTag,
@@ -162,7 +162,7 @@ class MessageListener extends Listener {
               });
             }
           } else {
-            this.client.logger.warning('La API de Fandom devolvió cualquier cosa', {
+            this.client.logger.warn('La API de Fandom devolvió cualquier cosa', {
               discordTag,
               mwUser,
               servicesApiResponse: fdServicesResponse
@@ -185,7 +185,7 @@ class MessageListener extends Listener {
           } else throw err;
         });
       } catch (err) {
-        this.client.logger.error('Internal error', { err });
+        this.client.logException(err);
         message.channel.send({
           embed: {
             color: 14889515,

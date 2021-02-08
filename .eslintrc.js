@@ -24,6 +24,7 @@ module.exports = {
     'curly': ['error', 'multi-or-nest'],
     'eol-last': ['error', 'always'],
     'one-var': ['off'],
+    '@typescript-eslint/ban-ts-comment': ['warn'],
     '@typescript-eslint/comma-dangle': ['error', 'never'],
     '@typescript-eslint/no-shadow': ['off']
   }

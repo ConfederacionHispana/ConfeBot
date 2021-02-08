@@ -43,9 +43,7 @@ class MemberAddListener extends Listener {
             ]
           }
         }).then((sentMessage) => {
-          sentMessage.react('🌐').catch((err) => {
-            this.client.logger.error('Error reacting to welcome message', { err });
-          });
+          sentMessage.react('🌐').catch(this.client.logException);
           const filter = (reaction: MessageReaction, user: GuildMember) => ['🌐'].includes(reaction.emoji.name) && user.id === newMember.id;
           sentMessage.awaitReactions(filter, {
             max: 1,
@@ -61,9 +59,8 @@ class MemberAddListener extends Listener {
                   member: newMember.user.id
                 });
               }).catch((err) => {
-                this.client.logger.error('Error adding user role', {
-                  err,
-                  member: newMember.user.id
+                this.client.logException(err, {
+                  user_id: newMember.user.id
                 });
               });
             }
@@ -71,12 +68,12 @@ class MemberAddListener extends Listener {
             // idk lol
           });
         }).catch((err) => {
-          logsChannel.send(`❌ Imposible enviar mensaje de bienvenida a <@!${newMember.user.id}>: ${err.message} (${err.name})`).catch((err) => this.client.logger.error('Unable to send message', { err }));
-          this.client.logger.error('Error sending message', { err });
+          logsChannel.send(`❌ Imposible enviar mensaje de bienvenida a <@!${newMember.user.id}>: ${err.message} (${err.name})`).catch(this.client.logException);
+          this.client.logException(err);
         });
       }).catch((err) => {
-        logsChannel.send(`❌ Imposible agregar el rol Nuevo Ingreso a <@!${newMember.user.id}>: ${err.message} (${err.name})`).catch((err) => this.client.logger.error('Unable to send message', { err }));
-        this.client.logger.error('Error adding newUserRole', { err });
+        logsChannel.send(`❌ Imposible agregar el rol Nuevo Ingreso a <@!${newMember.user.id}>: ${err.message} (${err.name})`).catch(this.client.logException);
+        this.client.logException(err);
       });
     }
   }
