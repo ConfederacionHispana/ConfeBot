@@ -13,6 +13,7 @@
   "author": "TheNozomi <13172293+TheNozomi@users.noreply.github.com>",
   "license": "MIT",
   "dependencies": {
+    "@honeybadger-io/js": "^3.0.2",
     "axios": "^0.21.1",
     "consola": "^2.15.0",
     "cron": "^1.8.2",
@@ -22,13 +23,10 @@
     "esm": "^3.2.25",
     "mongoose": "^5.11.13",
     "node-cron": "^2.0.3",
-    "rollbar": "^2.20.0",
     "string-similarity-js": "^2.1.2",
     "ts-dotenv": "^0.8.3",
     "tslib": "^2.1.0",
-    "winston": "^3.3.3",
-    "winston-discordjs": "^2.1.1",
-    "winston-logzio": "^5.1.2"
+    "winston": "^3.3.3"
   },
   "optionalDependencies": {
     "bufferutil": "^4.0.3",

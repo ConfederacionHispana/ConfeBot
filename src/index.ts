@@ -5,7 +5,8 @@ import { hostname } from 'os';
 import {
   Logger, createLogger, format as logFormat, transports as logTransports
 } from 'winston';
-import LogzioWinstonTransport from 'winston-logzio';
+
+import Rollbar from 'rollbar';
 
 import {
   AkairoClient,
@@ -52,14 +53,6 @@ class ConfeBot extends AkairoClient {
       ]
     });
 
-    if (env.LOGZIO_TOKEN) {
-      this.logger.add(new LogzioWinstonTransport({
-        level: 'info',
-        name: 'winston_logzio',
-        token: env.LOGZIO_TOKEN
-      }));
-    } else this.logger.warn('Logz.io reporting disabled');
-
     this.listenerHandler = new ListenerHandler(this, {
       directory: './events',
       extensions: process.env.TS_NODE_DEV ? ['.js', '.ts'] : ['.js']
@@ -74,6 +67,7 @@ class ConfeBot extends AkairoClient {
 
   async start() {
     this.logger.info(`ConfeBot v${this.version} is starting`);
+
     console.log(env);
     this.listenerHandler.loadAll();
     this.commandHandler.loadAll();

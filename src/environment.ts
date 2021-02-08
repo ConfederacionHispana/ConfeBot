@@ -5,13 +5,11 @@ export type Env = EnvType<typeof schema>;
 
 export const schema = {
   DISCORD_TOKEN: String,
-  LOGZIO_TOKEN: {
+  ROLLBAR_TOKEN: {
     type: String,
     optional: true
   },
-  SYSLOG_CHANNEL: String,
   OWNER_ID: String,
-
   MW_API: String,
 
   GUILD_ID: String,

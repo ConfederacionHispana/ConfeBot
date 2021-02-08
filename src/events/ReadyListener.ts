@@ -1,7 +1,4 @@
 import { Listener } from 'discord-akairo';
-import { TextChannel } from 'discord.js';
-import DiscordTransport from 'winston-discordjs';
-import { env } from '../environment';
 
 class ReadyListener extends Listener {
   constructor() {
@@ -12,13 +9,6 @@ class ReadyListener extends Listener {
   }
 
   exec(): void {
-    const systemLogChannel = this.client.channels.resolve(env.SYSLOG_CHANNEL);
-    if (systemLogChannel instanceof TextChannel) {
-      this.client.logger.add(new DiscordTransport({
-        discordChannel: systemLogChannel
-      }));
-    } else this.client.logger.warn('Discord reporting disabled');
-
     this.client.logger.info('Received ready event', {
       source: 'discord'
     });
