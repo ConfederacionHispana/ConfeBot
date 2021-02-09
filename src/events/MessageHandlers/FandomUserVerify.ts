@@ -10,18 +10,17 @@ import {
 } from 'date-fns';
 import { es } from 'date-fns/locale';
 
-import { env } from '../environment';
+import { env } from '../../environment';
 
-class MessageListener extends Listener {
+class FandomUserVerify extends Listener {
   constructor() {
-    super('message', {
+    super('fandomUserVerify', {
       emitter: 'client',
       event: 'message'
     });
   }
 
   async exec(message: Message) {
-    // console.log('message', message);
     if (message.channel.id !== env.VERIF_CHANNEL) return;
     if (message.author.bot) return;
     if (!message.guild || !message.member) return;
@@ -199,4 +198,4 @@ class MessageListener extends Listener {
   }
 }
 
-export default MessageListener;
+export default FandomUserVerify;
