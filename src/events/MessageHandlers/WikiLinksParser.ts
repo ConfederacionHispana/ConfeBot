@@ -30,13 +30,13 @@ class WikiLinksParser extends Listener {
       member = msg.member as GuildMember;
     let parsedMsg: string = msg.content;
 
-	for (const link of capturedLinks) {
+    for (const link of capturedLinks) {
       // Proceso de parseo
       const groups = link.match(/\[\[(.*?)(\|(.*?))?\]\]/);
       if (!groups || groups.length < 2) return;
       const prefix = groups[1].match(/^(.*?):(.*)/) || [];
-	  // desperate times ask for desperate measures
-	  const [_, prefixCandidate, prefixContent] = prefix as [ never, keyof typeof InterwikiPrefixes, string ];
+      // desperate times ask for desperate measures
+      const [, prefixCandidate, prefixContent] = prefix as [ never, keyof typeof InterwikiPrefixes, string ];
       const interwikiUrl: string = InterwikiPrefixes[prefixCandidate]
         ? InterwikiPrefixes[prefixCandidate].replace(/\$1/g, prefixContent.replace(/ /g, '_'))
         : `https://comunidad.fandom/wiki/${groups[1].replace(/ /g, '_')}`;
