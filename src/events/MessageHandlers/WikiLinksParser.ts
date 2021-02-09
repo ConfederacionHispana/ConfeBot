@@ -29,18 +29,20 @@ class WikiLinksParser extends Listener {
     const channel = msg.channel as TextChannel,
       member = msg.member as GuildMember;
     let parsedMsg: string = msg.content;
-    capturedLinks.forEach((link) => {
+
+	for (const link of capturedLinks) {
       // Proceso de parseo
       const groups = link.match(/\[\[(.*?)(\|(.*?))?\]\]/);
       if (!groups || groups.length < 2) return;
       const prefix = groups[1].match(/^(.*?):(.*)/) || [];
-      const [, prefixCandidate, prefixContent] = prefix;
+	  // desperate times ask for desperate measures
+	  const [_, prefixCandidate, prefixContent] = prefix as [ never, keyof typeof InterwikiPrefixes, string ];
       const interwikiUrl: string = InterwikiPrefixes[prefixCandidate]
         ? InterwikiPrefixes[prefixCandidate].replace(/\$1/g, prefixContent.replace(/ /g, '_'))
         : `https://comunidad.fandom/wiki/${groups[1].replace(/ /g, '_')}`;
       const displayText = groups[3] || prefixContent || groups[1];
       parsedMsg = parsedMsg.replace(link, `[${displayText}](${interwikiUrl})`);
-    });
+    }
     msg.delete();
     channel.createWebhook(member.nickname ? member.nickname : msg.author.username, {
       avatar: msg.author.displayAvatarURL({ size: 512 }),
