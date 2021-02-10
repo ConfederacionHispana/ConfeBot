@@ -44,3 +44,8 @@ jobs:
           app_name: ${{ secrets.HEROKU_APP_NAME }}
           dockerfile_path: ''
           formation: 'worker'
+      - name: Send deploy notification
+        uses: honeybadger-io/github-notify-deploy-action@v1
+        with:
+          # The Honeybadger project API key
+          api_key: ${{ secrets.HONEYBADGER_API_KEY }}
