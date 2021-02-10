@@ -48,7 +48,7 @@ class WikiLinksParser extends Listener {
       avatar: msg.author.displayAvatarURL({ size: 512 }),
       reason: 'Parsear wiki link'
     }).then((wh) => {
-      wh.send(parsedMsg).then(() => {  
+      wh.send(parsedMsg).then(() => {
         msg.delete().catch(this.client.logException);
         wh.delete().catch(this.client.logException);
       }).catch(this.client.logException);
