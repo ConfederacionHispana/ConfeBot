@@ -36,20 +36,21 @@ class WikiLinksParser extends Listener {
       if (!groups || groups.length < 2) return;
       const prefix = groups[1].match(/^(.*?):(.*)/) || [];
       // desperate times ask for desperate measures
-      const [, prefixCandidate, prefixContent] = prefix as [ never, keyof typeof InterwikiPrefixes, string ];
+      const [, prefixCandidate, prefixContent] = prefix as [never, keyof typeof InterwikiPrefixes, string];
       const interwikiUrl: string = InterwikiPrefixes[prefixCandidate]
         ? InterwikiPrefixes[prefixCandidate].replace(/\$1/g, prefixContent.replace(/ /g, '_'))
-        : `https://comunidad.fandom/wiki/${groups[1].replace(/ /g, '_')}`;
+        : `https://comunidad.fandom.com/wiki/${groups[1].replace(/ /g, '_')}`;
       const displayText = groups[3] || prefixContent || groups[1];
       parsedMsg = parsedMsg.replace(link, `[${displayText}](${interwikiUrl})`);
     }
-    msg.delete();
+    // TODO: don't create a webhook every time (perf); instead check if one already exists and use it
     channel.createWebhook(member.nickname ? member.nickname : msg.author.username, {
       avatar: msg.author.displayAvatarURL({ size: 512 }),
       reason: 'Parsear wiki link'
     }).then((wh) => {
-      wh.send(parsedMsg).then(() => {
-        wh.delete();
+      wh.send(parsedMsg).then(() => {  
+        msg.delete().catch(this.client.logException);
+        wh.delete().catch(this.client.logException);
       }).catch(this.client.logException);
     }).catch(this.client.logException);
   }

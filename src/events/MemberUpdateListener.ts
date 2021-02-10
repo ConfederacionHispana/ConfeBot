@@ -1,3 +1,4 @@
+import { URL } from 'url';
 import { Listener } from 'discord-akairo';
 import { GuildMember, MessageReaction, TextChannel } from 'discord.js';
 import { env } from '../environment';
@@ -23,6 +24,13 @@ class MemberAddListener extends Listener {
       const welcomeChannel = newMember.guild.channels.resolve(env.WELCOME_CHANNEL) as TextChannel,
         logsChannel = newMember.guild.channels.resolve(env.LOGS_CHANNEL) as TextChannel;
 
+      const interactiveVerifyURL = new URL('https://confederacion-hispana.fandom.com/es/wiki/Especial:VerifyUser');
+
+      interactiveVerifyURL.searchParams.append('user', newMember.user.username);
+      interactiveVerifyURL.searchParams.append('tag', newMember.user.discriminator);
+      interactiveVerifyURL.searchParams.append('ch', (this.client.channels.resolve(env.VERIF_CHANNEL) as TextChannel).name);
+      interactiveVerifyURL.searchParams.append('c', 'c!verify');
+
       newMember.roles.add(env.NEWUSER_ROLE).then(() => {
         welcomeChannel.send(`¡Bienvenid@ <@!${newMember.user.id}> a la **Confederación de Fandom Hispano**!`, {
           embed: {
@@ -30,7 +38,7 @@ class MemberAddListener extends Listener {
             thumbnail: {
               url: 'https://vignette4.wikia.nocookie.net/confederacion-hispana/es/images/8/89/Wiki-wordmark.png'
             },
-            description: `Para acceder a todos los canales del servidor, necesitamos que completes una pequeña verificación:\n\nSi aún no lo has hecho, dirígete a [tu perfil de Fandom](https://comunidad.fandom.com/wiki/Especial:MiPágina), y en la parte superior del mismo (perfil global) añade tu Discord Tag en el campo destinado a ello.\n\nLuego, envía un mensaje en <#${env.VERIF_CHANNEL}> con tus datos. **Dado que los mensajes son verificados por un bot, te pedimos que sigas este formato:** \`\`\`\nUsuario: Tu nombre de usuario\nWiki: Wikis en las que contribuyes (separadas por coma)\nInvitación: ¿Cómo llegaste aquí? Si te invitó alguien que ya está en el servidor, puedes @Mencionarle\`\`\``,
+            description: `Para acceder a todos los canales del servidor, necesitamos que completes una pequeña verificación:\n\nSi aún no lo has hecho, dirígete a tu perfil de Fandom, y en la parte superior (perfil global) añade tu Discord Tag en el campo destinado a ello. También puedes ingresar a [este enlace](${interactiveVerifyURL.href}) para agregar tu tag automáticamente.\n\nLuego, envía un mensaje en <#${env.VERIF_CHANNEL}> con el comando \`c!verify TuNombreDeUsuario\`.`,
             fields: [
               {
                 name: '¿No tienes una cuenta en Fandom?',

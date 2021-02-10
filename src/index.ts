@@ -75,7 +75,7 @@ class ConfeBot extends AkairoClient {
     });
   }
 
-  async start() {
+  start(): void {
     this.logger.info(`ConfeBot v${this.version} is starting`);
 
     this.logger.info('Environment:', env);

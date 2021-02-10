@@ -2,7 +2,7 @@ import { AkairoClient } from 'discord-akairo';
 import { Guild, Role, TextChannel } from 'discord.js';
 import { env } from '../environment';
 
-const KickNonVerifiedMembers = (client: AkairoClient) => {
+const KickNonVerifiedMembers = (client: AkairoClient): void => {
   client.logger.info('Running scheduled task: KickNonVerifiedMembers');
   const guild = client.guilds.resolve(env.GUILD_ID) as Guild,
     newUserRole = guild.roles.resolve(env.NEWUSER_ROLE) as Role,
@@ -20,7 +20,7 @@ const KickNonVerifiedMembers = (client: AkairoClient) => {
     const timestampDifference = new Date().getTime() - member.joinedTimestamp,
       differenceDays = timestampDifference / (1000 * 3600 * 24);
     if (differenceDays >= 2) {
-      member.send(`¡Hola! Esto es una notificación para informarte que se te ha expulsado automáticamente de la **Confederación de Fandom Hispano** porque no has completado a tiempo el formulario. No te preocupes, puedes volver a unirte cuando desees mediante este enlace: <${process.env.GUILD_INVITE}>, o desde <https://confederacion-hispana.fandom.com/es/>. ¡Te esperamos!`)
+      member.send(`¡Hola! Esto es una notificación para informarte que se te ha expulsado automáticamente de la **Confederación de Fandom Hispano** porque no has completado a tiempo el formulario. No te preocupes, puedes volver a unirte cuando desees mediante este enlace: <${env.GUILD_INVITE}>, o desde <https://confederacion-hispana.fandom.com/es/>. ¡Te esperamos!`)
         .catch(client.logException)
         .finally(() => {
           member.kick('Expulsión automática pasadas 48 horas sin llenar el formulario').then(() => {

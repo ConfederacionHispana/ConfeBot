@@ -8,8 +8,8 @@ class PingCommand extends Command {
     });
   }
 
-  exec(message: Message): void {
-    message.reply('pong!');
+  exec(msg: Message): void {
+    msg.reply('pong!');
   }
 }
 

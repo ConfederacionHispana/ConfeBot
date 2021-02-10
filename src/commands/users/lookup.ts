@@ -14,13 +14,13 @@ class LookupUserCommand extends Command {
     });
   }
 
-  exec(message: Message, args: any): void {
+  exec(msg: Message, args: { member?: GuildMember }): void {
     if (!args.member) {
-      message.reply('❓ No encontré al usuario que buscas.');
+      msg.reply('❓ No encontré al usuario que buscas.');
       return;
     }
-    const member = args.member as GuildMember;
-    message.reply({
+    const { member } = args;
+    msg.reply({
       embed: {
         color: member.displayColor,
         title: `Información de **${member.user.username}#${member.user.discriminator}**`,

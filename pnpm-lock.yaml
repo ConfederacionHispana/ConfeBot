@@ -1,10 +1,10 @@
 dependencies:
-  '@honeybadger-io/js': 3.0.2
+  '@honeybadger-io/js': 3.0.3
   axios: 0.21.1
   cron: 1.8.2
   date-fns: 2.17.0
   discord-akairo: 8.1.0
-  discord.js: github.com/discordjs/discord.js/c4c817116f868cedb4ec20bcbf90b9b3d382621e_c70f8fc5586dd378b8c866035dbe710b
+  discord.js: github.com/discordjs/discord.js/cee6cf70ce76e9b06dc7f25bfd77498e18d7c8d4_c70f8fc5586dd378b8c866035dbe710b
   esm: 3.2.25
   mongoose: 5.11.15
   signale: 1.4.0
@@ -15,13 +15,13 @@ devDependencies:
   '@types/cron': 1.7.2
   '@types/node': 14.14.25
   '@types/signale': 1.4.1
-  '@typescript-eslint/eslint-plugin': 4.14.2_e5f964fa93e839b7a7927397f6cb9cb1
-  '@typescript-eslint/parser': 4.14.2_eslint@7.19.0+typescript@4.1.3
+  '@typescript-eslint/eslint-plugin': 4.15.0_180f9559caa1e269a170bbcc0f3d3058
+  '@typescript-eslint/parser': 4.15.0_eslint@7.19.0+typescript@4.1.4
   eslint: 7.19.0
-  eslint-config-airbnb-typescript: 12.3.1_ee81acc4f2e70806f61ec96b6b3729db
+  eslint-config-airbnb-typescript: 12.3.1_a7f294c9ca17b75b845caae5e8b6d172
   eslint-plugin-import: 2.22.1_eslint@7.19.0
-  ts-node-dev: 1.1.1_typescript@4.1.3
-  typescript: 4.1.3
+  ts-node-dev: 1.1.1_typescript@4.1.4
+  typescript: 4.1.4
 lockfileVersion: 5.2
 optionalDependencies:
   bufferutil: 4.0.3
@@ -78,12 +78,12 @@ packages:
       node: ^10.12.0 || >=12.0.0
     resolution:
       integrity: sha512-1JTKgrOKAHVivSvOYw+sJOunkBjUOvjqWk1DPja7ZFhIS2mX/4EgTT8M7eTK9jrKhL/FvXXEbQwIs3pg1xp3dg==
-  /@honeybadger-io/js/3.0.2:
+  /@honeybadger-io/js/3.0.3:
     dependencies:
       stacktrace-parser: 0.1.10
     dev: false
     resolution:
-      integrity: sha512-epaTt8bIw0HDCdRFU0ss6/0tDK+P0aeOYhJvZqOff45y9tgRPEWl43DzJnYemH4OryKDMhPW6XfsWX4qVAbnDA==
+      integrity: sha512-DQuaEpXYO1AqC5S6U5nl72OzIaclkC8hORe03Qp3cJDE9WooGnVaTcYrCHGjEwPkwhOHAuCakyCI19/dKHXK6A==
   /@nodelib/fs.scandir/2.1.4:
     dependencies:
       '@nodelib/fs.stat': 2.0.4
@@ -153,19 +153,19 @@ packages:
     dev: true
     resolution:
       integrity: sha512-7NQmHra/JILCd1QqpSzl8+mJRc8ZHz3uDm8YV1Ks9IhK0epEiTw8aIErbvH9PI+6XbqhyIQy3462nEsn7UVzjQ==
-  /@typescript-eslint/eslint-plugin/4.14.2_e5f964fa93e839b7a7927397f6cb9cb1:
+  /@typescript-eslint/eslint-plugin/4.15.0_180f9559caa1e269a170bbcc0f3d3058:
     dependencies:
-      '@typescript-eslint/experimental-utils': 4.14.2_eslint@7.19.0+typescript@4.1.3
-      '@typescript-eslint/parser': 4.14.2_eslint@7.19.0+typescript@4.1.3
-      '@typescript-eslint/scope-manager': 4.14.2
+      '@typescript-eslint/experimental-utils': 4.15.0_eslint@7.19.0+typescript@4.1.4
+      '@typescript-eslint/parser': 4.15.0_eslint@7.19.0+typescript@4.1.4
+      '@typescript-eslint/scope-manager': 4.15.0
       debug: 4.3.1
       eslint: 7.19.0
       functional-red-black-tree: 1.0.1
       lodash: 4.17.20
       regexpp: 3.1.0
       semver: 7.3.4
-      tsutils: 3.20.0_typescript@4.1.3
-      typescript: 4.1.3
+      tsutils: 3.20.0_typescript@4.1.4
+      typescript: 4.1.4
     dev: true
     engines:
       node: ^10.12.0 || >=12.0.0
@@ -177,13 +177,13 @@ packages:
       typescript:
         optional: true
     resolution:
-      integrity: sha512-uMGfG7GFYK/nYutK/iqYJv6K/Xuog/vrRRZX9aEP4Zv1jsYXuvFUMDFLhUnc8WFv3D2R5QhNQL3VYKmvLS5zsQ==
-  /@typescript-eslint/experimental-utils/4.14.2_eslint@7.19.0+typescript@4.1.3:
+      integrity: sha512-DJgdGZW+8CFUTz5C/dnn4ONcUm2h2T0itWD85Ob5/V27Ndie8hUoX5HKyGssvR8sUMkAIlUc/AMK67Lqa3kBIQ==
+  /@typescript-eslint/experimental-utils/4.15.0_eslint@7.19.0+typescript@4.1.4:
     dependencies:
       '@types/json-schema': 7.0.7
-      '@typescript-eslint/scope-manager': 4.14.2
-      '@typescript-eslint/types': 4.14.2
-      '@typescript-eslint/typescript-estree': 4.14.2_typescript@4.1.3
+      '@typescript-eslint/scope-manager': 4.15.0
+      '@typescript-eslint/types': 4.15.0
+      '@typescript-eslint/typescript-estree': 4.15.0_typescript@4.1.4
       eslint: 7.19.0
       eslint-scope: 5.1.1
       eslint-utils: 2.1.0
@@ -194,15 +194,15 @@ packages:
       eslint: '*'
       typescript: '*'
     resolution:
-      integrity: sha512-mV9pmET4C2y2WlyHmD+Iun8SAEqkLahHGBkGqDVslHkmoj3VnxnGP4ANlwuxxfq1BsKdl/MPieDbohCEQgKrwA==
-  /@typescript-eslint/parser/4.14.2_eslint@7.19.0+typescript@4.1.3:
+      integrity: sha512-V4vaDWvxA2zgesg4KPgEGiomWEBpJXvY4ZX34Y3qxK8LUm5I87L+qGIOTd9tHZOARXNRt9pLbblSKiYBlGMawg==
+  /@typescript-eslint/parser/4.14.2_eslint@7.19.0+typescript@4.1.4:
     dependencies:
       '@typescript-eslint/scope-manager': 4.14.2
       '@typescript-eslint/types': 4.14.2
-      '@typescript-eslint/typescript-estree': 4.14.2_typescript@4.1.3
+      '@typescript-eslint/typescript-estree': 4.14.2_typescript@4.1.4
       debug: 4.3.1
       eslint: 7.19.0
-      typescript: 4.1.3
+      typescript: 4.1.4
     dev: true
     engines:
       node: ^10.12.0 || >=12.0.0
@@ -214,6 +214,25 @@ packages:
         optional: true
     resolution:
       integrity: sha512-ipqSP6EuUsMu3E10EZIApOJgWSpcNXeKZaFeNKQyzqxnQl8eQCbV+TSNsl+s2GViX2d18m1rq3CWgnpOxDPgHg==
+  /@typescript-eslint/parser/4.15.0_eslint@7.19.0+typescript@4.1.4:
+    dependencies:
+      '@typescript-eslint/scope-manager': 4.15.0
+      '@typescript-eslint/types': 4.15.0
+      '@typescript-eslint/typescript-estree': 4.15.0_typescript@4.1.4
+      debug: 4.3.1
+      eslint: 7.19.0
+      typescript: 4.1.4
+    dev: true
+    engines:
+      node: ^10.12.0 || >=12.0.0
+    peerDependencies:
+      eslint: ^5.0.0 || ^6.0.0 || ^7.0.0
+      typescript: '*'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+    resolution:
+      integrity: sha512-L6Dtbq8Bc7g2aZwnIBETpmUa9XDKCMzKVwAArnGp5Mn7PRNFjf3mUzq8UeBjL3K8t311hvevnyqXAMSmxO8Gpg==
   /@typescript-eslint/scope-manager/4.14.2:
     dependencies:
       '@typescript-eslint/types': 4.14.2
@@ -223,13 +242,28 @@ packages:
       node: ^8.10.0 || ^10.13.0 || >=11.10.1
     resolution:
       integrity: sha512-cuV9wMrzKm6yIuV48aTPfIeqErt5xceTheAgk70N1V4/2Ecj+fhl34iro/vIssJlb7XtzcaD07hWk7Jk0nKghg==
+  /@typescript-eslint/scope-manager/4.15.0:
+    dependencies:
+      '@typescript-eslint/types': 4.15.0
+      '@typescript-eslint/visitor-keys': 4.15.0
+    dev: true
+    engines:
+      node: ^8.10.0 || ^10.13.0 || >=11.10.1
+    resolution:
+      integrity: sha512-CSNBZnCC2jEA/a+pR9Ljh8Y+5TY5qgbPz7ICEk9WCpSEgT6Pi7H2RIjxfrrbUXvotd6ta+i27sssKEH8Azm75g==
   /@typescript-eslint/types/4.14.2:
     dev: true
     engines:
       node: ^8.10.0 || ^10.13.0 || >=11.10.1
     resolution:
       integrity: sha512-LltxawRW6wXy4Gck6ZKlBD05tCHQUj4KLn4iR69IyRiDHX3d3NCAhO+ix5OR2Q+q9bjCrHE/HKt+riZkd1At8Q==
-  /@typescript-eslint/typescript-estree/4.14.2_typescript@4.1.3:
+  /@typescript-eslint/types/4.15.0:
+    dev: true
+    engines:
+      node: ^8.10.0 || ^10.13.0 || >=11.10.1
+    resolution:
+      integrity: sha512-su4RHkJhS+iFwyqyXHcS8EGPlUVoC+XREfy5daivjLur9JP8GhvTmDipuRpcujtGC4M+GYhUOJCPDE3rC5NJrg==
+  /@typescript-eslint/typescript-estree/4.14.2_typescript@4.1.4:
     dependencies:
       '@typescript-eslint/types': 4.14.2
       '@typescript-eslint/visitor-keys': 4.14.2
@@ -238,8 +272,8 @@ packages:
       is-glob: 4.0.1
       lodash: 4.17.20
       semver: 7.3.4
-      tsutils: 3.20.0_typescript@4.1.3
-      typescript: 4.1.3
+      tsutils: 3.20.0_typescript@4.1.4
+      typescript: 4.1.4
     dev: true
     engines:
       node: ^10.12.0 || >=12.0.0
@@ -250,6 +284,26 @@ packages:
         optional: true
     resolution:
       integrity: sha512-ESiFl8afXxt1dNj8ENEZT12p+jl9PqRur+Y19m0Z/SPikGL6rqq4e7Me60SU9a2M28uz48/8yct97VQYaGl0Vg==
+  /@typescript-eslint/typescript-estree/4.15.0_typescript@4.1.4:
+    dependencies:
+      '@typescript-eslint/types': 4.15.0
+      '@typescript-eslint/visitor-keys': 4.15.0
+      debug: 4.3.1
+      globby: 11.0.2
+      is-glob: 4.0.1
+      semver: 7.3.4
+      tsutils: 3.20.0_typescript@4.1.4
+      typescript: 4.1.4
+    dev: true
+    engines:
+      node: ^10.12.0 || >=12.0.0
+    peerDependencies:
+      typescript: '*'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+    resolution:
+      integrity: sha512-jG6xTmcNbi6xzZq0SdWh7wQ9cMb2pqXaUp6bUZOMsIlu5aOlxGxgE/t6L/gPybybQGvdguajXGkZKSndZJpksA==
   /@typescript-eslint/visitor-keys/4.14.2:
     dependencies:
       '@typescript-eslint/types': 4.14.2
@@ -259,6 +313,15 @@ packages:
       node: ^8.10.0 || ^10.13.0 || >=11.10.1
     resolution:
       integrity: sha512-KBB+xLBxnBdTENs/rUgeUKO0UkPBRs2vD09oMRRIkj5BEN8PX1ToXV532desXfpQnZsYTyLLviS7JrPhdL154w==
+  /@typescript-eslint/visitor-keys/4.15.0:
+    dependencies:
+      '@typescript-eslint/types': 4.15.0
+      eslint-visitor-keys: 2.0.0
+    dev: true
+    engines:
+      node: ^8.10.0 || ^10.13.0 || >=11.10.1
+    resolution:
+      integrity: sha512-RnDtJwOwFucWFAMjG3ghCG/ikImFJFEg20DI7mn4pHEx3vC48lIAoyjhffvfHmErRDboUPC7p9Z2il4CLb7qxA==
   /abort-controller/3.0.0:
     dependencies:
       event-target-shim: 5.0.1
@@ -805,9 +868,9 @@ packages:
       eslint-plugin-import: ^2.22.1
     resolution:
       integrity: sha512-GOrQyDtVEc1Xy20U7vsB2yAoB4nBlfH5HZJeatRXHleO+OS5Ot+MWij4Dpltw4/DyIkqUfqz1epfhVR5XWWQPA==
-  /eslint-config-airbnb-typescript/12.3.1_ee81acc4f2e70806f61ec96b6b3729db:
+  /eslint-config-airbnb-typescript/12.3.1_a7f294c9ca17b75b845caae5e8b6d172:
     dependencies:
-      '@typescript-eslint/parser': 4.14.2_eslint@7.19.0+typescript@4.1.3
+      '@typescript-eslint/parser': 4.14.2_eslint@7.19.0+typescript@4.1.4
       eslint-config-airbnb: 18.2.1_846d62cfa210dc3f225625c64ae883be
       eslint-config-airbnb-base: 14.2.1_846d62cfa210dc3f225625c64ae883be
     dev: true
@@ -2393,7 +2456,7 @@ packages:
     dev: false
     resolution:
       integrity: sha512-S1wYF0j0C02SaV+escizhCcq0bC58as87cW7M+9zYnEhlgihGEU/Sl+CoshT2VU6Gp7wSrsoaOgt5OSBgsVaVA==
-  /ts-node-dev/1.1.1_typescript@4.1.3:
+  /ts-node-dev/1.1.1_typescript@4.1.4:
     dependencies:
       chokidar: 3.5.0
       dateformat: 1.0.12
@@ -2404,9 +2467,9 @@ packages:
       rimraf: 2.7.1
       source-map-support: 0.5.19
       tree-kill: 1.2.2
-      ts-node: 9.1.1_typescript@4.1.3
+      ts-node: 9.1.1_typescript@4.1.4
       tsconfig: 7.0.0
-      typescript: 4.1.3
+      typescript: 4.1.4
     dev: true
     engines:
       node: '>=0.8.0'
@@ -2419,14 +2482,14 @@ packages:
         optional: true
     resolution:
       integrity: sha512-kAO8LUZgXZSY0+PucMPsQ0Bbdv0x+lgbN7j8gcD4PuTI4uKC6YchekaspmYTBNilkiu+rQYkWJA7cK+Q8/B0tQ==
-  /ts-node/9.1.1_typescript@4.1.3:
+  /ts-node/9.1.1_typescript@4.1.4:
     dependencies:
       arg: 4.1.3
       create-require: 1.1.1
       diff: 4.0.2
       make-error: 1.3.6
       source-map-support: 0.5.19
-      typescript: 4.1.3
+      typescript: 4.1.4
       yn: 3.1.1
     dev: true
     engines:
@@ -2462,10 +2525,10 @@ packages:
     dev: false
     resolution:
       integrity: sha512-hcVC3wYEziELGGmEEXue7D75zbwIIVUMWAVbHItGPx0ziyXxrOMQx4rQEVEV45Ut/1IotuEvwqPopzIOkDMf0A==
-  /tsutils/3.20.0_typescript@4.1.3:
+  /tsutils/3.20.0_typescript@4.1.4:
     dependencies:
       tslib: 1.14.1
-      typescript: 4.1.3
+      typescript: 4.1.4
     dev: true
     engines:
       node: '>= 6'
@@ -2497,13 +2560,13 @@ packages:
       node: '>=8'
     resolution:
       integrity: sha512-4dbzIzqvjtgiM5rw1k5rEHtBANKmdudhGyBEajN01fEyhaAIhsoKNy6y7+IN93IfpFtwY9iqi7kD+xwKhQsNJA==
-  /typescript/4.1.3:
+  /typescript/4.1.4:
     dev: true
     engines:
       node: '>=4.2.0'
     hasBin: true
     resolution:
-      integrity: sha512-B3ZIOf1IKeH2ixgHhj6la6xdwR9QrLC5d1VKeCSY4tvkqhF2eqd9O7txNlS0PO3GrBAFIdr3L1ndNwteUbZLYg==
+      integrity: sha512-+Uru0t8qIRgjuCpiSPpfGuhHecMllk5Zsazj5LZvVsEStEjmIRRBZe+jHjGQvsgS7M1wONy2PQXd67EMyV6acg==
   /uri-js/4.4.1:
     dependencies:
       punycode: 2.1.1
@@ -2604,7 +2667,7 @@ packages:
     resolution:
       tarball: https://codeload.github.com/discord/erlpack/tar.gz/e27db8f82892bdb9b28a0547cc394d68b5d2242d
     version: 0.1.3
-  github.com/discordjs/discord.js/c4c817116f868cedb4ec20bcbf90b9b3d382621e_c70f8fc5586dd378b8c866035dbe710b:
+  github.com/discordjs/discord.js/cee6cf70ce76e9b06dc7f25bfd77498e18d7c8d4_c70f8fc5586dd378b8c866035dbe710b:
     dependencies:
       '@discordjs/collection': 0.1.6
       '@discordjs/form-data': 3.0.1
@@ -2616,21 +2679,21 @@ packages:
     dev: false
     engines:
       node: '>=14.0.0'
-    id: github.com/discordjs/discord.js/c4c817116f868cedb4ec20bcbf90b9b3d382621e
+    id: github.com/discordjs/discord.js/cee6cf70ce76e9b06dc7f25bfd77498e18d7c8d4
     name: discord.js
     peerDependencies:
       bufferutil: '*'
       utf-8-validate: '*'
     resolution:
-      tarball: https://codeload.github.com/discordjs/discord.js/tar.gz/c4c817116f868cedb4ec20bcbf90b9b3d382621e
+      tarball: https://codeload.github.com/discordjs/discord.js/tar.gz/cee6cf70ce76e9b06dc7f25bfd77498e18d7c8d4
     version: 12.5.0
 specifiers:
-  '@honeybadger-io/js': ^3.0.2
+  '@honeybadger-io/js': ^3.0.3
   '@types/cron': ^1.7.2
   '@types/node': ^14.14.25
   '@types/signale': ^1.4.1
-  '@typescript-eslint/eslint-plugin': ^4.14.2
-  '@typescript-eslint/parser': ^4.14.2
+  '@typescript-eslint/eslint-plugin': ^4.15.0
+  '@typescript-eslint/parser': ^4.15.0
   axios: ^0.21.1
   bufferutil: ^4.0.3
   cron: ^1.8.2
@@ -2648,6 +2711,6 @@ specifiers:
   ts-dotenv: ^0.8.3
   ts-node-dev: ^1.1.1
   tslib: ^2.1.0
-  typescript: ^4.1.3
+  typescript: ^4.1.4
   utf-8-validate: ^5.0.4
   zlib-sync: ^0.1.7

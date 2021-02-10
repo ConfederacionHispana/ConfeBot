@@ -23,6 +23,18 @@ module.exports = {
     'consistent-return': ['off'],
     'curly': ['error', 'multi-or-nest'],
     'eol-last': ['error', 'always'],
+    'max-len': ['error', 120, 2, {
+      ignoreUrls: true,
+      ignoreComments: false,
+      ignoreRegExpLiterals: true,
+      ignoreStrings: true,
+      ignoreTemplateLiterals: true,
+    }],
+    'no-restricted-syntax': [
+      'error',
+      'LabeledStatement',
+      'WithStatement',
+    ],
     'one-var': ['off'],
     '@typescript-eslint/ban-ts-comment': ['warn'],
     '@typescript-eslint/comma-dangle': ['error', 'never'],

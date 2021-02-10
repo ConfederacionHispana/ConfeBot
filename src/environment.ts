@@ -13,6 +13,7 @@ export const schema = {
   MW_API: String,
 
   GUILD_ID: String,
+  GUILD_INVITE: String,
 
   WELCOME_CHANNEL: String,
   VERIF_CHANNEL: String,
