@@ -1,36 +1,47 @@
 {
   "name": "ConfeBot",
-  "version": "0.1.5",
+  "version": "1.0.0-dev",
   "description": "Bot de la Confederación de Fandom Hispano",
-  "main": "index.js",
-  "module": "src/index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "lint": "eslint .",
-    "start": "node index.js"
+    "build": "tsc",
+    "dev": "cd src && ts-node-dev --transpile-only --respawn index.ts",
+    "lint": "eslint src/ --ext .js,.ts",
+    "lint:fix": "eslint src/ --fix --ext .js,.ts",
+    "start": "cd dist && node index.js"
   },
   "author": "TheNozomi <13172293+TheNozomi@users.noreply.github.com>",
   "license": "MIT",
   "dependencies": {
+    "@honeybadger-io/js": "^3.0.3",
     "axios": "^0.21.1",
     "cron": "^1.8.2",
-    "date-fns": "^2.16.1",
+    "date-fns": "^2.17.0",
     "discord-akairo": "^8.1.0",
-    "discord.js": "^12.5.1",
-    "dotenv": "^8.2.0",
+    "discord.js": "github:discordjs/discord.js#cee6cf70ce76e9b06dc7f25bfd77498e18d7c8d4",
     "esm": "^3.2.25",
-    "rollbar": "^2.19.4",
+    "mongoose": "^5.11.15",
     "signale": "^1.4.0",
-    "string-similarity-js": "^2.1.2"
+    "string-similarity-js": "^2.1.2",
+    "ts-dotenv": "^0.8.3",
+    "tslib": "^2.1.0"
   },
   "optionalDependencies": {
-    "bufferutil": "^4.0.2",
+    "bufferutil": "^4.0.3",
     "erlpack": "github:discord/erlpack",
-    "utf-8-validate": "^5.0.3",
+    "utf-8-validate": "^5.0.4",
     "zlib-sync": "^0.1.7"
   },
   "devDependencies": {
-    "eslint": "^7.16.0",
-    "eslint-config-airbnb-base": "^14.2.1",
-    "eslint-plugin-import": "2.22.1"
+    "@types/cron": "^1.7.2",
+    "@types/node": "^14.14.25",
+    "@types/signale": "^1.4.1",
+    "@typescript-eslint/eslint-plugin": "^4.15.0",
+    "@typescript-eslint/parser": "^4.15.0",
+    "eslint": "^7.19.0",
+    "eslint-config-airbnb-typescript": "^12.3.1",
+    "eslint-plugin-import": "2.22.1",
+    "ts-node-dev": "^1.1.1",
+    "typescript": "^4.1.4"
   }
 }
