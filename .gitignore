@@ -103,6 +103,11 @@ dist
 # TernJS port file
 .tern-port
 
+<<<<<<< HEAD
 # Lockfiles from other package managers
 package-lock.json
 yarn.lock
+=======
+# NPM junk
+package-lock.json
+>>>>>>> ad99439e546b7dd1d75d8a5a706ab3b71f6c3d74
