@@ -6,7 +6,7 @@ const InterwikiPrefixes = {
   github: 'https://github.com/$1',
   gh: 'https://github.com/$1', // github alias
   google: 'https://google.com/?q=$1',
-  mw: 'http://www.mediawiki.org/wiki/$1',
+  mw: 'https://www.mediawiki.org/wiki/$1',
   ud: 'https://www.urbandictionary.com/define.php?term=$1',
   w: 'https://community.fandom.com/wiki/w:$1',
   c: 'https://community.fandom.com/wiki/$1',
