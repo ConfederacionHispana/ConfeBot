@@ -17,7 +17,7 @@ declare module 'discord-akairo' {
     listenerHandler: ListenerHandler,
     logger: Signale,
     logException(err: Error, context?: any): void,
-	version: string,
+    version: string,
     // set during the 'ready' event
     cache: {
 	  widgetInvite: {
