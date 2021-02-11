@@ -18,10 +18,12 @@ declare module 'discord-akairo' {
     logger: Signale,
     logException(err: Error, context?: any): void,
 	version: string,
-    // set during t	// set during the 'ready' event
-    widgetInvite: {
-      code: string
-      uses: number
+    // set during the 'ready' event
+    cache: {
+	  widgetInvite: {
+        code: string
+        uses: number
+      }
     }
   }
 }

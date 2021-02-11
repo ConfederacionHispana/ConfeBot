@@ -34,7 +34,7 @@ class ReadyListener extends Listener {
     const invites = await guild?.fetchInvites();
     const widgetInvite = invites?.find((invite) => !invite.inviter);
     if (!widgetInvite) return this.client.logger.warn('No he podido encontrar una invitación por widget.');
-    this.client.widgetInvite = {
+    this.client.cache.widgetInvite = {
       code: widgetInvite.code,
       uses: widgetInvite.uses ?? 0
     };

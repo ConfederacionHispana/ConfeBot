@@ -33,15 +33,15 @@ class MemberAddListener extends Listener {
         const widgetInvite = invites?.find((invite) => !invite.inviter);
         if (!widgetInvite) this.client.logger.warn('No he podido encontrar una invitación por widget.');
         else {
-          const usedWidgetInvite = widgetInvite.code === this.client.widgetInvite.code
-            && widgetInvite.uses === this.client.widgetInvite.uses + 1;
-          const usedNewWidgetInvite = widgetInvite.code !== this.client.widgetInvite.code
+          const usedWidgetInvite = widgetInvite.code === this.client.cache.widgetInvite.code
+            && widgetInvite.uses === this.client.cache.widgetInvite.uses + 1;
+          const usedNewWidgetInvite = widgetInvite.code !== this.client.cache.widgetInvite.code
             && widgetInvite.uses === 1;
           if (usedWidgetInvite || usedNewWidgetInvite) {
-            if (usedWidgetInvite) this.client.widgetInvite.uses += 1;
+            if (usedWidgetInvite) this.client.cache.widgetInvite.uses += 1;
             else {
               // a new invite was generated
-              this.client.widgetInvite = {
+              this.client.cache.widgetInvite = {
                 code: widgetInvite.code,
                 uses: widgetInvite.uses ?? 0
               };
