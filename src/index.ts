@@ -20,7 +20,7 @@ declare module 'discord-akairo' {
     version: string,
     // set during the 'ready' event
     cache: {
-	  widgetInvite: {
+      widgetInvite: {
         code: string
         uses: number
       }
