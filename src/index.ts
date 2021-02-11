@@ -17,7 +17,12 @@ declare module 'discord-akairo' {
     listenerHandler: ListenerHandler,
     logger: Signale,
     logException(err: Error, context?: any): void,
-    version: string
+	version: string,
+    // set during t	// set during the 'ready' event
+    widgetInvite: {
+      code: string
+      uses: number
+    }
   }
 }
 
