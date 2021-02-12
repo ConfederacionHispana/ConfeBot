@@ -47,9 +47,9 @@ class MemberAddListener extends Listener {
               };
             }
             // log everywhere
-            newMember.kick('Cuenta creada hace menos de 3 días.');
-            this.client.logger.info(`${newMember.user.tag} expulsado del servidor por tener menos de 3 días desde la creación de su cuenta.`);
-            logsChannel.send(`**${newMember.user.tag}** expulsado del servidor por tener menos de 3 días desde la creación de su cuenta.`);
+            newMember.kick('Cuenta creada hace menos de 3 días.').catch(this.client.logException);
+            this.client.logger.info(`<@!${newMember.user.id}> (${newMember.user.tag}) expulsado del servidor por tener menos de 3 días desde la creación de su cuenta.`);
+            logsChannel.send(`<@!${newMember.user.id}> (${newMember.user.tag}) expulsado del servidor por tener menos de 3 días desde la creación de su cuenta.`).catch(this.client.logException);
             return;
           }
         }
