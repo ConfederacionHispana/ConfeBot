@@ -1,5 +1,6 @@
 import { Listener } from 'discord-akairo';
 import { CronJob } from 'cron';
+import { env } from '../environment';
 import KickNonVerifiedMembers from '../tasks/KickNonVerifiedMembers';
 
 class ReadyListener extends Listener {
@@ -10,7 +11,7 @@ class ReadyListener extends Listener {
     });
   }
 
-  exec(): void {
+  async exec(): Promise<void> {
     this.client.logger.info('Received ready event', {
       source: 'discord'
     });
@@ -28,6 +29,16 @@ class ReadyListener extends Listener {
 
     scheduledTask.start();
     scheduledTask.fireOnTick();
+
+    const guild = await this.client.guilds.resolve(env.GUILD_ID);
+    const invites = await guild?.fetchInvites();
+    const widgetInvite = invites?.find((invite) => !invite.inviter);
+    if (!widgetInvite) return this.client.logger.warn('No he podido encontrar una invitación por widget.');
+    this.client.cache.widgetInvite = {
+      code: widgetInvite.code,
+      uses: widgetInvite.uses ?? 0
+    };
+    this.client.logger.info(`Se ha registrado la invitación del widget: ${widgetInvite.code} (${widgetInvite.uses} usos).`);
   }
 }
 

@@ -11,7 +11,7 @@ class MemberAddListener extends Listener {
     });
   }
 
-  exec(oldMember: GuildMember, newMember: GuildMember): void {
+  async exec(oldMember: GuildMember, newMember: GuildMember): Promise<void> {
     if (newMember.guild.id !== env.GUILD_ID) return;
     if (newMember.user.bot) return;
     if (oldMember.pending && !newMember.pending) {
@@ -23,6 +23,39 @@ class MemberAddListener extends Listener {
 
       const welcomeChannel = newMember.guild.channels.resolve(env.WELCOME_CHANNEL) as TextChannel,
         logsChannel = newMember.guild.channels.resolve(env.LOGS_CHANNEL) as TextChannel;
+
+      // kick if the account was created recently and joined from the widget invite
+      const minimumMS = Date.now() - 1000 * 60 * 60 * 24 * 3; // 3 days
+      const ageMS = newMember.user.createdAt.getTime();
+      if (minimumMS < ageMS) {
+        const guild = await this.client.guilds.resolve(env.GUILD_ID);
+        const invites = await guild?.fetchInvites();
+        const widgetInvite = invites?.find((invite) => !invite.inviter);
+        if (!widgetInvite) this.client.logger.warn('No he podido encontrar una invitación por widget.');
+        else {
+          const usedWidgetInvite = widgetInvite.code === this.client.cache.widgetInvite.code
+            && widgetInvite.uses === this.client.cache.widgetInvite.uses + 1;
+          const usedNewWidgetInvite = widgetInvite.code !== this.client.cache.widgetInvite.code
+            && widgetInvite.uses === 1;
+          if (usedWidgetInvite || usedNewWidgetInvite) {
+            if (usedWidgetInvite) this.client.cache.widgetInvite.uses += 1;
+            else {
+              // a new invite was generated
+              this.client.cache.widgetInvite = {
+                code: widgetInvite.code,
+                uses: widgetInvite.uses ?? 0
+              };
+            }
+            newMember.kick('Cuenta creada hace menos de 3 días.').then(() => {
+              // log everywhere
+              this.client.logger.info(`<@!${newMember.user.id}> (${newMember.user.tag}) expulsado del servidor por tener menos de 3 días desde la creación de su cuenta.`);
+              logsChannel.send(`<@!${newMember.user.id}> (${newMember.user.tag}) expulsado del servidor por tener menos de 3 días desde la creación de su cuenta.`).catch(this.client.logException);
+            }).catch(this.client.logException);
+
+            return;
+          }
+        }
+      }
 
       const interactiveVerifyURL = new URL('https://confederacion-hispana.fandom.com/es/wiki/Especial:VerifyUser');
 
