@@ -10,8 +10,8 @@ const InterwikiPrefixes = {
   ud: 'https://www.urbandictionary.com/define.php?term=$1',
   w: 'https://community.fandom.com/wiki/w:$1',
   c: 'https://community.fandom.com/wiki/$1',
-  wikipedia: 'https://wikipedia.org/$1',
-  wp: 'https://wikipedia.org/$1' // wikipedia alias
+  wikipedia: 'https://en.wikipedia.org/wiki/$1',
+  wp: 'https://en.wikipedia.org/wiki/$1' // wikipedia alias
 };
 
 class WikiLinksParser extends Listener {
