@@ -37,12 +37,11 @@ jobs:
 
       - name: Build and deploy Docker image
         id: heroku
-        uses: jctaveras/heroku-deploy@v2.1.1
+        uses: techmmunity/docker-heroku-deploy@v1.0.0
         with:
           email: ${{ secrets.HEROKU_EMAIL }}
           api_key: ${{ secrets.HEROKU_API_KEY }}
           app_name: ${{ secrets.HEROKU_APP_NAME }}
-          dockerfile_path: ''
           formation: 'worker'
       - name: Send deploy notification
         uses: honeybadger-io/github-notify-deploy-action@v1
