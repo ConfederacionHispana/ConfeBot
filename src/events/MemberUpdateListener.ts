@@ -28,7 +28,7 @@ class MemberAddListener extends Listener {
       const minimumMS = Date.now() - 1000 * 60 * 60 * 24 * 3; // 3 days
       const ageMS = newMember.user.createdAt.getTime();
       if (minimumMS < ageMS) {
-        const guild = await this.client.guilds.resolve(env.GUILD_ID);
+        const guild = this.client.guilds.resolve(env.GUILD_ID);
         const invites = await guild?.fetchInvites();
         const widgetInvite = invites?.find((invite) => !invite.inviter);
         if (!widgetInvite) this.client.logger.warn('No he podido encontrar una invitación por widget.');
@@ -99,15 +99,14 @@ class MemberAddListener extends Listener {
                 this.client.logger.info('User authenticated as guest', {
                   member: newMember.user.id
                 });
+                logsChannel.send(`✅ Se verificó a <@!${newMember.user.id}> como invitado`).catch(this.client.logException);
               }).catch((err) => {
                 this.client.logException(err, {
                   user_id: newMember.user.id
                 });
               });
             }
-          }).catch(() => {
-            // idk lol
-          });
+          }).catch(this.client.logException);
         }).catch((err) => {
           logsChannel.send(`❌ Imposible enviar mensaje de bienvenida a <@!${newMember.user.id}>: ${err.message} (${err.name})`).catch(this.client.logException);
           this.client.logException(err);

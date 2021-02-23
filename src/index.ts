@@ -16,7 +16,7 @@ declare module 'discord-akairo' {
     commandHandler: CommandHandler,
     listenerHandler: ListenerHandler,
     logger: Signale,
-    logException(err: Error, context?: any): void,
+    logException(err: Error, context?: Record<string, unknown>): void,
     version: string,
     // set during the 'ready' event
     cache: {
@@ -60,7 +60,7 @@ class ConfeBot extends AkairoClient {
       });
     } else this.logger.warn('HONEYBADGER_API_KEY not set, error reporting disabled.');
 
-    this.logException = (err: Error, context: any = {}): void => {
+    this.logException = (err: Error, context: Record<string, unknown> = {}): void => {
       if (Object.keys(context).length) this.logger.error(err, '\nContext:', context);
       else this.logger.error(err);
 

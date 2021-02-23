@@ -30,7 +30,7 @@ class ReadyListener extends Listener {
     scheduledTask.start();
     scheduledTask.fireOnTick();
 
-    const guild = await this.client.guilds.resolve(env.GUILD_ID);
+    const guild = this.client.guilds.resolve(env.GUILD_ID);
     const invites = await guild?.fetchInvites();
     const widgetInvite = invites?.find((invite) => !invite.inviter);
     if (!widgetInvite) return this.client.logger.warn('No he podido encontrar una invitación por widget.');

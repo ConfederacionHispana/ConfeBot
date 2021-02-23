@@ -1,6 +1,6 @@
 {
   "name": "ConfeBot",
-  "version": "1.0.0-dev",
+  "version": "1.0.0",
   "description": "Bot de la Confederación de Fandom Hispano",
   "main": "dist/index.js",
   "scripts": {
@@ -18,12 +18,13 @@
     "cron": "^1.8.2",
     "date-fns": "^2.17.0",
     "discord-akairo": "^8.1.0",
+    "discord-paginationembed": "github:gazmull/discord-paginationembed#bcf150b9207c3885884f181d343a592bf9247db2",
     "discord.js": "github:discordjs/discord.js#cee6cf70ce76e9b06dc7f25bfd77498e18d7c8d4",
     "mongoose": "^5.11.15",
     "signale": "^1.4.0",
     "string-similarity-js": "^2.1.2",
-    "tslib": "^2.1.0",
-    "ts-dotenv": "^0.8.3"
+    "ts-dotenv": "^0.8.3",
+    "tslib": "^2.1.0"
   },
   "optionalDependencies": {
     "bufferutil": "^4.0.3",
