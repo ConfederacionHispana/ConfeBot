@@ -1,5 +1,8 @@
 import { Command } from 'discord-akairo';
-import { GuildMember, Message, Role } from 'discord.js';
+import {
+  GuildMember, Message, Role, TextChannel
+} from 'discord.js';
+import { FieldsEmbed } from 'discord-paginationembed';
 import { stringSimilarity } from 'string-similarity-js';
 import { env } from '../../environment';
 
@@ -51,13 +54,19 @@ class WikiSelfRolesCommand extends Command {
         if (role.position === 0) return; // @everyone role
         assignableRoles.push(role);
       });
-      msg.channel.send({
-        embed: {
-          title: 'Roles de wikis',
-          color: 'RANDOM',
-          description: `Roles de wikis asignables:\n\n${assignableRoles.map((role) => `• <@&${role.id}>`).join('\n')}`
-        }
-      }).catch(this.client.logException);
+
+      const embed = new FieldsEmbed()
+        .setArray(assignableRoles.map((role) => `• <@&${role.id}>`))
+        .setAuthorizedUsers(msg.author.id)
+        .setChannel(msg.channel as TextChannel)
+        .setElementsPerPage(20)
+        .setPageIndicator(true, (page, pages) => `Página ${page} de ${pages}`)
+        .setDisabledNavigationEmojis(['delete', 'jump'])
+        .formatField('Roles asignables de wikis', (el) => el);
+      embed.embed.setTitle('Roles de wikis').setColor('RANDOM');
+
+      embed.on('error', this.client.logException);
+      embed.build();
     }
   }
 }
