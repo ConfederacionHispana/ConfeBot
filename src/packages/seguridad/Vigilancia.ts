@@ -1,6 +1,9 @@
+import { MessageEmbed } from 'discord.js';
 import fetch from 'node-fetch';
-import { formatDistance } from 'date-fns';
+import { format, formatDistance } from 'date-fns';
 import { es } from 'date-fns/locale';
+// @ts-ignore
+import { getColorFromURL } from 'color-thief-node';
 import FandomUtilities from './FandomUtilities';
 import DBModels from '../../database';
 
@@ -42,6 +45,21 @@ class Vigilancia {
     };
   }
 
+  static async customUserEmbed(name: string, avatarURL?: string): Promise<MessageEmbed> {
+    const colorRGB: number[] = await getColorFromURL(avatarURL);
+    const colorHex = colorRGB.map((i) => i.toString(16)).join('');
+    const color = parseInt(colorHex, 16);
+    const embed = new MessageEmbed({
+      title: name,
+      color,
+      thumbnail: {
+        url: avatarURL
+      }
+    });
+
+    return embed;
+  }
+
   static async getCalendar(): Promise<ICalendar> {
     const req = await fetch(Vigilancia.CALENDAR_URL);
     const res = await req.json();
@@ -57,6 +75,17 @@ class Vigilancia {
       for (const interwikis of Object.values(wikisByUser)) for (const interwiki of interwikis) wikis.add(interwiki);
     }
     return wikis;
+  }
+
+  static async getTodaysCalendar(): Promise<Record<string, string[]>> {
+    const result: Record<string, string[]> = {};
+    const calendar = await Vigilancia.getCalendar();
+    for (const username in calendar) {
+      const wikisByUser = calendar[username];
+      const todayWikis = wikisByUser[Vigilancia.today()];
+      result[username] = todayWikis;
+    }
+    return result;
   }
 
   static async sample(_qty = 4): Promise<IWiki[]> {
@@ -82,6 +111,10 @@ class Vigilancia {
       wikis.push(report);
     }
     return wikis;
+  }
+
+  static today(): Day {
+    return format(Date.now(), 'EEEE', { locale: es }) as Day;
   }
 }
 

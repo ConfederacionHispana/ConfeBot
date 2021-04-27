@@ -1,7 +1,5 @@
 import { Command } from 'discord-akairo';
-import { Message, MessageEmbed } from 'discord.js';
-// @ts-ignore
-import { getColorFromURL } from 'color-thief-node';
+import { Message } from 'discord.js';
 import { env, loadEnv } from '../../environment';
 import FandomUtilities from '../../packages/seguridad/FandomUtilities';
 import Vigilancia from '../../packages/seguridad/Vigilancia';
@@ -28,7 +26,8 @@ class RevisarCommand extends Command {
     await message.react('✅');
 
     const sample = await Vigilancia.sample(qty);
-    const embed = await RevisarCommand.userCustomEmbed(message);
+    const avatarURL = message.author.avatarURL({ format: 'png' }) || undefined;
+    const embed = await Vigilancia.customUserEmbed(message.author.tag, avatarURL);
 
     for (const item of sample) {
       const url = FandomUtilities.interwiki2url(item.interwiki);
@@ -44,22 +43,6 @@ class RevisarCommand extends Command {
     }
 
     message.channel.send(embed);
-  }
-
-  static async userCustomEmbed(message: Message): Promise<MessageEmbed> {
-    const avatarURL = message.author.avatarURL({ format: 'png' }) || undefined;
-    const colorRGB: number[] = await getColorFromURL(avatarURL);
-    const colorHex = colorRGB.map((i) => i.toString(16)).join('');
-    const color = parseInt(colorHex, 16);
-    const embed = new MessageEmbed({
-      title: message.author.tag,
-      color,
-      thumbnail: {
-        url: avatarURL
-      }
-    });
-
-    return embed;
   }
 }
 
