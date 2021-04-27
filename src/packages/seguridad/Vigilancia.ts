@@ -27,16 +27,20 @@ class Vigilancia {
   static async checkWiki(interwiki: string): Promise<IWiki> {
     const document = await DBModels.Vigilancia.findOne({
       interwiki
-    });
+    }) || new DBModels.Vigilancia({ interwiki });
     const sitename = await FandomUtilities.getSitename(interwiki);
-    const recentChanges = await FandomUtilities.getRecentChanges(interwiki);
-    const users = recentChanges.map((i) => i.user);
-    const ago = document?.lastCheck
+    const recentChanges = await FandomUtilities.getRecentChanges(interwiki, document.lastCheck);
+    const rcusers = recentChanges.map((i) => i.user);
+	const users = [...new Set(rcusers)]
+    const ago = document.lastCheck
       ? formatDistance(document.lastCheck, Date.now(), {
         locale: es,
         addSuffix: true
       })
       : 'hace 7 días';
+
+    document.lastCheck = Date.now();
+    await document.save();
     return {
       interwiki,
       ago,
@@ -105,8 +109,8 @@ class Vigilancia {
       interwikis.splice(index, 1);
       if (confederates.has(interwiki)) continue;
 
-      const report = await Vigilancia.checkWiki(interwiki);
-      if (report.users.length === 0) continue;
+      const report = await Vigilancia.checkWiki(interwiki).catch(_ => {});
+      if (!report || report.users.length === 0) continue;
 
       wikis.push(report);
     }

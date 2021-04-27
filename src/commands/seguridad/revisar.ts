@@ -32,8 +32,8 @@ class RevisarCommand extends Command {
     for (const item of sample) {
       const url = FandomUtilities.interwiki2url(item.interwiki);
       let fieldValue = `**Enlace:** ${url}\n`;
-      fieldValue = `**Último patrullaje:** ${item.ago}.\n`;
-      fieldValue = `**Editores encontrados:** ${item.users.join(', ')}`;
+      fieldValue += `**Último patrullaje:** ${item.ago}.\n`;
+      fieldValue += `**Editores encontrados:** ${item.users.join(', ')}`;
       if (fieldValue.length > 1000) fieldValue = `${fieldValue.substr(0, 1000)}...`;
 
       embed.addField(
