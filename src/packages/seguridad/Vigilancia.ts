@@ -31,7 +31,7 @@ class Vigilancia {
     const sitename = await FandomUtilities.getSitename(interwiki);
     const recentChanges = await FandomUtilities.getRecentChanges(interwiki, document.lastCheck);
     const rcusers = recentChanges.map((i) => i.user);
-	const users = [...new Set(rcusers)]
+    const users = [...new Set(rcusers)];
     const ago = document.lastCheck
       ? formatDistance(document.lastCheck, Date.now(), {
         locale: es,
@@ -109,7 +109,7 @@ class Vigilancia {
       interwikis.splice(index, 1);
       if (confederates.has(interwiki)) continue;
 
-      const report = await Vigilancia.checkWiki(interwiki).catch(_ => {});
+      const report = await Vigilancia.checkWiki(interwiki).catch(() => {});
       if (!report || report.users.length === 0) continue;
 
       wikis.push(report);
