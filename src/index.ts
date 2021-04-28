@@ -44,7 +44,7 @@ class ConfeBot extends AkairoClient {
     this.version = process.env.npm_package_version || '1.0.0';
 
     const loggerConfig = {
-      secrets: [env.DISCORD_TOKEN]
+      secrets: [env.DB_URI, env.DISCORD_TOKEN]
     };
 
     if (env.HONEYBADGER_API_KEY) loggerConfig.secrets.push(env.HONEYBADGER_API_KEY);

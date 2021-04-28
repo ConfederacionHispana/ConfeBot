@@ -2,8 +2,6 @@ import { MessageEmbed } from 'discord.js';
 import fetch from 'node-fetch';
 import { format, formatDistance } from 'date-fns';
 import { es } from 'date-fns/locale';
-// @ts-ignore
-import { getColorFromURL } from 'color-thief-node';
 import FandomUtilities from './FandomUtilities';
 import DBModels from '../../database';
 
@@ -50,12 +48,9 @@ class Vigilancia {
   }
 
   static async customUserEmbed(name: string, avatarURL?: string): Promise<MessageEmbed> {
-    const colorRGB: number[] = await getColorFromURL(avatarURL);
-    const colorHex = colorRGB.map((i) => i.toString(16)).join('');
-    const color = parseInt(colorHex, 16);
     const embed = new MessageEmbed({
       title: name,
-      color,
+      color: 'RANDOM',
       thumbnail: {
         url: avatarURL
       }
