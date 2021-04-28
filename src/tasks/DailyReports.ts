@@ -1,17 +1,7 @@
 import { AkairoClient } from 'discord-akairo';
-import fetch from 'node-fetch';
-import { env, loadEnv } from '../environment';
-import FandomUtilities from '../packages/seguridad/FandomUtilities';
-import Vigilancia from '../packages/seguridad/Vigilancia';
-
-loadEnv();
-
-const getUserAvatar = async (username: string): Promise<string> => {
-  const red = await fetch(`https://confederacion-hispana.fandom.com/es/api/v1/User/Details?ids=${username}`);
-  const res = await red.json();
-  const avatar = `${res.items[0].avatar.split('/thumbnail')[0]}?format=png`;
-  return avatar;
-};
+import { env } from '../environment';
+import FandomUtilities from '../util/FandomUtilities';
+import Vigilancia from '../modules/seguridad/Vigilancia';
 
 const DailyReports = async (client: AkairoClient): Promise<void> => {
   const todayCalendar = await Vigilancia.getTodaysCalendar();
@@ -21,7 +11,7 @@ const DailyReports = async (client: AkairoClient): Promise<void> => {
     return;
   }
   for (const username in todayCalendar) {
-    const avatar = await getUserAvatar(username);
+    const avatar = await FandomUtilities.getUserAvatar(username);
     const embed = await Vigilancia.customUserEmbed(username, avatar);
     embed.setDescription('He revisado las siguientes comunidades para buscar ediciones realizadas desde su último patrullaje. **Se ignoran ediciones de la administración del respectivo wiki.**');
 

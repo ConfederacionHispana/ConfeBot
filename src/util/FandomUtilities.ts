@@ -1,4 +1,4 @@
-import fetch from 'node-fetch';
+import axios from 'axios';
 
 import InexistentWiki from './errors/InexistentWiki';
 import InvalidInterwiki from './errors/InvalidInterwiki';
@@ -39,35 +39,60 @@ export default class FandomUtilities {
   }
 
   static interwiki2api(interwiki: string): string {
-    const url = FandomUtilities.interwiki2url(interwiki);
+    const url = this.interwiki2url(interwiki);
     return `${url}/api.php`;
   }
 
+  static async apiQuery(interwiki: string, params: Record<string, unknown>) {
+    const api = this.interwiki2api(interwiki);
+    const res = await axios.get(api, {
+      params: {
+        ...{
+          action: 'query',
+          format: 'json'
+        },
+        ...params
+      }
+    });
+    if (res.status === 404) throw new InexistentWiki(interwiki);
+    return res.data;
+  }
+
   static async getSitename(interwiki: string): Promise<string> {
-    const api = FandomUtilities.interwiki2api(interwiki);
-    const req = await fetch(`${api}?action=query&meta=siteinfo&siprop=general&format=json`);
-    if (req.status === 404) throw new InexistentWiki(interwiki);
-    const res = await req.json();
-    return res.query.general.sitename;
+    const result = await this.apiQuery(interwiki, {
+      meta: 'siteinfo',
+      siprop: 'general'
+    });
+    return result.query.general.sitename;
   }
 
   static async getAdmins(interwiki: string): Promise<string[]> {
-    const api = FandomUtilities.interwiki2api(interwiki);
-    const req = await fetch(`${api}?action=query&list=allusers&format=json&augroup=sysop`);
-    const res: IAllUsersQuery = await req.json();
-    return res.query.allusers.map((i) => i.name);
+    const result: IAllUsersQuery = await this.apiQuery(interwiki, {
+      list: 'allusers',
+      augroup: 'sysop'
+    });
+    return result.query.allusers.map((i) => i.name);
   }
 
   static async getRecentChanges(
     interwiki: string,
     since: number = Date.now() - 604800000
   ): Promise<IRecentChangesEntry[]> {
-    const api = FandomUtilities.interwiki2api(interwiki);
     const rcend = new Date(since).toISOString();
-    const req = await fetch(`${api}?action=query&list=recentchanges&format=json&rcprop=title|sizes|user&rclimit=max&rcend=${rcend}`);
-    const res: IRecentChangesQuery = await req.json();
+    const result: IRecentChangesQuery = await this.apiQuery(interwiki, {
+      list: 'recentchanges',
+      rcprop: 'title|sizes|user',
+      rclimit: 'max',
+      rcend: rcend
+    });
     // Exclude admins
     const admins = await FandomUtilities.getAdmins(interwiki);
-    return res.query.recentchanges.filter((i) => !admins.includes(i.user));
+    return result.query.recentchanges.filter((i) => !admins.includes(i.user));
+  }
+
+  static async getUserAvatar(username: string): Promise<string> {
+    const res = await axios.get(`https://confederacion-hispana.fandom.com/es/api/v1/User/Details?ids=${username}`);
+    const avatar = `${res.data.items[0].avatar.split('/thumbnail')[0]}?format=png`;
+    return avatar;    
   }
 }

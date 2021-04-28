@@ -1,10 +1,8 @@
 import { Command } from 'discord-akairo';
 import { Message } from 'discord.js';
-import { env, loadEnv } from '../../environment';
-import FandomUtilities from '../../packages/seguridad/FandomUtilities';
-import Vigilancia from '../../packages/seguridad/Vigilancia';
-
-loadEnv();
+import { env } from '../../environment';
+import FandomUtilities from '../../util/FandomUtilities';
+import Vigilancia from '../../modules/seguridad/Vigilancia';
 
 class RevisarCommand extends Command {
   constructor() {

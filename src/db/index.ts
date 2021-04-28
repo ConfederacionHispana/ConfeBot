@@ -1,9 +1,7 @@
 import mongoose from 'mongoose';
-import { env, loadEnv } from '../environment';
+import { env } from '../environment';
 
-import Vigilancia from './Vigilancia';
-
-loadEnv();
+import Vigilancia from './models/Vigilancia';
 
 mongoose.connect(env.DB_URI, {
   useNewUrlParser: true,

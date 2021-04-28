@@ -20,7 +20,6 @@ specifiers:
   eslint-config-airbnb-typescript: ^12.3.1
   eslint-plugin-import: 2.22.1
   mongoose: ^5.11.15
-  node-fetch: ^2.6.1
   signale: ^1.4.0
   string-similarity-js: ^2.1.2
   ts-dotenv: ^0.8.3
@@ -39,7 +38,6 @@ dependencies:
   discord-paginationembed: github.com/gazmull/discord-paginationembed/bcf150b9207c3885884f181d343a592bf9247db2_discord.js@12.5.0
   discord.js: github.com/discordjs/discord.js/cee6cf70ce76e9b06dc7f25bfd77498e18d7c8d4_c70f8fc5586dd378b8c866035dbe710b
   mongoose: 5.12.6
-  node-fetch: 2.6.1
   signale: 1.4.0
   string-similarity-js: 2.1.2
   ts-dotenv: 0.8.3

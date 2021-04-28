@@ -1,9 +1,9 @@
 import { MessageEmbed } from 'discord.js';
-import fetch from 'node-fetch';
+import axios from 'axios';
 import { format, formatDistance } from 'date-fns';
 import { es } from 'date-fns/locale';
-import FandomUtilities from './FandomUtilities';
-import DBModels from '../../database';
+import FandomUtilities from '../../util/FandomUtilities';
+import DBModels from '../../db';
 
 type Day = 'lunes' | 'martes' | 'miércoles' | 'jueves' | 'viernes' | 'sábado' | 'domingo';
 type ICalendar = {
@@ -20,7 +20,7 @@ interface IWiki {
 class Vigilancia {
   static readonly CALENDAR_URL = 'https://confederacion-hispana.fandom.com/es/wiki/MediaWiki:Custom-vigilancia.json?action=raw&ctype=application/json';
 
-  static readonly WIKIS_LIST = 'https://comunidad.fandom.com/wiki/Lista_de_comunidades?action=raw&ctype=text/css';
+  static readonly WIKIS_LIST = 'https://comunidad.fandom.com/wiki/Lista_de_comunidades?action=raw&ctype=text/plain';
 
   static async checkWiki(interwiki: string): Promise<IWiki> {
     const document = await DBModels.Vigilancia.findOne({
@@ -60,9 +60,8 @@ class Vigilancia {
   }
 
   static async getCalendar(): Promise<ICalendar> {
-    const req = await fetch(Vigilancia.CALENDAR_URL);
-    const res = await req.json();
-    return res;
+    const {data} = await axios.get(Vigilancia.CALENDAR_URL);
+    return data;
   }
 
   // Get a list of wikis that are already in the calendar
@@ -93,9 +92,8 @@ class Vigilancia {
 
     const confederates = await Vigilancia.getConfederateWikis();
 
-    const req = await fetch(Vigilancia.WIKIS_LIST);
-    const res = await req.text();
-    const interwikis = [...res.matchAll(/w:c:(.*?)\|/g)].map((i) => i[1]);
+    const {data: wikiListData} = await axios.get(Vigilancia.WIKIS_LIST);
+    const interwikis = [...wikiListData.matchAll(/w:c:(.*?)\|/g)].map((i) => i[1]);
 
     const wikis: IWiki[] = [];
     while (wikis.length < qty && interwikis.length !== 0) {
