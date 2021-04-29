@@ -1,6 +1,7 @@
 import { Listener } from 'discord-akairo';
 import { CronJob } from 'cron';
 import { env } from '../environment';
+import DailyReports from '../tasks/DailyReports';
 import KickNonVerifiedMembers from '../tasks/KickNonVerifiedMembers';
 
 class ReadyListener extends Listener {
@@ -29,6 +30,10 @@ class ReadyListener extends Listener {
 
     scheduledTask.start();
     scheduledTask.fireOnTick();
+
+    const dailyReportsTask = new CronJob('0 0 3 * * *', () => DailyReports(this.client), null, true);
+    dailyReportsTask.start();
+    dailyReportsTask.fireOnTick();
 
     const guild = this.client.guilds.resolve(env.GUILD_ID);
     const invites = await guild?.fetchInvites();

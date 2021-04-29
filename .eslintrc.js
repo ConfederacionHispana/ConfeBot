@@ -23,6 +23,7 @@ module.exports = {
     'consistent-return': ['off'],
     'curly': ['error', 'multi-or-nest'],
     'eol-last': ['error', 'always'],
+    'guard-for-in': ['off'],
     'max-len': ['error', 120, 2, {
       ignoreUrls: true,
       ignoreComments: false,
@@ -30,6 +31,8 @@ module.exports = {
       ignoreStrings: true,
       ignoreTemplateLiterals: true,
     }],
+    'no-await-in-loop': ['off'],
+    'no-continue': ['off'],
     'no-restricted-syntax': [
       'error',
       'LabeledStatement',
