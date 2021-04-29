@@ -48,19 +48,17 @@ class Vigilancia {
   }
 
   static async customUserEmbed(name: string, avatarURL?: string): Promise<MessageEmbed> {
-    const embed = new MessageEmbed({
+    return new MessageEmbed({
       title: name,
       color: 'RANDOM',
       thumbnail: {
         url: avatarURL
       }
     });
-
-    return embed;
   }
 
   static async getCalendar(): Promise<ICalendar> {
-    const {data} = await axios.get(Vigilancia.CALENDAR_URL);
+    const { data } = await axios.get(Vigilancia.CALENDAR_URL);
     return data;
   }
 
@@ -92,7 +90,7 @@ class Vigilancia {
 
     const confederates = await Vigilancia.getConfederateWikis();
 
-    const {data: wikiListData} = await axios.get(Vigilancia.WIKIS_LIST);
+    const { data: wikiListData } = await axios.get(Vigilancia.WIKIS_LIST);
     const interwikis = [...wikiListData.matchAll(/w:c:(.*?)\|/g)].map((i) => i[1]);
 
     const wikis: IWiki[] = [];
@@ -102,7 +100,10 @@ class Vigilancia {
       interwikis.splice(index, 1);
       if (confederates.has(interwiki)) continue;
 
-      const report = await Vigilancia.checkWiki(interwiki).catch(() => {});
+      const report = await Vigilancia.checkWiki(interwiki).catch((err) => {
+        // TODO: actually report the error
+        console.error(err);
+      });
       if (!report || report.users.length === 0) continue;
 
       wikis.push(report);

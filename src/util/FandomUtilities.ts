@@ -12,6 +12,12 @@ interface IAllUsersQuery {
   }
 }
 
+interface IRecentChangesQuery {
+  query: {
+    recentchanges: IRecentChangesEntry[]
+  }
+}
+
 interface IRecentChangesEntry {
   type: string
   ns: number
@@ -21,19 +27,14 @@ interface IRecentChangesEntry {
   newlen: number
 }
 
-interface IRecentChangesQuery {
-  query: {
-    recentchanges: IRecentChangesEntry[]
-  }
-}
-
 export default class FandomUtilities {
   static interwiki2url(_interwiki: string): string {
     const interwiki = _interwiki.toLowerCase();
     if (interwiki.match(/[a-z0-9-]+\.[a-z0-9-]+/)) {
       const [lang, wikiname] = interwiki.split('.');
       return `https://${wikiname}.fandom.com/${lang}`;
-    } if (interwiki.match(/^[a-z0-9-]+$/)) return `https://${interwiki}.fandom.com`;
+    }
+    if (interwiki.match(/^[a-z0-9-]+$/)) return `https://${interwiki}.fandom.com`;
 
     throw new InvalidInterwiki(interwiki);
   }
@@ -83,7 +84,7 @@ export default class FandomUtilities {
       list: 'recentchanges',
       rcprop: 'title|sizes|user',
       rclimit: 'max',
-      rcend: rcend
+      rcend
     });
     // Exclude admins
     const admins = await FandomUtilities.getAdmins(interwiki);
@@ -92,7 +93,6 @@ export default class FandomUtilities {
 
   static async getUserAvatar(username: string): Promise<string> {
     const res = await axios.get(`https://confederacion-hispana.fandom.com/es/api/v1/User/Details?ids=${username}`);
-    const avatar = `${res.data.items[0].avatar.split('/thumbnail')[0]}?format=png`;
-    return avatar;    
+    return `${res.data.items[0].avatar.split('/thumbnail')[0]}?format=png`;
   }
 }

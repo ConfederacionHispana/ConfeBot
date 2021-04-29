@@ -27,7 +27,7 @@ export const schema = {
   FDUSER_ROLE: String,
   STAFF_ROLE: String,
   SEGURIDAD_ROLE: String,
-  WIKI_ROLE_GROUP: String,
+  WIKI_ROLE_GROUP: String
 };
 
 // eslint-disable-next-line import/no-mutable-exports
