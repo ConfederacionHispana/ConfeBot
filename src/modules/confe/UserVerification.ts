@@ -11,7 +11,11 @@ import FandomUtilities from '../../util/FandomUtilities';
 
 interface IVerificationResult {
   success: boolean,
-  userGroups?: string[],
+  user?: {
+    name: string,
+    id: number,
+    groups?: string[]
+  },
   error?: string,
   errorDescription?: string,
   blockinfo?: {
@@ -67,7 +71,11 @@ export default class UserVerification {
         if (discordUsername === expectedName && discrim === expectedDisc) {
           return {
             success: true,
-            userGroups: mwUser.groups
+            user: {
+              name: mwUser.name,
+              id: mwUser.userid,
+              groups: mwUser.groups
+            }
           };
         }
         return {

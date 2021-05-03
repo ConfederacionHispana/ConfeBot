@@ -4,6 +4,7 @@ import { Message, TextChannel } from 'discord.js';
 import { format as formatDate } from 'date-fns';
 
 import { env } from '../../environment';
+import DBModels from '../../db';
 import UserVerification from '../../modules/confe/UserVerification';
 import NonExistentUser from '../../util/errors/NonExistentUser';
 
@@ -47,7 +48,7 @@ class UserVerifyCommand extends Command {
 
     UserVerification.verifyUser(fandomUser, msg.author.username, msg.author.discriminator).then((result) => {
       if (result.success) {
-        member.roles.add([env.USER_ROLE, env.FDUSER_ROLE], `Verificado como ${fandomUser}`).then(() => {
+        member.roles.add([env.USER_ROLE, env.FDUSER_ROLE], `Verificado como ${fandomUser}`).then(async () => {
           member.roles.remove(env.NEWUSER_ROLE).catch(this.client.logException);
           logsChannel.send(`✅ Se verificó a <@!${msg.author.id}> con la cuenta de Fandom **${fandomUser}**`).catch(this.client.logException);
           msg.channel.send({
@@ -57,7 +58,25 @@ class UserVerifyCommand extends Command {
               description: `✅ Te has autenticado correctamente con la cuenta de Fandom **${fandomUser}** y ahora tienes acceso a todos los canales del servidor.\n\n¡Recuerda visitar <#${env.SELFROLES_CHANNEL}> si deseas elegir más roles de tu interés!`
             }
           }).catch(this.client.logException);
-          // TODO: log verification in db
+
+          const dbUser = await DBModels.User.findOne({ id: msg.author.id }) || new DBModels.User({ id: msg.author.id });
+
+          dbUser.fandomUser = {
+            username: result.user!.name,
+            userId: result.user!.id,
+            verifiedAt: new Date()
+          };
+
+          dbUser.fandomAccountEvents = dbUser.fandomAccountEvents.concat({
+            date: new Date(),
+            event: 'userVerify',
+            account: {
+              username: result.user!.name,
+              userId: result.user!.id
+            }
+          });
+
+          dbUser.save().catch(this.client.logException);
         }).catch(this.client.logException);
       } else {
         const embed = {

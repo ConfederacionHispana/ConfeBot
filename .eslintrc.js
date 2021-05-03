@@ -41,6 +41,7 @@ module.exports = {
     'one-var': ['off'],
     '@typescript-eslint/ban-ts-comment': ['warn'],
     '@typescript-eslint/comma-dangle': ['error', 'never'],
+    '@typescript-eslint/no-non-null-assertion': ['off'],
     '@typescript-eslint/no-shadow': ['off']
   }
 };

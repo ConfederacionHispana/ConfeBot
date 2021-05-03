@@ -11,7 +11,7 @@ describe('UserVerification tests', () => {
     UserVerification.verifyUser('Taxcy Marsopas1', 'Taxcymus', '9999').then((result) => {
       expect(result).to.be.an('object');
       expect(result).to.include({ success: true });
-      expect(result.userGroups).to.include.members(['*', 'user']);
+      expect(result.user!.groups).to.include.members(['*', 'user']);
       done();
     }).catch(done);
   });
