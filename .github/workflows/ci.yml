@@ -26,6 +26,9 @@ jobs:
     - name: ESLint
       run: npm run lint
 
+    - name: Run tests
+      run: npm run test
+
     - name: TypeScript build
       run: npm run build
   deploy:
@@ -34,6 +37,7 @@ jobs:
     needs: [build]
     steps:
       - uses: actions/checkout@v2
+
       - name: Build and deploy container image
         uses: gonuit/heroku-docker-deploy@v1.3.3
         with:
@@ -41,8 +45,8 @@ jobs:
           heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
           heroku_app_name: ${{ secrets.HEROKU_APP_NAME }}
           process_type: 'worker'
+
       - name: Send deploy notification
         uses: honeybadger-io/github-notify-deploy-action@v1
         with:
-          # The Honeybadger project API key
           api_key: ${{ secrets.HONEYBADGER_API_KEY }}
