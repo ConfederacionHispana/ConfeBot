@@ -6,7 +6,7 @@ specifiers:
   '@types/chai-as-promised': ^7.1.3
   '@types/cron': ^1.7.2
   '@types/mocha': ^8.2.2
-  '@types/node': ^14.14.26
+  '@types/node': ^15.0.1
   '@types/node-fetch': ^2.5.10
   '@types/signale': ^1.4.1
   '@typescript-eslint/eslint-plugin': ^4.15.0
@@ -21,20 +21,19 @@ specifiers:
   discord-paginationembed: github:gazmull/discord-paginationembed#bcf150b9207c3885884f181d343a592bf9247db2
   discord.js: github:discordjs/discord.js#cee6cf70ce76e9b06dc7f25bfd77498e18d7c8d4
   erlpack: github:discord/erlpack
-  esbuild-register: ^2.5.0
   eslint: ^7.19.0
   eslint-config-airbnb-typescript: ^12.3.1
   eslint-plugin-import: 2.22.1
-  esmon: ^1.0.3
   mocha: ^8.3.2
-  mongoose: ^5.11.15
+  mongoose: ^5.12.7
   signale: ^1.4.0
   string-similarity-js: ^2.1.2
   ts-dotenv: ^0.8.3
+  ts-node: ^9.1.1
   ts-node-dev: ^1.1.1
   tslib: ^2.1.0
   typescript: ^4.1.5
-  utf-8-validate: ^5.0.4
+  utf-8-validate: ^5.0.5
   zlib-sync: ^0.1.7
 
 dependencies:
@@ -44,8 +43,8 @@ dependencies:
   date-fns: 2.21.1
   discord-akairo: 8.1.0
   discord-paginationembed: github.com/gazmull/discord-paginationembed/bcf150b9207c3885884f181d343a592bf9247db2_discord.js@12.5.0
-  discord.js: github.com/discordjs/discord.js/cee6cf70ce76e9b06dc7f25bfd77498e18d7c8d4_c70f8fc5586dd378b8c866035dbe710b
-  mongoose: 5.12.6
+  discord.js: github.com/discordjs/discord.js/cee6cf70ce76e9b06dc7f25bfd77498e18d7c8d4_72ef9f06cb99540da679cbf1bf7a3256
+  mongoose: 5.12.7
   signale: 1.4.0
   string-similarity-js: 2.1.2
   ts-dotenv: 0.8.3
@@ -54,7 +53,7 @@ dependencies:
 optionalDependencies:
   bufferutil: 4.0.3
   erlpack: github.com/discord/erlpack/e27db8f82892bdb9b28a0547cc394d68b5d2242d
-  utf-8-validate: 5.0.4
+  utf-8-validate: 5.0.5
   zlib-sync: 0.1.7
 
 devDependencies:
@@ -62,19 +61,18 @@ devDependencies:
   '@types/chai-as-promised': 7.1.3
   '@types/cron': 1.7.2
   '@types/mocha': 8.2.2
-  '@types/node': 14.14.43
+  '@types/node': 15.0.1
   '@types/node-fetch': 2.5.10
   '@types/signale': 1.4.1
   '@typescript-eslint/eslint-plugin': 4.22.0_e3b52a83531895e7febd6ecd5ba813eb
   '@typescript-eslint/parser': 4.22.0_eslint@7.25.0+typescript@4.2.4
   chai: 4.3.4
   chai-as-promised: 7.1.1_chai@4.3.4
-  esbuild-register: 2.5.0
   eslint: 7.25.0
   eslint-config-airbnb-typescript: 12.3.1_2cba491c4f4688e75b332aa6c536aab1
   eslint-plugin-import: 2.22.1_eslint@7.25.0
-  esmon: 1.0.3
   mocha: 8.3.2
+  ts-node: 9.1.1_typescript@4.2.4
   ts-node-dev: 1.1.6_typescript@4.2.4
   typescript: 4.2.4
 
@@ -158,7 +156,7 @@ packages:
   /@types/bson/4.0.3:
     resolution: {integrity: sha512-mVRvYnTOZJz3ccpxhr3wgxVmSeiYinW+zlzQz3SXWaJmD1DuL05Jeq7nKw3SnbKmbleW5qrLG5vdyWe/A9sXhw==}
     dependencies:
-      '@types/node': 14.14.43
+      '@types/node': 15.0.1
     dev: false
 
   /@types/chai-as-promised/7.1.3:
@@ -194,7 +192,7 @@ packages:
     resolution: {integrity: sha512-49aEzQD5VdHPxyd5dRyQdqEveAg9LanwrH8RQipnMuulwzKmODXIZRp0umtxi1eBUfEusRkoy8AVOMr+kVuFog==}
     dependencies:
       '@types/bson': 4.0.3
-      '@types/node': 14.14.43
+      '@types/node': 15.0.1
     dev: false
 
   /@types/node-fetch/2.5.10:
@@ -206,6 +204,10 @@ packages:
 
   /@types/node/14.14.43:
     resolution: {integrity: sha512-3pwDJjp1PWacPTpH0LcfhgjvurQvrZFBrC6xxjaUEZ7ifUtT32jtjPxEMMblpqd2Mvx+k8haqQJLQxolyGN/cQ==}
+    dev: true
+
+  /@types/node/15.0.1:
+    resolution: {integrity: sha512-TMkXt0Ck1y0KKsGr9gJtWGjttxlZnnvDtphxUOSd0bfaR6Q1jle+sPvrzNR1urqYTWMinoKvjKfXUGsumaO1PA==}
 
   /@types/signale/1.4.1:
     resolution: {integrity: sha512-05d9fUDqRnt36rizLgo38SbPTrkMzdhXpvSHSAhxzokgIUPGNUoXHV0zYjPpTd4IryDADJ0mGHpfJ/Yhjyh9JQ==}
@@ -870,19 +872,6 @@ packages:
       is-symbol: 1.0.3
     dev: true
 
-  /esbuild-register/2.5.0:
-    resolution: {integrity: sha512-5a8W3rH7IQbIPR9pPXJFkC3+CRMtm/OSpBz3hkWUUU63oPZ3NU6dVDGfaIjKnRizCTIRoGjNE6KEDt5p1sLwEw==}
-    dependencies:
-      esbuild: 0.11.18
-      jsonc-parser: 3.0.0
-    dev: true
-
-  /esbuild/0.11.18:
-    resolution: {integrity: sha512-KD7v4N9b5B8bxPUNn/3GA9r0HWo4nJk3iwjZ+2zG1ffg+r8ig+wqj7sW6zgI6Sn4/B2FnbzqWxcAokAGGM5zwQ==}
-    hasBin: true
-    requiresBuild: true
-    dev: true
-
   /escalade/3.1.1:
     resolution: {integrity: sha512-k0er2gUkLf8O0zKJiAhmkTnJlTvINGv7ygDNPbeIsX/TJjGJZHuh9B2UxbsaEkmlEo9MfhrSzmhIlhRlI2GXnw==}
     engines: {node: '>=6'}
@@ -1050,15 +1039,6 @@ packages:
       v8-compile-cache: 2.3.0
     transitivePeerDependencies:
       - supports-color
-    dev: true
-
-  /esmon/1.0.3:
-    resolution: {integrity: sha512-Zd+eTO7RDKecEUdx7fGlr1QN3jB3LcR86F68rqT1+A/bo5JB7Q+9Tdhw0CfbLCYkfDlLqjIzS1CRbu8ePwZmhA==}
-    hasBin: true
-    dependencies:
-      chokidar: 3.5.1
-      cross-spawn: 7.0.3
-      esbuild: 0.11.18
     dev: true
 
   /espree/7.3.1:
@@ -1548,10 +1528,6 @@ packages:
       minimist: 1.2.5
     dev: true
 
-  /jsonc-parser/3.0.0:
-    resolution: {integrity: sha512-fQzRfAbIBnR0IQvftw9FJveWiHp72Fg20giDrHz6TdfB12UH/uue0D3hm57UB5KgAVuniLMCaS8P1IMj9NR7cA==}
-    dev: true
-
   /kareem/2.3.2:
     resolution: {integrity: sha512-STHz9P7X2L4Kwn72fA4rGyqyXdmrMSdxqHx9IXon/FXluXieaFA6KJ2upcHAHxQPQ0LeM/OjLrhFxifHewOALQ==}
     dev: false
@@ -1790,23 +1766,23 @@ packages:
       saslprep: 1.0.3
     dev: false
 
-  /mongoose-legacy-pluralize/1.0.2_mongoose@5.12.6:
+  /mongoose-legacy-pluralize/1.0.2_mongoose@5.12.7:
     resolution: {integrity: sha512-Yo/7qQU4/EyIS8YDFSeenIvXxZN+ld7YdV9LqFVQJzTLye8unujAWPZ4NWKfFA+RNjh+wvTWKY9Z3E5XM6ZZiQ==}
     peerDependencies:
       mongoose: '*'
     dependencies:
-      mongoose: 5.12.6
+      mongoose: 5.12.7
     dev: false
 
-  /mongoose/5.12.6:
-    resolution: {integrity: sha512-lNkToNqcfDyHNArPjd/aODTJp/cDhFEZE9Xtj0yBz+Z2t1h6RRDxzxIV0NW12SAnjIh50U1yW6c3rLPqn17lSw==}
+  /mongoose/5.12.7:
+    resolution: {integrity: sha512-BniNwACn7uflK2h+M3juvyLH5nn9JDFgnB5KE2EwWFwSrRyhSpPnCtanRKJW3OtMCJyPccMIjtGZxHNW7JfnIw==}
     engines: {node: '>=4.0.0'}
     dependencies:
       '@types/mongodb': 3.6.12
       bson: 1.1.6
       kareem: 2.3.2
       mongodb: 3.6.6
-      mongoose-legacy-pluralize: 1.0.2_mongoose@5.12.6
+      mongoose-legacy-pluralize: 1.0.2_mongoose@5.12.7
       mpath: 0.8.3
       mquery: 3.2.5
       ms: 2.1.2
@@ -2680,8 +2656,8 @@ packages:
       punycode: 2.1.1
     dev: true
 
-  /utf-8-validate/5.0.4:
-    resolution: {integrity: sha512-MEF05cPSq3AwJ2C7B7sHAA6i53vONoZbMGX8My5auEVm6W+dJ2Jd/TZPyGJ5CH42V2XtbI5FD28HeHeqlPzZ3Q==}
+  /utf-8-validate/5.0.5:
+    resolution: {integrity: sha512-+pnxRYsS/axEpkrrEpzYfNZGXp0IjC/9RIxwM5gntY4Koi8SHmUGSfxfWqxZdRxrtaoVstuOzUp/rbs3JSPELQ==}
     requiresBuild: true
     dependencies:
       node-gyp-build: 4.2.3
@@ -2749,7 +2725,7 @@ packages:
     resolution: {integrity: sha1-tSQ9jz7BqjXxNkYFvA0QNuMKtp8=}
     dev: true
 
-  /ws/7.4.5_c70f8fc5586dd378b8c866035dbe710b:
+  /ws/7.4.5_72ef9f06cb99540da679cbf1bf7a3256:
     resolution: {integrity: sha512-xzyu3hFvomRfXKH8vOFMU3OguG6oOvhXMo3xsGy3xWExqaM2dxBbVxuD99O7m3ZUFMvvscsZDqxfgMaRr/Nr1g==}
     engines: {node: '>=8.3.0'}
     peerDependencies:
@@ -2762,7 +2738,7 @@ packages:
         optional: true
     dependencies:
       bufferutil: 4.0.3
-      utf-8-validate: 5.0.4
+      utf-8-validate: 5.0.5
     dev: false
 
   /xtend/4.0.2:
@@ -2836,7 +2812,7 @@ packages:
     dev: false
     optional: true
 
-  github.com/discordjs/discord.js/cee6cf70ce76e9b06dc7f25bfd77498e18d7c8d4_c70f8fc5586dd378b8c866035dbe710b:
+  github.com/discordjs/discord.js/cee6cf70ce76e9b06dc7f25bfd77498e18d7c8d4_72ef9f06cb99540da679cbf1bf7a3256:
     resolution: {tarball: https://codeload.github.com/discordjs/discord.js/tar.gz/cee6cf70ce76e9b06dc7f25bfd77498e18d7c8d4}
     id: github.com/discordjs/discord.js/cee6cf70ce76e9b06dc7f25bfd77498e18d7c8d4
     name: discord.js
@@ -2849,7 +2825,7 @@ packages:
       node-fetch: 2.6.1
       prism-media: 1.2.9
       tweetnacl: 1.0.3
-      ws: 7.4.5_c70f8fc5586dd378b8c866035dbe710b
+      ws: 7.4.5_72ef9f06cb99540da679cbf1bf7a3256
     transitivePeerDependencies:
       - '@discordjs/opus'
       - bufferutil
@@ -2868,5 +2844,5 @@ packages:
     peerDependencies:
       discord.js: ^12.0.0
     dependencies:
-      discord.js: github.com/discordjs/discord.js/cee6cf70ce76e9b06dc7f25bfd77498e18d7c8d4_c70f8fc5586dd378b8c866035dbe710b
+      discord.js: github.com/discordjs/discord.js/cee6cf70ce76e9b06dc7f25bfd77498e18d7c8d4_72ef9f06cb99540da679cbf1bf7a3256
     dev: false
