@@ -90,7 +90,7 @@ export default class UserVerification {
         errorDescription: 'Tu perfil de Fandom no tiene ningún Discord Tag asociado.\nSi acabas de añadir tu tag, espera unos minutos y vuelve a intentar.'
       };
     } catch (err) {
-      if (err.response && err.response.status === 404) {
+      if (err.response?.status === 404) {
         return {
           success: false,
           error: 'DiscordHandleNotFound',

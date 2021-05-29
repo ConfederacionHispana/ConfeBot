@@ -49,7 +49,9 @@ class UserAssociateCommand extends Command {
     if (args.fandomUser) {
       try {
         const mwUser = await FandomUtilities.getUserInfo('comunidad', args.fandomUser);
-        const dbUser = await DBModels.User.findOne({ id: args.member.id }) || new DBModels.User({ id: args.member.id });
+
+        const { id } = args.member;
+        const dbUser = await DBModels.User.findOne({ id }) || new DBModels.User({ id });
 
         dbUser.fandomUser = {
           username: mwUser.name,
@@ -73,12 +75,12 @@ class UserAssociateCommand extends Command {
       }
     }
 
-    const logsChannel = message.guild.channels.resolve(env.LOGS_CHANNEL) as TextChannel;
+    const logsChannel = message.guild?.channels.resolve(env.LOGS_CHANNEL) as TextChannel;
     const rolesToAdd = args.fandomUser ? [env.USER_ROLE, env.FDUSER_ROLE] : [env.USER_ROLE];
-    const logReason = `✅ <@!${message.member.id}> verificó a <@!${args.member.id}> ${args.fandomUser ? `con la cuenta de Fandom **${args.fandomUser}**` : 'como invitado'}`;
+    const logReason = `✅ <@!${message.member?.id}> verificó a <@!${args.member!.id}> ${args.fandomUser ? `con la cuenta de Fandom **${args.fandomUser}**` : 'como invitado'}`;
 
-    args.member.roles.add(rolesToAdd, `Verificado manualmente por ${message.member.user.username}#${message.member.user.discriminator}`).then(async () => {
-      args.member.roles.remove(env.NEWUSER_ROLE).catch(this.client.logException);
+    args.member!.roles.add(rolesToAdd, `Verificado manualmente por ${message.member?.user.username}#${message.member?.user.discriminator}`).then(async () => {
+      args.member!.roles.remove(env.NEWUSER_ROLE).catch(this.client.logException);
       logsChannel.send(logReason).catch(this.client.logException);
       message.react('✅').catch(this.client.logException);
     }).catch(this.client.logException);
