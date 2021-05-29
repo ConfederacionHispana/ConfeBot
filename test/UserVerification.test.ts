@@ -8,7 +8,7 @@ chai.use(chaiAsPromised);
 
 describe('UserVerification tests', () => {
   it('passes verification when tag matches', (done) => {
-    UserVerification.verifyUser('Taxcy Marsopas1', 'Taxcymus', '9999').then((result) => {
+    UserVerification.verifyUser('Taxcy Marsopas1', 'Rothschild', '8625').then((result) => {
       expect(result).to.be.an('object');
       expect(result).to.include({ success: true });
       expect(result.user!.groups).to.include.members(['*', 'user']);
