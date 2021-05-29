@@ -2,13 +2,11 @@ import axios from 'axios';
 
 import InexistentWiki from './errors/InexistentWiki';
 import InvalidInterwiki from './errors/InvalidInterwiki';
+import NonExistentUser from './errors/NonExistentUser';
 
 interface IAllUsersQuery {
   query: {
-    allusers: {
-      userid: number
-      name: string
-    }[]
+    allusers: IMediaWikiUser[]
   }
 }
 
@@ -18,6 +16,13 @@ interface IRecentChangesQuery {
   }
 }
 
+interface IUsersQuery {
+  query: {
+    users: IMediaWikiUser[]
+  },
+  error?: Record<string, unknown>
+}
+
 interface IRecentChangesEntry {
   type: string
   ns: number
@@ -25,6 +30,21 @@ interface IRecentChangesEntry {
   user: string
   oldlen: number
   newlen: number
+}
+
+interface IMediaWikiUser {
+  userid: number,
+  name: string,
+  registration: string,
+  groups?: string[],
+  implicitgroups?: string[],
+  blockid?: number,
+  blockedby?: string,
+  blockedbyid?: number,
+  blockedtimestamp?: string,
+  blockreason?: string,
+  blockexpiry?: string,
+  missing?: string
 }
 
 export default class FandomUtilities {
@@ -89,6 +109,18 @@ export default class FandomUtilities {
     // Exclude admins
     const admins = await FandomUtilities.getAdmins(interwiki);
     return result.query.recentchanges.filter((i) => !admins.includes(i.user));
+  }
+
+  static async getUserInfo(interwiki: string, username: string): Promise<IMediaWikiUser> {
+    const result: IUsersQuery = await this.apiQuery(interwiki, {
+      list: 'users',
+      usprop: 'blockinfo|registration|implicitgroups|groups',
+      ususers: username
+    });
+
+    if (result.error || !result.query.users[0] || typeof result.query.users[0].implicitgroups === 'undefined' || result.query.users[0].missing) throw new NonExistentUser(username);
+
+    return result.query.users[0];
   }
 
   static async getUserAvatar(username: string): Promise<string> {

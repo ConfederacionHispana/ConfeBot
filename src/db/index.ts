@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import { env } from '../environment';
 
+import User from './models/User';
 import Vigilancia from './models/Vigilancia';
 
 mongoose.connect(env.DB_URI, {
@@ -11,5 +12,6 @@ mongoose.connect(env.DB_URI, {
 });
 
 export default {
+  User,
   Vigilancia
 };

@@ -26,7 +26,7 @@ module.exports = {
     'guard-for-in': ['off'],
     'max-len': ['error', 120, 2, {
       ignoreUrls: true,
-      ignoreComments: false,
+      ignoreComments: true,
       ignoreRegExpLiterals: true,
       ignoreStrings: true,
       ignoreTemplateLiterals: true,
@@ -41,6 +41,7 @@ module.exports = {
     'one-var': ['off'],
     '@typescript-eslint/ban-ts-comment': ['warn'],
     '@typescript-eslint/comma-dangle': ['error', 'never'],
+    '@typescript-eslint/no-non-null-assertion': ['off'],
     '@typescript-eslint/no-shadow': ['off']
   }
 };
