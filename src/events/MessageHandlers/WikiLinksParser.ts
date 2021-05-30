@@ -1,5 +1,5 @@
 import { Listener } from 'discord-akairo';
-import { Message, GuildMember, TextChannel } from 'discord.js';
+import type { Message } from 'discord.js';
 
 const InterwikiPrefixes = {
   dev: 'https://dev.fandom.com/wiki/$1',
@@ -24,11 +24,9 @@ class WikiLinksParser extends Listener {
 
   exec(msg: Message): void {
     if (!msg.content) return;
-    const capturedLinks = msg.content.match(/\[\[(.*?)(\|(.*?))?\]\]/g);
+    const capturedLinks = msg.content.match(/\[\[(.*?)(\|(.*?))?\]\](?=(?:[^`]*`[^`]*`)*[^`]*$)/g);
     if (!capturedLinks || !capturedLinks.length) return;
-    const channel = msg.channel as TextChannel,
-      member = msg.member as GuildMember;
-    let parsedMsg: string = msg.content;
+    let parsedLinks: string[] = [];
 
     for (const link of capturedLinks) {
       // Proceso de parseo
@@ -40,19 +38,10 @@ class WikiLinksParser extends Listener {
       const interwikiUrl: string = InterwikiPrefixes[prefixCandidate]
         ? InterwikiPrefixes[prefixCandidate].replace(/\$1/g, prefixContent.replace(/ /g, '_'))
         : `https://comunidad.fandom.com/wiki/${groups[1].replace(/ /g, '_')}`;
-      const displayText = groups[3] || prefixContent || groups[1];
-      parsedMsg = parsedMsg.replace(link, `[${displayText}](${interwikiUrl})`);
+      parsedLinks = parsedLinks.concat(interwikiUrl);
     }
-    // TODO: don't create a webhook every time (perf); instead check if one already exists and use it
-    channel.createWebhook(member.nickname ? member.nickname : msg.author.username, {
-      avatar: msg.author.displayAvatarURL({ size: 512 }),
-      reason: 'Parsear wiki link'
-    }).then((wh) => {
-      wh.send(parsedMsg).then(() => {
-        msg.delete().catch(this.client.logException);
-        wh.delete().catch(this.client.logException);
-      }).catch(this.client.logException);
-    }).catch(this.client.logException);
+
+    msg.reply(parsedLinks.join('\n')).catch(this.client.logException);
   }
 }
 
