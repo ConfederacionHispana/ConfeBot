@@ -19,11 +19,14 @@ class ReadyListener extends Listener {
 
     if (this.client.user) {
       this.client.user.setPresence({
-        activity: {
-          name: `${this.client.users.cache.size} usuarios | version ${this.client.version}`
-        },
+        activities: [
+          {
+            type: 'WATCHING',
+            name: `${this.client.users.cache.size} usuarios | version ${this.client.version}`
+          }
+        ],
         status: 'online'
-      }).catch((err) => this.client.logger.error('Error setting status', { err }));
+      });
     }
 
     const scheduledTask = new CronJob('0 * * * *', () => KickNonVerifiedMembers(this.client), null, true);

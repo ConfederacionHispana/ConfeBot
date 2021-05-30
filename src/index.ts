@@ -31,14 +31,11 @@ declare module 'discord-akairo' {
 class ConfeBot extends AkairoClient {
   constructor() {
     super({
-      ownerID: env.OWNER_ID
-    }, {
+      ownerID: env.OWNER_ID,
       allowedMentions: {
         parse: ['roles', 'users']
       },
-      ws: {
-        intents: ['GUILDS', 'GUILD_PRESENCES', 'GUILD_MEMBERS', 'GUILD_MESSAGES', 'GUILD_MESSAGE_REACTIONS']
-      }
+      intents: ['GUILDS', 'GUILD_PRESENCES', 'GUILD_MEMBERS', 'GUILD_MESSAGES', 'GUILD_MESSAGE_REACTIONS']
     });
 
     this.version = process.env.npm_package_version || '1.0.0';

@@ -1,6 +1,8 @@
 import { URL } from 'url';
 import { Listener } from 'discord-akairo';
-import { GuildMember, MessageReaction, TextChannel } from 'discord.js';
+import type {
+  GuildMember, MessageReaction, TextChannel, User
+} from 'discord.js';
 import { env } from '../environment';
 
 class MemberAddListener extends Listener {
@@ -85,7 +87,7 @@ class MemberAddListener extends Listener {
           }
         }).then((sentMessage) => {
           sentMessage.react('🌐').catch(this.client.logException);
-          const filter = (reaction: MessageReaction, user: GuildMember) => ['🌐'].includes(reaction.emoji.name) && user.id === newMember.id;
+          const filter = (reaction: MessageReaction, user: User) => ['🌐'].includes(reaction.emoji.name as string) && user.id === newMember.id;
           sentMessage.awaitReactions(filter, {
             max: 1,
             time: 3600000, // 1h
