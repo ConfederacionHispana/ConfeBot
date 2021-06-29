@@ -36,8 +36,8 @@ class WikiLinksParser extends Listener {
       // desperate times ask for desperate measures
       const [, prefixCandidate, prefixContent] = prefix as [never, keyof typeof InterwikiPrefixes, string];
       const interwikiUrl: string = InterwikiPrefixes[prefixCandidate]
-        ? InterwikiPrefixes[prefixCandidate].replace(/\$1/g, prefixContent.replace(/ /g, '_'))
-        : `https://comunidad.fandom.com/wiki/${groups[1].replace(/ /g, '_')}`;
+        ? '<' + InterwikiPrefixes[prefixCandidate].replace(/\$1/g, prefixContent.replace(/ /g, '_')) + '>'
+        : `<https://comunidad.fandom.com/wiki/${groups[1].replace(/ /g, '_')}>`;
       parsedLinks = parsedLinks.concat(interwikiUrl);
     }
 
