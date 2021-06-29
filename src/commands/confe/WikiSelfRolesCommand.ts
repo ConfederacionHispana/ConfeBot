@@ -1,72 +1,93 @@
-import { Command } from 'discord-akairo';
-import {
-  GuildMember, Message, Role, TextChannel
-} from 'discord.js';
-import { FieldsEmbed } from 'discord-paginationembed';
+import { ApplyOptions } from '@sapphire/decorators';
+import { PaginatedMessage } from '@sapphire/discord.js-utilities';
+import { Args, Command } from '@sapphire/framework';
 import { stringSimilarity } from 'string-similarity-js';
-import { env } from '../../environment';
+import { env } from '#lib/env';
 
+import type { MessagePage } from '@sapphire/discord.js-utilities';
+import type { CommandOptions } from '@sapphire/framework';
+import type { Message, Role, TextChannel } from 'discord.js';
+
+@ApplyOptions<CommandOptions>({
+  aliases: ['wiki', 'wikis']
+})
 class WikiSelfRolesCommand extends Command {
-  constructor() {
-    super('wikis', {
-      aliases: ['wikis', 'wiki'],
-      args: [
-        {
-          id: 'wikiNames',
-          type: 'string',
-          match: 'content'
-        }
-      ]
-    });
-  }
+  public async run(message: Message, args: Args) {
+    if (!message.guild || message.guild.id !== env.GUILD_ID) return;
+    if (!message.member) return;
+    const { client } = this.context;
+    const guildRoles = message.guild.roles.cache;
+    const wikiIndexRole = message.guild.roles.resolve(
+      env.WIKI_ROLE_GROUP
+    ) as Role;
+    const wikiNamesResolver = Args.make((arg) =>
+      Args.ok(arg.split(',').map((arg) => arg.trim()))
+    );
+    const wikiNames = await args.restResult(wikiNamesResolver);
 
-  exec(msg: Message, args: { wikiNames?: string }): void {
-    if (!msg.guild || msg.guild.id !== env.GUILD_ID) return;
-    if (!(msg.member instanceof GuildMember)) return;
-
-    if (args.wikiNames) {
-      const wikiNames = args.wikiNames.split(',');
-      const guildRoles = msg.guild.roles.cache,
-        wikiIndexRole = msg.guild.roles.resolve(env.WIKI_ROLE_GROUP) as Role,
-        assignedRoles: Role[] = [];
+    if (wikiNames.success) {
+      const assignedRoles: Role[] = [];
       guildRoles.each((role) => {
         if (role.position >= wikiIndexRole.position) return;
         if (role.position === 0) return; // @everyone role
-        wikiNames.forEach((wikiName: string) => {
+        wikiNames.value.forEach((wikiName: string) => {
           if (!wikiName) return;
           const similarityScore = stringSimilarity(wikiName, role.name);
-          if (similarityScore > 0.70) {
-            (msg.member as GuildMember).roles.add(role).catch(this.client.logException);
+          if (similarityScore >= 0.7) {
+            message.member?.roles.add(role).catch(client.logException);
             assignedRoles.push(role);
           }
         });
       });
+
       if (assignedRoles.length) {
-        msg.member.roles.add(env.WIKI_ROLE_GROUP).catch(this.client.logException);
-        msg.reply(`✅ Roles añadidos: ${assignedRoles.map((role) => `**${role.name}**`).join(', ')}.`).catch(this.client.logException);
-      } else msg.reply('⚠️ No encontré ningún rol de wiki similar a lo que has escrito. Revisa e intenta nuevamente.').catch(this.client.logException);
+        message.member.roles
+          .add(env.WIKI_ROLE_GROUP)
+          .catch(client.logException);
+        message
+          .reply(
+            `✅ Roles añadidos: ${assignedRoles
+              .map((role) => `**${role.name}**`)
+              .join(', ')}.`
+          )
+          .catch(client.logException);
+      } else
+        message
+          .reply(
+            '⚠️ No encontré ningún rol de wiki similar a lo que has escrito. Revisa e intenta nuevamente.'
+          )
+          .catch(client.logException);
     } else {
-      const guildRoles = msg.guild.roles.cache,
-        wikiIndexRole = msg.guild.roles.resolve(env.WIKI_ROLE_GROUP) as Role,
-        assignableRoles: Role[] = [];
+      const assignableRoles: Role[] = [];
+      const rolesPerPage = 20;
       guildRoles.each((role) => {
         if (role.position >= wikiIndexRole.position) return;
         if (role.position === 0) return; // @everyone role
         assignableRoles.push(role);
       });
 
-      const embed = new FieldsEmbed()
-        .setArray(assignableRoles.map((role) => `• <@&${role.id}>`))
-        .setAuthorizedUsers(msg.author.id)
-        .setChannel(msg.channel as TextChannel)
-        .setElementsPerPage(20)
-        .setPageIndicator(true, (page, pages) => `Página ${page} de ${pages}`)
-        .setDisabledNavigationEmojis(['delete', 'jump'])
-        .formatField('Roles asignables de wikis', (el) => el);
-      embed.embed.setTitle('Roles de wikis').setColor('RANDOM');
+      const assignableRolesPages: Role[][] = new Array(
+        Math.ceil(assignableRoles.length / rolesPerPage)
+      )
+        .fill(null)
+        .map((_) => assignableRoles.splice(0, rolesPerPage));
 
-      embed.on('error', this.client.logException);
-      embed.build();
+      const pages: MessagePage[] = assignableRolesPages.map((roles, idx) => {
+        return {
+          embed: {
+            title: 'Roles de wikis',
+            color: roles[0].color,
+            description: roles.map((role) => `• <@&${role.id}>`).join('\n'),
+            footer: {
+              text: `Página ${idx + 1} de ${assignableRolesPages.length}`
+            }
+          }
+        };
+      });
+
+      const paginator = new PaginatedMessage();
+      paginator.addPages(pages);
+      paginator.run(message.author, message.channel as TextChannel);
     }
   }
 }
