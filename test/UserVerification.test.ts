@@ -1,8 +1,8 @@
 import chai, { expect } from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 
-import UserVerification from '../src/modules/confe/UserVerification';
-import NonExistentUser from '../src/util/errors/NonExistentUser';
+import UserVerification from '#lib/confe/UserVerification';
+import NonExistentUser from '#lib/util/errors/NonExistentUser';
 
 chai.use(chaiAsPromised);
 

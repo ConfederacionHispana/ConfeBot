@@ -7,8 +7,8 @@
     "#lib/*": "./dist/lib/*.js"
   },
   "scripts": {
-    "build": "tsc  --listEmittedFiles",
-    "dev": "rimraf dist/ && tsc-watch --noClear --onSuccess \"node --enable-source-maps ./dist/index.js\"",
+    "build": "tsc --project tsconfig.build.json --listEmittedFiles",
+    "dev": "rimraf dist/ && tsc-watch --project tsconfig.build.json --noClear --onSuccess \"node --enable-source-maps ./dist/index.js\"",
     "lint": "eslint src/ --ext ts",
     "lint:fix": "eslint src/ --ext ts --fix",
     "start": "node --enable-source-maps ./dist/index.js",
