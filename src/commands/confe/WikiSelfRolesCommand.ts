@@ -6,7 +6,7 @@ import { env } from '#lib/env';
 
 import type { MessagePage } from '@sapphire/discord.js-utilities';
 import type { CommandOptions } from '@sapphire/framework';
-import type { Message, Role, TextChannel } from 'discord.js';
+import type { Message, Role } from 'discord.js';
 
 @ApplyOptions<CommandOptions>({
   aliases: ['wiki', 'wikis']
@@ -87,7 +87,7 @@ class WikiSelfRolesCommand extends Command {
 
       const paginator = new PaginatedMessage();
       paginator.addPages(pages);
-      paginator.run(message.author, message.channel as TextChannel);
+      paginator.run(message);
     }
   }
 }

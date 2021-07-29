@@ -20,7 +20,7 @@ class UserVerifyCommand extends Command {
     if (!message.guild || !message.member) return;
 
     // TODO: Allow users to re-verify (e.g. if they changed accs)?
-    if (message.member.roles.cache.has(env.USER_ROLE)) return;
+    if (message.member.roles.cache.has(env.FDUSER_ROLE)) return;
 
     const fandomUserResolver = Args.make((arg) => Args.ok(arg.substring(0, 255)));
     const fandomUser = await args.restResult(fandomUserResolver);
