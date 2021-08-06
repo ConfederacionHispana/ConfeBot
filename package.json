@@ -20,7 +20,7 @@
     "date-fns": "^2.22.1",
     "discord-akairo": "^8.1.0",
     "discord-paginationembed": "github:gazmull/discord-paginationembed#4ef3476d4c34d9c4bfe6233095515577203e4fce",
-    "discord.js": "github:discordjs/discord.js#03256bd9f88c63dc5c2169e2c09ac8078ea84992",
+    "discord.js": "^13.0.0",
     "mongoose": "^5.12.12",
     "signale": "^1.4.0",
     "string-similarity-js": "^2.1.2",
