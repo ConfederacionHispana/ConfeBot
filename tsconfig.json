@@ -20,6 +20,10 @@
     "moduleResolution": "node",
     "noEmitHelpers": true,
     "outDir": "dist",
+    "typeRoots": [
+      "./node_modules/@types",
+      "./src/types"
+    ],
     "skipLibCheck": true
   },
   "outDir": "../dist",

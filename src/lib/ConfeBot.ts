@@ -6,7 +6,7 @@ import {
 import '@sapphire/plugin-logger/register';
 import Honeybadger from '@honeybadger-io/js';
 
-import { env } from '#lib/env';
+import { env } from './env';
 
 class ConfeBot extends SapphireClient {
   constructor(options: SapphireClientOptions) {
@@ -69,6 +69,13 @@ declare module 'discord.js' {
   interface Client {
     logException(err: Error, context?: Record<string, unknown>): void;
     readonly version: string;
+    // set during the 'ready' event
+    cache: {
+      widgetInvite: {
+        code: string
+        uses: number
+      }
+    }
   }
 }
 

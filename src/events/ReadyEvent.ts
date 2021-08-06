@@ -1,5 +1,8 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { Event, Events, EventOptions } from '@sapphire/framework';
+import { join } from 'path';
+
+import { TaskStore } from '#lib/structures/TaskStore';
 
 @ApplyOptions<EventOptions>({
   event: Events.Ready,
@@ -23,7 +26,8 @@ class ReadyEvent extends Event {
       status: 'online'
     });
 
-    // TODO: setup scheduled tasks
+    client.stores.register(new TaskStore().registerPath(join(__dirname, '..', 'tasks')));
+    (client.stores.get('tasks')! as TaskStore).loadAll();
   }
 }
 
