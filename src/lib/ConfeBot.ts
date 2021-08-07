@@ -65,24 +65,4 @@ class ConfeBot extends SapphireClient {
   }
 }
 
-declare module 'discord.js' {
-  interface Client {
-    logException(err: Error, context?: Record<string, unknown>): void;
-    readonly version: string;
-    // set during the 'ready' event
-    cache: {
-      widgetInvite: {
-        code: string
-        uses: number
-      }
-    }
-  }
-}
-
-declare module '@sapphire/framework' {
-  interface ILogger {
-    log(...values: readonly unknown[]): void;
-  }
-}
-
 export { ConfeBot };

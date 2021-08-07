@@ -14,11 +14,7 @@
       "ESNext.Symbol",
       "ESNext.BigInt"
     ],
-    "experimentalDecorators": true,
-    "importHelpers": true,
-    "incremental": true,
-    "moduleResolution": "node",
-    "noEmitHelpers": true,
+    "importsNotUsedAsValues": "preserve",
     "outDir": "dist",
     "typeRoots": [
       "./node_modules/@types",
