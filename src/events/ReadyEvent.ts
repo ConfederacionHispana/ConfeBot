@@ -38,7 +38,7 @@ class ReadyEvent extends Event {
     client.logger.info(`Se ha registrado la invitación del widget: ${widgetInvite.code} (${widgetInvite.uses} usos).`);
 
     client.stores.register(new TaskStore().registerPath(join(__dirname, '..', 'tasks')));
-    (client.stores.get('tasks')! as TaskStore).loadAll();
+    (client.stores.get('tasks')! as TaskStore).loadAll().catch(client.logException);
   }
 }
 

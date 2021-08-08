@@ -15,6 +15,7 @@ import type { Message, TextChannel } from 'discord.js';
 })
 class UserVerifyCommand extends Command {
   public async run(message: Message, args: Args): Promise<void> {
+    const { client } = this.context;
     if (message.channel.id !== env.VERIF_CHANNEL) return;
     if (message.author.bot) return;
     if (!message.guild || !message.member) return;
@@ -26,11 +27,10 @@ class UserVerifyCommand extends Command {
     const fandomUser = await args.restResult(fandomUserResolver);
 
     if (!fandomUser.success) {
-      message.reply('❌ Debes ingresar tu nombre de usuario de Fandom.');
+      message.reply('❌ Debes ingresar tu nombre de usuario de Fandom.').catch(client.logException);
       return;
     }
 
-    const { client } = this.context;
     const { guild, member } = message;
     const logsChannel = guild.channels.resolve(env.LOGS_CHANNEL) as TextChannel;
     const discordTag = `${message.author.username}#${message.author.discriminator}`;

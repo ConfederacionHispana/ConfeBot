@@ -15,6 +15,8 @@
       "ESNext.BigInt"
     ],
     "importsNotUsedAsValues": "preserve",
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
     "outDir": "dist",
     "typeRoots": [
       "./node_modules/@types",

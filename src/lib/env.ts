@@ -29,7 +29,6 @@ export const schema = {
   WIKI_ROLE_GROUP: String
 };
 
-// eslint-disable-next-line import/no-mutable-exports
 export let env: Env;
 
 export function loadEnv(): void {

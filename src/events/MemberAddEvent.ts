@@ -7,7 +7,7 @@ import type { GuildMember } from 'discord.js';
   event: Events.GuildMemberAdd
 })
 class MemberAddEvent extends Event {
-  public async run(member: GuildMember): Promise<void> {
+  public run(member: GuildMember): void {
     const { client } = this.context;
 
     client.logger.info('Nuevo miembro', {

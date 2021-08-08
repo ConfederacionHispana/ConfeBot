@@ -29,6 +29,7 @@ export class DailyReports extends Task {
       const wikis = todayCalendar[username];
       for (const interwiki of wikis) {
         const url = FandomUtilities.interwiki2url(interwiki);
+        // eslint-disable-next-line @typescript-eslint/unbound-method
         const report = await Vigilancia.checkWiki(interwiki).catch(client.logger.error);
         if (!report) {
           embed.addField('❗ Wiki no encontrado', `No he podido encontrar ningún wiki para **${interwiki}**.`);

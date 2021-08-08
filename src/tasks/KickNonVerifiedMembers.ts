@@ -9,7 +9,7 @@ import type { Guild, Role, TextChannel } from 'discord.js';
 
 @ApplyOptions<PieceOptions>({ enabled: true })
 export class KickNonVerifiedMembers extends Task {
-  public async run(): Promise<void> {
+  public run(): void {
     const { client } = this.context;
 
     client.logger.info('Running scheduled task: KickNonVerifiedMembers');

@@ -113,7 +113,7 @@ class MemberUpdateEvent extends Event {
                     newMember.roles
                       .add(env.USER_ROLE)
                       .then(() => {
-                        newMember.roles.remove(env.NEWUSER_ROLE);
+                        newMember.roles.remove(env.NEWUSER_ROLE).catch(client.logException);
                         // TODO: log in db
                         client.logger.info('User authenticated as guest', {
                           member: newMember.user.id

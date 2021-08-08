@@ -50,7 +50,7 @@ class Vigilancia {
     };
   }
 
-  static async customUserEmbed(name: string, avatarURL?: string): Promise<MessageEmbed> {
+  static customUserEmbed(name: string, avatarURL?: string): MessageEmbed {
     return new MessageEmbed({
       title: name,
       color: 'RANDOM',

@@ -20,7 +20,7 @@ const InterwikiPrefixes = {
   event: Events.Message
 })
 class WikiLinksParser extends Event {
-  public async run(message: Message): Promise<void> {
+  public run(message: Message): void {
     const { client } = this.context;
 
     if (!message.content) return;

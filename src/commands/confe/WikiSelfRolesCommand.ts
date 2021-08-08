@@ -73,7 +73,7 @@ class WikiSelfRolesCommand extends Command {
 
       const paginator = new PaginatedMessage();
       paginator.addPages(pages);
-      paginator.run(message);
+      paginator.run(message).catch(client.logException);
     }
   }
 }

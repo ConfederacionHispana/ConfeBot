@@ -80,7 +80,7 @@ class UserAssociateCommand extends Command {
         rolesToAdd,
         `Verificado manualmente por ${message.member?.user.username}#${message.member?.user.discriminator}`
       )
-      .then(async () => {
+      .then(() => {
         targetUser.roles.remove(env.NEWUSER_ROLE).catch(client.logException);
         logsChannel.send(logReason).catch(client.logException);
         message.react('✅').catch(client.logException);

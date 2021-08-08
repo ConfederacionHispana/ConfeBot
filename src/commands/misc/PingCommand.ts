@@ -9,7 +9,7 @@ import type { Message } from 'discord.js';
 class PingCommand extends Command {
   public run(message: Message) {
     const { client } = this.context;
-    message.reply(`Pong! ConfeBot v${client.version}`);
+    message.reply(`Pong! ConfeBot v${client.version}`).catch(client.logException);
   }
 }
 
