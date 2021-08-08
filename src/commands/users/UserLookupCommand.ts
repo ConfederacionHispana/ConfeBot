@@ -29,9 +29,14 @@ class UserLookupCommand extends Command {
       .addField('Registro', member.user.createdAt)
       .addField('En el servidor desde', member.joinedAt);
 
-    if (dbUser && dbUser.fandomUser) embed.addField('Cuenta de Fandom', `${dbUser.fandomUser.username} (${dbUser.fandomUser.userId})`);
+    if (dbUser && dbUser.fandomUser)
+      embed.addField('Cuenta de Fandom', `${dbUser.fandomUser.username} (${dbUser.fandomUser.userId})`);
 
-    embed.addField('Roles', member.roles.cache.map((role) => (role.id === '@everyone' ? role.id : `<@&${role.id}>`)).join(', '))
+    embed
+      .addField(
+        'Roles',
+        member.roles.cache.map((role) => (role.id === '@everyone' ? role.id : `<@&${role.id}>`)).join(', ')
+      )
       .addField('ID', member.user.id)
       .addField('Estado', member.presence.status);
 

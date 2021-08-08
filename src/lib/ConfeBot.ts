@@ -1,8 +1,4 @@
-import {
-  SapphireClient,
-  SapphireClientOptions,
-  Store
-} from '@sapphire/framework';
+import { SapphireClient, SapphireClientOptions, Store } from '@sapphire/framework';
 import '@sapphire/plugin-logger/register';
 import Honeybadger from '@honeybadger-io/js';
 
@@ -14,13 +10,7 @@ class ConfeBot extends SapphireClient {
       allowedMentions: {
         parse: ['roles', 'users']
       },
-      intents: [
-        'GUILDS',
-        'GUILD_PRESENCES',
-        'GUILD_MEMBERS',
-        'GUILD_MESSAGES',
-        'GUILD_MESSAGE_REACTIONS'
-      ],
+      intents: ['GUILDS', 'GUILD_PRESENCES', 'GUILD_MEMBERS', 'GUILD_MESSAGES', 'GUILD_MESSAGE_REACTIONS'],
       ...options
     });
 
@@ -36,8 +26,7 @@ class ConfeBot extends SapphireClient {
   }
 
   logException(err: Error, context: Record<string, unknown> = {}) {
-    if (Object.keys(context).length)
-      Store.injectedContext.client.logger.error(err, '\nContext:', context);
+    if (Object.keys(context).length) Store.injectedContext.client.logger.error(err, '\nContext:', context);
     else Store.injectedContext.client.logger.error(err);
 
     if (env.HONEYBADGER_API_KEY) {
@@ -56,10 +45,7 @@ class ConfeBot extends SapphireClient {
         logger: this.logger,
         revision: this.version
       });
-    } else
-      this.logger.warn(
-        'HONEYBADGER_API_KEY not set, error reporting disabled.'
-      );
+    } else this.logger.warn('HONEYBADGER_API_KEY not set, error reporting disabled.');
 
     return super.login(token);
   }

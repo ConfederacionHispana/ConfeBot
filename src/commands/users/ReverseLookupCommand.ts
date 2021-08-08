@@ -24,17 +24,21 @@ class ReverseLookupCommand extends Command {
     });
 
     if (!dbUser) {
-      message.reply('❌ No se encontró un usuario de Discord que coincida con la cuenta especificada.').catch(client.logException);
+      message
+        .reply('❌ No se encontró un usuario de Discord que coincida con la cuenta especificada.')
+        .catch(client.logException);
       return;
     }
 
-    message.reply({
-      embed: {
-        title: 'Resultados de la búsqueda',
-        color: 'RANDOM',
-        description: `Se encontró el siguiente usuario de Discord para la cuenta de Fandom **${fandomUser}**:\n<@!${dbUser.id}>`
-      }
-    }).catch(client.logException);
+    message
+      .reply({
+        embed: {
+          title: 'Resultados de la búsqueda',
+          color: 'RANDOM',
+          description: `Se encontró el siguiente usuario de Discord para la cuenta de Fandom **${fandomUser}**:\n<@!${dbUser.id}>`
+        }
+      })
+      .catch(client.logException);
   }
 }
 

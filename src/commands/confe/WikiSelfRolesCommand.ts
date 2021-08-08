@@ -17,12 +17,8 @@ class WikiSelfRolesCommand extends Command {
     if (!message.member) return;
     const { client } = this.context;
     const guildRoles = message.guild.roles.cache;
-    const wikiIndexRole = message.guild.roles.resolve(
-      env.WIKI_ROLE_GROUP
-    ) as Role;
-    const wikiNamesResolver = Args.make((arg) =>
-      Args.ok(arg.split(',').map((arg) => arg.trim()))
-    );
+    const wikiIndexRole = message.guild.roles.resolve(env.WIKI_ROLE_GROUP) as Role;
+    const wikiNamesResolver = Args.make((arg) => Args.ok(arg.split(',').map((arg) => arg.trim())));
     const wikiNames = await args.restResult(wikiNamesResolver);
 
     if (wikiNames.success) {
@@ -41,21 +37,13 @@ class WikiSelfRolesCommand extends Command {
       });
 
       if (assignedRoles.length) {
-        message.member.roles
-          .add(env.WIKI_ROLE_GROUP)
-          .catch(client.logException);
+        message.member.roles.add(env.WIKI_ROLE_GROUP).catch(client.logException);
         message
-          .reply(
-            `✅ Roles añadidos: ${assignedRoles
-              .map((role) => `**${role.name}**`)
-              .join(', ')}.`
-          )
+          .reply(`✅ Roles añadidos: ${assignedRoles.map((role) => `**${role.name}**`).join(', ')}.`)
           .catch(client.logException);
       } else
         message
-          .reply(
-            '⚠️ No encontré ningún rol de wiki similar a lo que has escrito. Revisa e intenta nuevamente.'
-          )
+          .reply('⚠️ No encontré ningún rol de wiki similar a lo que has escrito. Revisa e intenta nuevamente.')
           .catch(client.logException);
     } else {
       const assignableRoles: Role[] = [];
@@ -66,9 +54,7 @@ class WikiSelfRolesCommand extends Command {
         assignableRoles.push(role);
       });
 
-      const assignableRolesPages: Role[][] = new Array(
-        Math.ceil(assignableRoles.length / rolesPerPage)
-      )
+      const assignableRolesPages: Role[][] = new Array(Math.ceil(assignableRoles.length / rolesPerPage))
         .fill(null)
         .map((_) => assignableRoles.splice(0, rolesPerPage));
 

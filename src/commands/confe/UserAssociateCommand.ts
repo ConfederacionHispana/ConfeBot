@@ -6,7 +6,7 @@ import FandomUtilities from '#lib/fandom/FandomUtilities';
 import NonExistentUser from '#lib/util/errors/NonExistentUser';
 
 import type { CommandOptions } from '@sapphire/framework';
-import type {  Message, TextChannel } from 'discord.js';
+import type { Message, TextChannel } from 'discord.js';
 
 @ApplyOptions<CommandOptions>({
   aliases: ['associate', 'forceverify', 'manualverify'],
@@ -30,7 +30,9 @@ class UserAssociateCommand extends Command {
     const guestFlag = args.getFlags('guest');
     const fandomUserMatch = await args.restResult('string');
     if (!fandomUserMatch.success && !guestFlag) {
-      message.reply('❓ Se requiere un nombre de usuario de Fandom, o el flag `--guest` para verificar como invitado.').catch(client.logException);
+      message
+        .reply('❓ Se requiere un nombre de usuario de Fandom, o el flag `--guest` para verificar como invitado.')
+        .catch(client.logException);
       return;
     }
 
@@ -41,7 +43,7 @@ class UserAssociateCommand extends Command {
         const mwUser = await FandomUtilities.getUserInfo('comunidad', fandomUser);
 
         const { id } = targetUser;
-        const dbUser = await DBModels.User.findOne({ id }) || new DBModels.User({ id });
+        const dbUser = (await DBModels.User.findOne({ id })) || new DBModels.User({ id });
 
         dbUser.fandomUser = {
           username: mwUser.name,
@@ -60,20 +62,30 @@ class UserAssociateCommand extends Command {
 
         dbUser.save().catch(client.logException);
       } catch (err) {
-        message.reply(`❌ ${err instanceof NonExistentUser ? 'La cuenta de usuario especificada no existe.' : err.message}`).catch(client.logException);
+        message
+          .reply(`❌ ${err instanceof NonExistentUser ? 'La cuenta de usuario especificada no existe.' : err.message}`)
+          .catch(client.logException);
         return;
       }
     }
 
     const logsChannel = message.guild?.channels.resolve(env.LOGS_CHANNEL) as TextChannel;
     const rolesToAdd = fandomUser ? [env.USER_ROLE, env.FDUSER_ROLE] : [env.USER_ROLE];
-    const logReason = `✅ <@!${message.member?.id}> verificó a <@!${targetUser.id}> ${fandomUser ? `con la cuenta de Fandom **${fandomUser}**` : 'como invitado'}`;
+    const logReason = `✅ <@!${message.member?.id}> verificó a <@!${targetUser.id}> ${
+      fandomUser ? `con la cuenta de Fandom **${fandomUser}**` : 'como invitado'
+    }`;
 
-    targetUser.roles.add(rolesToAdd, `Verificado manualmente por ${message.member?.user.username}#${message.member?.user.discriminator}`).then(async () => {
-      targetUser.roles.remove(env.NEWUSER_ROLE).catch(client.logException);
-      logsChannel.send(logReason).catch(client.logException);
-      message.react('✅').catch(client.logException);
-    }).catch(client.logException);
+    targetUser.roles
+      .add(
+        rolesToAdd,
+        `Verificado manualmente por ${message.member?.user.username}#${message.member?.user.discriminator}`
+      )
+      .then(async () => {
+        targetUser.roles.remove(env.NEWUSER_ROLE).catch(client.logException);
+        logsChannel.send(logReason).catch(client.logException);
+        message.react('✅').catch(client.logException);
+      })
+      .catch(client.logException);
   }
 }
 

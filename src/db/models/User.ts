@@ -1,24 +1,24 @@
 import mongoose, { Document, Schema } from 'mongoose';
 
 export interface IUser extends Document {
-  id: string,
+  id: string;
   fandomUser: {
-    username: string,
-    userId: number,
-    verifiedAt: Date
-  },
+    username: string;
+    userId: number;
+    verifiedAt: Date;
+  };
   serverEvents: {
-    date: Date,
-    event: string,
-  }[],
+    date: Date;
+    event: string;
+  }[];
   fandomAccountEvents: {
-    date: Date,
-    event: string,
+    date: Date;
+    event: string;
     account: {
-      username: string,
-      userId: number
-    }
-  }[]
+      username: string;
+      userId: number;
+    };
+  }[];
 }
 
 const UserSchema: Schema = new Schema({
@@ -40,18 +40,22 @@ const UserSchema: Schema = new Schema({
       required: true
     }
   },
-  serverEvents: [{
-    date: Date,
-    event: String
-  }],
-  fandomAccountEvents: [{
-    date: Date,
-    event: String,
-    account: {
-      username: String,
-      userId: Number
+  serverEvents: [
+    {
+      date: Date,
+      event: String
     }
-  }]
+  ],
+  fandomAccountEvents: [
+    {
+      date: Date,
+      event: String,
+      account: {
+        username: String,
+        userId: Number
+      }
+    }
+  ]
 });
 
 export default mongoose.model<IUser>('User', UserSchema);
