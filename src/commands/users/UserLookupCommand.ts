@@ -15,7 +15,9 @@ class UserLookupCommand extends Command {
 
     const targetMemberResult = await args.pickResult('member');
     if (!targetMemberResult.success) {
-      message.reply('❓ No encontré al usuario que buscas.').catch(client.logException);
+      message
+        .reply('❓ No encontré al usuario que buscas.')
+        .catch(client.logException);
       return;
     }
 
@@ -23,15 +25,27 @@ class UserLookupCommand extends Command {
     const dbUser = await DBModels.User.findOne({ id: member.user.id });
 
     const embed = new MessageEmbed()
-      .setTitle(`Información de **${member.user.username}#${member.user.discriminator}**`)
+      .setTitle(
+        `Información de **${member.user.username}#${member.user.discriminator}**`
+      )
       .setColor(member.displayColor)
       .setThumbnail(member.user.displayAvatarURL())
       .addField('Registro', member.user.createdAt)
       .addField('En el servidor desde', member.joinedAt);
 
-    if (dbUser && dbUser.fandomUser) embed.addField('Cuenta de Fandom', `${dbUser.fandomUser.username} (${dbUser.fandomUser.userId})`);
+    if (dbUser && dbUser.fandomUser)
+      embed.addField(
+        'Cuenta de Fandom',
+        `${dbUser.fandomUser.username} (${dbUser.fandomUser.userId})`
+      );
 
-    embed.addField('Roles', member.roles.cache.map((role) => (role.id === '@everyone' ? role.id : `<@&${role.id}>`)).join(', '))
+    embed
+      .addField(
+        'Roles',
+        member.roles.cache
+          .map((role) => (role.id === '@everyone' ? role.id : `<@&${role.id}>`))
+          .join(', ')
+      )
       .addField('ID', member.user.id)
       .addField('Estado', member.presence.status);
 

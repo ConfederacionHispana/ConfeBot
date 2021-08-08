@@ -24,7 +24,9 @@ class WikiLinksParser extends Event {
     const { client } = this.context;
 
     if (!message.content) return;
-    const capturedLinks = message.content.match(/\[\[(.*?)(\|(.*?))?\]\](?=(?:[^`]*`[^`]*`)*[^`]*$)/g);
+    const capturedLinks = message.content.match(
+      /\[\[(.*?)(\|(.*?))?\]\](?=(?:[^`]*`[^`]*`)*[^`]*$)/g
+    );
     if (!capturedLinks || !capturedLinks.length) return;
     let parsedLinks: string[] = [];
 
@@ -34,9 +36,16 @@ class WikiLinksParser extends Event {
       if (!groups || groups.length < 2) return;
       const prefix = groups[1].match(/^(.*?):(.*)/) || [];
       // desperate times ask for desperate measures
-      const [, prefixCandidate, prefixContent] = prefix as [never, keyof typeof InterwikiPrefixes, string];
+      const [, prefixCandidate, prefixContent] = prefix as [
+        never,
+        keyof typeof InterwikiPrefixes,
+        string
+      ];
       const interwikiUrl: string = InterwikiPrefixes[prefixCandidate]
-        ? InterwikiPrefixes[prefixCandidate].replace(/\$1/g, prefixContent.replace(/ /g, '_'))
+        ? InterwikiPrefixes[prefixCandidate].replace(
+            /\$1/g,
+            prefixContent.replace(/ /g, '_')
+          )
         : `https://comunidad.fandom.com/wiki/${groups[1].replace(/ /g, '_')}`;
       parsedLinks = parsedLinks.concat(interwikiUrl);
     }
