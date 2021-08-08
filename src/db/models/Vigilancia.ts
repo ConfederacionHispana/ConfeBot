@@ -1,8 +1,8 @@
 import mongoose from 'mongoose';
 
 export interface IVigilancia extends mongoose.Document {
-  interwiki: string;
-  lastCheck?: number;
+  interwiki: string
+  lastCheck?: number
 }
 
 const VigilanciaSchema: mongoose.Schema = new mongoose.Schema({

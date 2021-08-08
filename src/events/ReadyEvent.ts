@@ -30,21 +30,14 @@ class ReadyEvent extends Event {
     const guild = client.guilds.resolve(env.GUILD_ID);
     const invites = await guild?.fetchInvites();
     const widgetInvite = invites?.find((invite) => !invite.inviter);
-    if (!widgetInvite)
-      return client.logger.warn(
-        'No he podido encontrar una invitación por widget.'
-      );
+    if (!widgetInvite) return client.logger.warn('No he podido encontrar una invitación por widget.');
     client.cache.widgetInvite = {
       code: widgetInvite.code,
       uses: widgetInvite.uses ?? 0
     };
-    client.logger.info(
-      `Se ha registrado la invitación del widget: ${widgetInvite.code} (${widgetInvite.uses} usos).`
-    );
+    client.logger.info(`Se ha registrado la invitación del widget: ${widgetInvite.code} (${widgetInvite.uses} usos).`);
 
-    client.stores.register(
-      new TaskStore().registerPath(join(__dirname, '..', 'tasks'))
-    );
+    client.stores.register(new TaskStore().registerPath(join(__dirname, '..', 'tasks')));
     (client.stores.get('tasks')! as TaskStore).loadAll();
   }
 }

@@ -6,45 +6,45 @@ import NonExistentWiki from '#lib/util/errors/NonExistentWiki';
 
 interface IAllUsersQuery {
   query: {
-    allusers: IMediaWikiUser[];
-  };
+    allusers: IMediaWikiUser[]
+  }
 }
 
 interface IRecentChangesQuery {
   query: {
-    recentchanges: IRecentChangesEntry[];
-  };
+    recentchanges: IRecentChangesEntry[]
+  }
 }
 
 interface IUsersQuery {
   query: {
-    users: IMediaWikiUser[];
-  };
-  error?: Record<string, unknown>;
+    users: IMediaWikiUser[]
+  },
+  error?: Record<string, unknown>
 }
 
 interface IRecentChangesEntry {
-  type: string;
-  ns: number;
-  title: string;
-  user: string;
-  oldlen: number;
-  newlen: number;
+  type: string
+  ns: number
+  title: string
+  user: string
+  oldlen: number
+  newlen: number
 }
 
 interface IMediaWikiUser {
-  userid: number;
-  name: string;
-  registration: string;
-  groups?: string[];
-  implicitgroups?: string[];
-  blockid?: number;
-  blockedby?: string;
-  blockedbyid?: number;
-  blockedtimestamp?: string;
-  blockreason?: string;
-  blockexpiry?: string;
-  missing?: string;
+  userid: number,
+  name: string,
+  registration: string,
+  groups?: string[],
+  implicitgroups?: string[],
+  blockid?: number,
+  blockedby?: string,
+  blockedbyid?: number,
+  blockedtimestamp?: string,
+  blockreason?: string,
+  blockexpiry?: string,
+  missing?: string
 }
 
 export default class FandomUtilities {
@@ -54,8 +54,7 @@ export default class FandomUtilities {
       const [lang, wikiname] = interwiki.split('.');
       return `https://${wikiname}.fandom.com/${lang}`;
     }
-    if (interwiki.match(/^[a-z0-9-]+$/))
-      return `https://${interwiki}.fandom.com`;
+    if (interwiki.match(/^[a-z0-9-]+$/)) return `https://${interwiki}.fandom.com`;
 
     throw new InvalidInterwiki(interwiki);
   }
@@ -112,31 +111,20 @@ export default class FandomUtilities {
     return result.query.recentchanges.filter((i) => !admins.includes(i.user));
   }
 
-  static async getUserInfo(
-    interwiki: string,
-    username: string
-  ): Promise<IMediaWikiUser> {
+  static async getUserInfo(interwiki: string, username: string): Promise<IMediaWikiUser> {
     const result: IUsersQuery = await this.apiQuery(interwiki, {
       list: 'users',
       usprop: 'blockinfo|registration|implicitgroups|groups',
       ususers: username
     });
 
-    if (
-      result.error ||
-      !result.query.users[0] ||
-      typeof result.query.users[0].implicitgroups === 'undefined' ||
-      result.query.users[0].missing
-    )
-      throw new NonExistentUser(username);
+    if (result.error || !result.query.users[0] || typeof result.query.users[0].implicitgroups === 'undefined' || result.query.users[0].missing) throw new NonExistentUser(username);
 
     return result.query.users[0];
   }
 
   static async getUserAvatar(username: string): Promise<string> {
-    const res = await axios.get(
-      `https://confederacion-hispana.fandom.com/es/api/v1/User/Details?ids=${username}`
-    );
+    const res = await axios.get(`https://confederacion-hispana.fandom.com/es/api/v1/User/Details?ids=${username}`);
     return `${res.data.items[0].avatar.split('/thumbnail')[0]}?format=png`;
   }
 }
