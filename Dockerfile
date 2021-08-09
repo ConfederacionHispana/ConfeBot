@@ -2,8 +2,7 @@
 
 # The first stage installs npm prod dependencies and copies them for later use.
 # Then, installs devDependencies and compiles the TypeScript source.
-
-FROM node:lts-buster AS build
+FROM node:16-alpine3.14 AS build
 RUN mkdir /home/node/app/ && chown -R node:node /home/node/app
 WORKDIR /home/node/app
 
@@ -16,8 +15,7 @@ COPY --chown=node:node . .
 RUN npm run build
 
 # The second stage of the build copies node_modules_prod and the built JS from the first stage.
-# Here, the `lts-buster-slim` image is used since things like GCC and development headers are not needed for production.
-FROM node:lts-buster-slim
+FROM node:16-alpine3.14
 WORKDIR /home/node/app
 
 COPY --chown=node:node package*.json ./
@@ -28,4 +26,4 @@ COPY --from=build --chown=node:node /home/node/app/node_modules_prod ./node_modu
 COPY --from=build --chown=node:node /home/node/app/dist ./dist
 
 # Run the application
-CMD npm start
+ENTRYPOINT ["npm", "start"]
