@@ -1,27 +1,25 @@
-import { Command } from 'discord-akairo';
-import { GuildMember, Message, MessageEmbed } from 'discord.js';
-
+import { ApplyOptions } from '@sapphire/decorators';
+import { Command } from '@sapphire/framework';
+import { MessageEmbed } from 'discord.js';
 import DBModels from '../../db';
 
-class UserLookupCommand extends Command {
-  constructor() {
-    super('lookup', {
-      aliases: ['lookup', 'userlookup', 'userinfo'],
-      args: [
-        {
-          id: 'member',
-          type: 'member'
-        }
-      ]
-    });
-  }
+import type { Args, CommandOptions } from '@sapphire/framework';
+import type { Message } from 'discord.js';
 
-  async exec(msg: Message, args: { member?: GuildMember }): Promise<void> {
-    if (!args.member) {
-      msg.reply('❓ No encontré al usuario que buscas.').catch(this.client.logException);
+@ApplyOptions<CommandOptions>({
+  aliases: ['lookup', 'userlookup', 'userinfo']
+})
+class UserLookupCommand extends Command {
+  public async run(message: Message, args: Args) {
+    const { client } = this.context;
+
+    const targetMemberResult = await args.pickResult('member');
+    if (!targetMemberResult.success) {
+      message.reply('❓ No encontré al usuario que buscas.').catch(client.logException);
       return;
     }
-    const { member } = args;
+
+    const member = targetMemberResult.value;
     const dbUser = await DBModels.User.findOne({ id: member.user.id });
 
     const embed = new MessageEmbed()
@@ -31,13 +29,18 @@ class UserLookupCommand extends Command {
       .addField('Registro', member.user.createdAt)
       .addField('En el servidor desde', member.joinedAt);
 
-    if (dbUser && dbUser.fandomUser) embed.addField('Cuenta de Fandom', `${dbUser.fandomUser.username} (${dbUser.fandomUser.userId})`);
+    if (dbUser && dbUser.fandomUser)
+      embed.addField('Cuenta de Fandom', `${dbUser.fandomUser.username} (${dbUser.fandomUser.userId})`);
 
-    embed.addField('Roles', member.roles.cache.map((role) => (role.id === '@everyone' ? role.id : `<@&${role.id}>`)).join(', '))
+    embed
+      .addField(
+        'Roles',
+        member.roles.cache.map((role) => (role.id === '@everyone' ? role.id : `<@&${role.id}>`)).join(', ')
+      )
       .addField('ID', member.user.id)
       .addField('Estado', member.presence.status);
 
-    msg.reply({ embed }).catch(this.client.logException);
+    message.reply({ embed }).catch(client.logException);
   }
 }
 

@@ -1,50 +1,50 @@
 import axios from 'axios';
 
-import InexistentWiki from './errors/InexistentWiki';
-import InvalidInterwiki from './errors/InvalidInterwiki';
-import NonExistentUser from './errors/NonExistentUser';
+import InvalidInterwiki from '#lib/util/errors/InvalidInterwiki';
+import NonExistentUser from '#lib/util/errors/NonExistentUser';
+import NonExistentWiki from '#lib/util/errors/NonExistentWiki';
 
 interface IAllUsersQuery {
   query: {
-    allusers: IMediaWikiUser[]
-  }
+    allusers: IMediaWikiUser[];
+  };
 }
 
 interface IRecentChangesQuery {
   query: {
-    recentchanges: IRecentChangesEntry[]
-  }
+    recentchanges: IRecentChangesEntry[];
+  };
 }
 
 interface IUsersQuery {
   query: {
-    users: IMediaWikiUser[]
-  },
-  error?: Record<string, unknown>
+    users: IMediaWikiUser[];
+  };
+  error?: Record<string, unknown>;
 }
 
 interface IRecentChangesEntry {
-  type: string
-  ns: number
-  title: string
-  user: string
-  oldlen: number
-  newlen: number
+  type: string;
+  ns: number;
+  title: string;
+  user: string;
+  oldlen: number;
+  newlen: number;
 }
 
 interface IMediaWikiUser {
-  userid: number,
-  name: string,
-  registration: string,
-  groups?: string[],
-  implicitgroups?: string[],
-  blockid?: number,
-  blockedby?: string,
-  blockedbyid?: number,
-  blockedtimestamp?: string,
-  blockreason?: string,
-  blockexpiry?: string,
-  missing?: string
+  userid: number;
+  name: string;
+  registration: string;
+  groups?: string[];
+  implicitgroups?: string[];
+  blockid?: number;
+  blockedby?: string;
+  blockedbyid?: number;
+  blockedtimestamp?: string;
+  blockreason?: string;
+  blockexpiry?: string;
+  missing?: string;
 }
 
 export default class FandomUtilities {
@@ -75,7 +75,7 @@ export default class FandomUtilities {
         ...params
       }
     });
-    if (res.status === 404) throw new InexistentWiki(interwiki);
+    if (res.status === 404) throw new NonExistentWiki(interwiki);
     return res.data;
   }
 
@@ -118,7 +118,13 @@ export default class FandomUtilities {
       ususers: username
     });
 
-    if (result.error || !result.query.users[0] || typeof result.query.users[0].implicitgroups === 'undefined' || result.query.users[0].missing) throw new NonExistentUser(username);
+    if (
+      result.error ||
+      !result.query.users[0] ||
+      typeof result.query.users[0].implicitgroups === 'undefined' ||
+      result.query.users[0].missing
+    )
+      throw new NonExistentUser(username);
 
     return result.query.users[0];
   }

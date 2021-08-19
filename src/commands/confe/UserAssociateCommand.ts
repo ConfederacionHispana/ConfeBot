@@ -1,57 +1,49 @@
-import { Command } from 'discord-akairo';
-import type { GuildMember, Message, TextChannel } from 'discord.js';
-import { env } from '../../environment';
+import { ApplyOptions } from '@sapphire/decorators';
+import { Args, Command } from '@sapphire/framework';
+import { env } from '#lib/env';
 import DBModels from '../../db';
-import FandomUtilities from '../../util/FandomUtilities';
-import NonExistentUser from '../../util/errors/NonExistentUser';
+import FandomUtilities from '#lib/fandom/FandomUtilities';
+import NonExistentUser from '#lib/util/errors/NonExistentUser';
 
-class UserAssociateCommand extends Command {
-  constructor() {
-    super('associate', {
-      aliases: ['associate', 'forceverify', 'manualverify'],
-      args: [
-        {
-          id: 'member',
-          type: 'member'
-        },
-        {
-          id: 'fandomUser',
-          match: 'rest',
-          type: 'string'
-        },
-        {
-          id: 'guest',
-          match: 'flag',
-          flag: '--guest'
-        }
-      ]
-    });
+import type { CommandOptions } from '@sapphire/framework';
+import type { Message, TextChannel } from 'discord.js';
+
+@ApplyOptions<CommandOptions>({
+  aliases: ['associate', 'forceverify', 'manualverify'],
+  strategyOptions: {
+    flags: ['guest']
   }
-
-  async exec(message: Message, args: {
-    member?: GuildMember,
-    fandomUser?: string,
-    guest?: boolean
-  }): Promise<void> {
+})
+class UserAssociateCommand extends Command {
+  public async run(message: Message, args: Args): Promise<void> {
     const memberHasRole = message.member?.roles.cache.has(env.STAFF_ROLE);
     if (!memberHasRole) return;
 
-    if (!args.member) {
-      message.reply('❓ No encontré al usuario que buscas.').catch(this.client.logException);
+    const { client } = this.context;
+
+    const targetUserMatch = await args.pickResult('member');
+    if (!targetUserMatch.success) {
+      message.reply('❓ No encontré al usuario que buscas.').catch(client.logException);
+      return;
+    }
+    const targetUser = targetUserMatch.value;
+    const guestFlag = args.getFlags('guest');
+    const fandomUserMatch = await args.restResult('string');
+    if (!fandomUserMatch.success && !guestFlag) {
+      message
+        .reply('❓ Se requiere un nombre de usuario de Fandom, o el flag `--guest` para verificar como invitado.')
+        .catch(client.logException);
       return;
     }
 
-    if (!args.fandomUser && !args.guest) {
-      message.reply('❓ Se requiere un nombre de usuario de Fandom, o el flag `--guest` para verificar como invitado.').catch(this.client.logException);
-      return;
-    }
+    const fandomUser = fandomUserMatch.value;
 
-    if (args.fandomUser) {
+    if (fandomUser) {
       try {
-        const mwUser = await FandomUtilities.getUserInfo('comunidad', args.fandomUser);
+        const mwUser = await FandomUtilities.getUserInfo('comunidad', fandomUser);
 
-        const { id } = args.member;
-        const dbUser = await DBModels.User.findOne({ id }) || new DBModels.User({ id });
+        const { id } = targetUser;
+        const dbUser = (await DBModels.User.findOne({ id })) || new DBModels.User({ id });
 
         dbUser.fandomUser = {
           username: mwUser.name,
@@ -68,22 +60,32 @@ class UserAssociateCommand extends Command {
           }
         });
 
-        dbUser.save().catch(this.client.logException);
+        dbUser.save().catch(client.logException);
       } catch (err) {
-        message.reply(`❌ ${err instanceof NonExistentUser ? 'La cuenta de usuario especificada no existe.' : err.message}`).catch(this.client.logException);
+        message
+          .reply(`❌ ${err instanceof NonExistentUser ? 'La cuenta de usuario especificada no existe.' : err.message}`)
+          .catch(client.logException);
         return;
       }
     }
 
     const logsChannel = message.guild?.channels.resolve(env.LOGS_CHANNEL) as TextChannel;
-    const rolesToAdd = args.fandomUser ? [env.USER_ROLE, env.FDUSER_ROLE] : [env.USER_ROLE];
-    const logReason = `✅ <@!${message.member?.id}> verificó a <@!${args.member!.id}> ${args.fandomUser ? `con la cuenta de Fandom **${args.fandomUser}**` : 'como invitado'}`;
+    const rolesToAdd = fandomUser ? [env.USER_ROLE, env.FDUSER_ROLE] : [env.USER_ROLE];
+    const logReason = `✅ <@!${message.member?.id}> verificó a <@!${targetUser.id}> ${
+      fandomUser ? `con la cuenta de Fandom **${fandomUser}**` : 'como invitado'
+    }`;
 
-    args.member!.roles.add(rolesToAdd, `Verificado manualmente por ${message.member?.user.username}#${message.member?.user.discriminator}`).then(async () => {
-      args.member!.roles.remove(env.NEWUSER_ROLE).catch(this.client.logException);
-      logsChannel.send(logReason).catch(this.client.logException);
-      message.react('✅').catch(this.client.logException);
-    }).catch(this.client.logException);
+    targetUser.roles
+      .add(
+        rolesToAdd,
+        `Verificado manualmente por ${message.member?.user.username}#${message.member?.user.discriminator}`
+      )
+      .then(() => {
+        targetUser.roles.remove(env.NEWUSER_ROLE).catch(client.logException);
+        logsChannel.send(logReason).catch(client.logException);
+        message.react('✅').catch(client.logException);
+      })
+      .catch(client.logException);
   }
 }
 

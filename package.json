@@ -1,56 +1,55 @@
 {
-  "name": "ConfeBot",
-  "version": "1.1.0",
+  "name": "confebot",
+  "version": "2.0.0",
   "description": "Bot de la Confederación de Fandom Hispano",
   "main": "dist/index.js",
+  "imports": {
+    "#lib/*": "./dist/lib/*.js"
+  },
   "scripts": {
     "build": "tsc --project tsconfig.build.json --listEmittedFiles",
-    "dev": "cd src && ts-node-dev --transpile-only --respawn index.ts",
-    "lint": "eslint {src,test}/**/*.{js,ts}",
-    "lint:fix": "eslint --fix {src,test}/**/*.{js,ts}",
-    "start": "cd dist && node --enable-source-maps index.js",
-    "test": "mocha -r ts-node/register test/**/*.test.ts"
+    "dev": "rimraf dist/ && tsc-watch --project tsconfig.build.json --noClear --onSuccess \"node --enable-source-maps ./dist/index.js\"",
+    "lint": "eslint src/ --ext ts",
+    "lint:fix": "eslint src/ --ext ts --fix",
+    "start": "node --enable-source-maps ./dist/index.js",
+    "test": "mocha -r ts-node/register -r tsconfig-paths/register test/**/*.test.ts"
   },
   "author": "TheNozomi <13172293+TheNozomi@users.noreply.github.com>",
   "license": "MIT",
   "dependencies": {
-    "@honeybadger-io/js": "^3.2.1",
+    "@honeybadger-io/js": "^3.2.2",
+    "@sapphire/decorators": "^2.2.0",
+    "@sapphire/discord.js-utilities": "^2.0.2",
+    "@sapphire/framework": "^1.0.2",
+    "@sapphire/plugin-logger": "^1.0.13",
     "axios": "^0.21.1",
     "cron": "^1.8.2",
-    "date-fns": "^2.22.1",
-    "discord-akairo": "^8.1.0",
-    "discord-paginationembed": "github:gazmull/discord-paginationembed#4ef3476d4c34d9c4bfe6233095515577203e4fce",
-    "discord.js": "github:discordjs/discord.js#03256bd9f88c63dc5c2169e2c09ac8078ea84992",
-    "mongoose": "^5.12.12",
-    "signale": "^1.4.0",
+    "date-fns": "^2.23.0",
+    "discord.js": "13.0.0-dev.652c683da7032a147313b4a8db043be5385e0656",
+    "mongoose": "^5.13.5",
     "string-similarity-js": "^2.1.2",
-    "ts-dotenv": "^0.8.3",
-    "tslib": "^2.1.0"
+    "ts-dotenv": "^0.8.3"
   },
   "optionalDependencies": {
     "bufferutil": "^4.0.3",
-    "erlpack": "github:discord/erlpack",
-    "utf-8-validate": "^5.0.5",
-    "zlib-sync": "^0.1.7"
+    "utf-8-validate": "^5.0.5"
   },
   "devDependencies": {
-    "@types/chai": "^4.2.18",
+    "@sapphire/eslint-config": "^3.2.3",
+    "@sapphire/ts-config": "^3.0.0",
+    "@types/chai": "^4.2.21",
     "@types/chai-as-promised": "^7.1.4",
-    "@types/cron": "^1.7.2",
-    "@types/mocha": "^8.2.2",
-    "@types/node": "^15.6.1",
-    "@types/node-fetch": "^2.5.10",
-    "@types/signale": "^1.4.1",
-    "@typescript-eslint/eslint-plugin": "^4.25.0",
-    "@typescript-eslint/parser": "^4.25.0",
+    "@types/cron": "^1.7.3",
+    "@types/mocha": "^9.0.0",
+    "@types/node": "^16.4.13",
     "chai": "^4.3.4",
     "chai-as-promised": "^7.1.1",
-    "eslint": "^7.27.0",
-    "eslint-config-airbnb-typescript": "^12.3.1",
-    "eslint-plugin-import": "2.23.4",
-    "mocha": "^8.4.0",
-    "ts-node": "^10.0.0",
-    "ts-node-dev": "^1.1.1",
-    "typescript": "^4.3.2"
+    "eslint": "^7.32.0",
+    "mocha": "^9.0.3",
+    "rimraf": "^3.0.2",
+    "ts-node": "^10.1.0",
+    "tsc-watch": "^4.4.0",
+    "tsconfig-paths": "^3.10.1",
+    "typescript": "^4.3.5"
   }
 }

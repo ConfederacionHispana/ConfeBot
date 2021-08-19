@@ -2,13 +2,14 @@ import { MessageEmbed } from 'discord.js';
 import axios from 'axios';
 import { format, formatDistance } from 'date-fns';
 import { es } from 'date-fns/locale';
-import FandomUtilities from '../../util/FandomUtilities';
+
+import FandomUtilities from '#lib/fandom/FandomUtilities';
 import DBModels from '../../db';
 
 type Day = 'lunes' | 'martes' | 'miércoles' | 'jueves' | 'viernes' | 'sábado' | 'domingo';
-type ICalendar = {
-  [username: string]: Record<Day, string[]>
-};
+interface ICalendar {
+  [username: string]: Record<Day, string[]>;
+}
 
 interface IWiki {
   interwiki: string;
@@ -18,23 +19,25 @@ interface IWiki {
 }
 
 class Vigilancia {
-  static readonly CALENDAR_URL = 'https://confederacion-hispana.fandom.com/es/wiki/MediaWiki:Custom-vigilancia.json?action=raw&ctype=application/json';
+  static readonly CALENDAR_URL =
+    'https://confederacion-hispana.fandom.com/es/wiki/MediaWiki:Custom-vigilancia.json?action=raw&ctype=application/json';
 
   static readonly WIKIS_LIST = 'https://comunidad.fandom.com/wiki/Lista_de_comunidades?action=raw&ctype=text/plain';
 
   static async checkWiki(interwiki: string): Promise<IWiki> {
-    const document = await DBModels.Vigilancia.findOne({
-      interwiki
-    }) || new DBModels.Vigilancia({ interwiki });
+    const document =
+      (await DBModels.Vigilancia.findOne({
+        interwiki
+      })) || new DBModels.Vigilancia({ interwiki });
     const sitename = await FandomUtilities.getSitename(interwiki);
     const recentChanges = await FandomUtilities.getRecentChanges(interwiki, document.lastCheck);
     const rcusers = recentChanges.map((i) => i.user);
     const users = [...new Set(rcusers)];
     const ago = document.lastCheck
       ? formatDistance(document.lastCheck, Date.now(), {
-        locale: es,
-        addSuffix: true
-      })
+          locale: es,
+          addSuffix: true
+        })
       : 'hace 7 días';
 
     document.lastCheck = Date.now();
@@ -47,7 +50,7 @@ class Vigilancia {
     };
   }
 
-  static async customUserEmbed(name: string, avatarURL?: string): Promise<MessageEmbed> {
+  static customUserEmbed(name: string, avatarURL?: string): MessageEmbed {
     return new MessageEmbed({
       title: name,
       color: 'RANDOM',

@@ -1,8 +1,10 @@
 {
+  "extends": "@sapphire/ts-config",
   "compilerOptions": {
-    "strict": true,
-    "moduleResolution": "Node",
-    "module": "CommonJS",
+    "baseUrl": "./src",
+    "paths": {
+      "#lib/*": ["lib/*"]
+    },
     "target": "ES2020",
     "lib": [
       "ESNext",
@@ -12,21 +14,20 @@
       "ESNext.Symbol",
       "ESNext.BigInt"
     ],
-    "declaration": true,
-    "sourceMap": true,
-    "removeComments": false,
-    "alwaysStrict": true,
-    "pretty": true,
+    "importsNotUsedAsValues": "preserve",
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
     "outDir": "dist",
-    "incremental": true,
-    "noEmitHelpers": true,
-    "importHelpers": true,
-    "skipLibCheck": true,
-    "resolveJsonModule": true,
-    "esModuleInterop": true
+    "typeRoots": [
+      "./node_modules/@types",
+      "./src/types"
+    ],
+    "skipLibCheck": true
   },
+  "outDir": "../dist",
+  "rootDir": "./src",
   "include": [
-    "src/**/*.ts",
-    "test/**/*.ts"
+    "./src/**/*.ts",
+    "./test/**/*.ts"
   ]
 }

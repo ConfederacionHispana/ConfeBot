@@ -1,4 +1,6 @@
-import { Listener } from 'discord-akairo';
+import { ApplyOptions } from '@sapphire/decorators';
+import { Event, Events, EventOptions } from '@sapphire/framework';
+
 import type { Message } from 'discord.js';
 
 const InterwikiPrefixes = {
@@ -14,17 +16,15 @@ const InterwikiPrefixes = {
   wp: 'https://en.wikipedia.org/wiki/$1' // wikipedia alias
 };
 
-class WikiLinksParser extends Listener {
-  constructor() {
-    super('wikiLinksParser', {
-      emitter: 'client',
-      event: 'message'
-    });
-  }
+@ApplyOptions<EventOptions>({
+  event: Events.Message
+})
+class WikiLinksParser extends Event {
+  public run(message: Message): void {
+    const { client } = this.context;
 
-  exec(msg: Message): void {
-    if (!msg.content) return;
-    const capturedLinks = msg.content.match(/\[\[(.*?)(\|(.*?))?\]\](?=(?:[^`]*`[^`]*`)*[^`]*$)/g);
+    if (!message.content) return;
+    const capturedLinks = message.content.match(/\[\[(.*?)(\|(.*?))?\]\](?=(?:[^`]*`[^`]*`)*[^`]*$)/g);
     if (!capturedLinks || !capturedLinks.length) return;
     let parsedLinks: string[] = [];
 
@@ -41,7 +41,7 @@ class WikiLinksParser extends Listener {
       parsedLinks = parsedLinks.concat(interwikiUrl);
     }
 
-    msg.reply(parsedLinks.join('\n')).catch(this.client.logException);
+    message.reply(parsedLinks.join('\n')).catch(client.logException);
   }
 }
 

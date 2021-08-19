@@ -7,4 +7,17 @@
 
 Bot para el servidor de Discord de la [Confederación de Fandom Hispano](https://confederacion-hispana.fandom.com/es/). Se encarga de autenticar usuarios utilizando sus cuentas de Fandom, y añadir roles en base a las wikis a las que pertenezcan.
 
-El código se encuentra publicado por razones de transparencia, y no tiene la intención de ser particularmente "portable". Sin embargo, no requiere mucho esfuerzo configurarlo para su uso en otro servidor. Referirse al archivo `.env.example` como referencia de las variables necesarias para su funcionamiento.
+El código se encuentra publicado por razones de transparencia, y no tiene la intención de ser particularmente "portable". Sin embargo, no requiere mucho esfuerzo configurarlo para su uso en otro servidor.
+
+### Configuración para desarrollo
+Se requiere `node >= 14` y `npm >= 7`. De ser posible, utilizar Node 16, para mayor similaridad con el ambiente de producción.
+
+No se requieren pasos especiales para la configuración, simplemente clonar el repositorio y ejecutar `npm install`.
+
+En el archivo `.env.example` se encuentra la lista de las variables de entorno necesarias para su funcionamiento, junto con su descripción.
+
+Por conveniencia, el `package.json` incluye el script `dev`, que inicia el bot en modo development, reiniciándose al detectar cambios.
+
+#### Ejecutar con Docker
+1. Crear la imagen: `docker build -t confebot .`
+2. Ejecutar: `docker run --env-file .env -it confebot`
