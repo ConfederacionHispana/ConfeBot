@@ -1,5 +1,6 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { Event, Events, EventOptions } from '@sapphire/framework';
+import { Time } from '#lib/util/constants';
 
 import type { GuildMember } from 'discord.js';
 
@@ -23,10 +24,9 @@ class MemberAddEvent extends Event {
   }
 
   private checkAccountAge(member: GuildMember): void {
-    const SECONDS_IN_DAY = 1000 * 60 * 60 * 24;
     const created = member.user.createdAt.getTime();
     const now = Date.now();
-    const age = Math.floor((now - created) / SECONDS_IN_DAY);
+    const age = Math.floor((now - created) / Time.Day);
     if (age < MemberAddEvent.MINIMUM_DAYS_AGE) {
       const { client } = this.context;
       member.kick(`Cuenta creada hace menos de 3 días.`).catch((e) => {
