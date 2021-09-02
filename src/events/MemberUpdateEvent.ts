@@ -69,6 +69,7 @@ class MemberUpdateEvent extends Event {
 
       const interactiveVerifyURL = new URL('https://confederacion-hispana.fandom.com/es/wiki/Especial:VerifyUser');
 
+      interactiveVerifyURL.searchParams.append('useskin', 'fandomdesktop');
       interactiveVerifyURL.searchParams.append('user', newMember.user.username);
       interactiveVerifyURL.searchParams.append('tag', newMember.user.discriminator);
       interactiveVerifyURL.searchParams.append('ch', (client.channels.resolve(env.VERIF_CHANNEL) as TextChannel).name);
