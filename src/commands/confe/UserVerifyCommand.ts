@@ -36,6 +36,8 @@ class UserVerifyCommand extends Command {
     const discordTag = `${message.author.username}#${message.author.discriminator}`;
 
     const interactiveVerifyURL = new URL('https://confederacion-hispana.fandom.com/es/wiki/Especial:VerifyUser');
+
+    interactiveVerifyURL.searchParams.append('useskin', 'fandomdesktop');
     interactiveVerifyURL.searchParams.append('user', message.author.username);
     interactiveVerifyURL.searchParams.append('tag', message.author.discriminator);
     interactiveVerifyURL.searchParams.append('ch', (message.channel as TextChannel).name);
