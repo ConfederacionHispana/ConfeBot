@@ -1,4 +1,4 @@
-import { ApplyOptions } from '@sapphire/decorators';
+import { ApplyOptions } from '@sapphire/decorators/dist/piece-decorators';
 import { CronJob } from 'cron';
 
 import { Task } from '#lib/structures/Task';
