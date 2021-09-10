@@ -1,4 +1,4 @@
-import { ApplyOptions } from '@sapphire/decorators/dist/piece-decorators';
+import { ApplyOptions } from '@sapphire/decorators';
 import { Event, Events, EventOptions } from '@sapphire/framework';
 import { URL } from 'url';
 

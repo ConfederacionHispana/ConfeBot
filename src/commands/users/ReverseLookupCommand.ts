@@ -1,4 +1,4 @@
-import { ApplyOptions } from '@sapphire/decorators/dist/piece-decorators';
+import { ApplyOptions } from '@sapphire/decorators';
 import { Command } from '@sapphire/framework';
 import DBModels from '../../db';
 
