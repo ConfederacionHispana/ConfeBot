@@ -16,32 +16,32 @@ const InterwikiPrefixes = {
   wp: 'https://en.wikipedia.org/wiki/$1' // wikipedia alias
 };
 
-@ApplyOptions<EventOptions>({
+@ApplyOptions<EventOptions>( {
   event: Events.Message
-})
+} )
 class WikiLinksParser extends Event {
-  public run(message: Message): void {
+  public run( message: Message ): void {
     const { client } = this.context;
 
-    if (!message.content) return;
-    const capturedLinks = message.content.match(/\[\[(.*?)(\|(.*?))?\]\](?=(?:[^`]*`[^`]*`)*[^`]*$)/g);
-    if (!capturedLinks || !capturedLinks.length) return;
+    if ( !message.content ) return;
+    const capturedLinks = message.content.match( /\[\[( .*?)( \|( .*?))?\]\]( ?=( ?:[^`]*`[^`]*`)*[^`]*$)/g );
+    if ( !capturedLinks || !capturedLinks.length ) return;
     let parsedLinks: string[] = [];
 
-    for (const link of capturedLinks) {
+    for ( const link of capturedLinks ) {
       // Proceso de parseo
-      const groups = link.match(/\[\[(.*?)(\|(.*?))?\]\]/);
-      if (!groups || groups.length < 2) return;
-      const prefix = groups[1].match(/^(.*?):(.*)/) || [];
+      const groups = link.match( /\[\[( .*?)( \|( .*?))?\]\]/);
+      if ( !groups || groups.length < 2 ) return;
+      const prefix = groups[1].match( /^( .*?):( .*)/) || [];
       // desperate times ask for desperate measures
       const [, prefixCandidate, prefixContent] = prefix as [never, keyof typeof InterwikiPrefixes, string];
       const interwikiUrl: string = InterwikiPrefixes[prefixCandidate]
-        ? InterwikiPrefixes[prefixCandidate].replace(/\$1/g, prefixContent.replace(/ /g, '_'))
-        : `https://comunidad.fandom.com/wiki/${groups[1].replace(/ /g, '_')}`;
-      parsedLinks = parsedLinks.concat(interwikiUrl);
+        ? InterwikiPrefixes[prefixCandidate].replace( /\$1/g, prefixContent.replace( / /g, '_' ))
+        : `https://comunidad.fandom.com/wiki/${groups[1].replace( / /g, '_' )}`;
+      parsedLinks = parsedLinks.concat( interwikiUrl );
     }
 
-    message.reply(parsedLinks.join('\n')).catch(client.logException);
+    message.reply( parsedLinks.join( '\n' ) ).catch( client.logException );
   }
 }
 

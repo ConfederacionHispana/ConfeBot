@@ -27,13 +27,13 @@ export default class UserVerification {
     discrim: string
   ): Promise<IVerificationResult> {
     const discordTag = `${discordUsername}#${discrim}`;
-    const mwUser = await FandomUtilities.getUserInfo('comunidad', fandomUsername);
-    const registrationDate = new Date(mwUser.registration);
+    const mwUser = await FandomUtilities.getUserInfo( 'comunidad', fandomUsername );
+    const registrationDate = new Date( mwUser.registration );
 
-    if (differenceInDays(Date.now(), registrationDate) < 5) {
-      const allowedDate = formatDate(addDays(registrationDate, 5), "d 'de' MMMM 'de' yyyy, h:mm:ss aa", {
+    if ( differenceInDays( Date.now(), registrationDate ) < 5 ) {
+      const allowedDate = formatDate( addDays( registrationDate, 5 ), "d 'de' MMMM 'de' yyyy, h:mm:ss aa", {
         locale: es
-      });
+      } );
 
       return {
         success: false,
@@ -42,9 +42,9 @@ export default class UserVerification {
       };
     }
 
-    if (mwUser.blockexpiry && mwUser.blockedby) {
+    if ( mwUser.blockexpiry && mwUser.blockedby ) {
       const blockExpiry =
-        mwUser.blockexpiry !== 'infinity' ? parseDate(mwUser.blockexpiry, 'yyyyMMddHHmmss', new Date()) : Infinity;
+        mwUser.blockexpiry !== 'infinity' ? parseDate( mwUser.blockexpiry, 'yyyyMMddHHmmss', new Date()) : Infinity;
       return {
         success: false,
         error: 'Blocked',
@@ -61,12 +61,12 @@ export default class UserVerification {
       const { data: discordHandle }: { data: { name: string; value: string } } = await axios.get(
         `https://services.fandom.com/user-attribute/user/${mwUser.userid}/attr/discordHandle?cb=${Date.now()}`
       );
-      if (discordHandle.name && discordHandle.value) {
+      if ( discordHandle.name && discordHandle.value ) {
         const expectedTag = discordHandle.value.trim();
-        const expectedName = expectedTag.substring(0, expectedTag.lastIndexOf('#')).trim();
-        const expectedDisc = expectedTag.substring(expectedTag.lastIndexOf('#') + 1, expectedTag.length).trim();
+        const expectedName = expectedTag.substring( 0, expectedTag.lastIndexOf( '#' ) ).trim();
+        const expectedDisc = expectedTag.substring( expectedTag.lastIndexOf( '#' ) + 1, expectedTag.length ).trim();
 
-        if (discordUsername === expectedName && discrim === expectedDisc) {
+        if ( discordUsername === expectedName && discrim === expectedDisc ) {
           return {
             success: true,
             user: {
@@ -79,9 +79,9 @@ export default class UserVerification {
         return {
           success: false,
           error: 'DiscordHandleMismatch',
-          errorDescription: `Tu Discord Tag no coincide con el que se indica en tu perfil de Fandom (tu tag es **${discordTag}**, mientras que tu perfil de Fandom ${
+          errorDescription: `Tu Discord Tag no coincide con el que se indica en tu perfil de Fandom ( tu tag es **${discordTag}**, mientras que tu perfil de Fandom ${
             expectedTag ? `indica **${expectedTag}**` : 'no tiene ningún tag asociado'
-          }). ¿Tal vez olvidaste actualizarlo?`
+          } ). ¿Tal vez olvidaste actualizarlo?`
         };
       }
       return {
@@ -90,8 +90,8 @@ export default class UserVerification {
         errorDescription:
           'Tu perfil de Fandom no tiene ningún Discord Tag asociado.\nSi acabas de añadir tu tag, espera unos minutos y vuelve a intentar.'
       };
-    } catch (err) {
-      if (err.response?.status === 404) {
+    } catch ( err ) {
+      if ( err.response?.status === 404 ) {
         return {
           success: false,
           error: 'DiscordHandleNotFound',

@@ -5,9 +5,9 @@ export interface IVigilancia extends mongoose.Document {
   lastCheck?: number;
 }
 
-const VigilanciaSchema: mongoose.Schema = new mongoose.Schema({
+const VigilanciaSchema: mongoose.Schema = new mongoose.Schema( {
   interwiki: { type: String, required: true },
   lastCheck: { type: Number }
-});
+} );
 
-export default mongoose.model<IVigilancia>('Vigilancia', VigilanciaSchema);
+export default mongoose.model<IVigilancia>( 'Vigilancia', VigilanciaSchema );

@@ -21,7 +21,7 @@ export interface IUser extends Document {
   }[];
 }
 
-const UserSchema: Schema = new Schema({
+const UserSchema: Schema = new Schema( {
   id: {
     type: String,
     required: true
@@ -56,6 +56,6 @@ const UserSchema: Schema = new Schema({
       }
     }
   ]
-});
+} );
 
-export default mongoose.model<IUser>('User', UserSchema);
+export default mongoose.model<IUser>( 'User', UserSchema );

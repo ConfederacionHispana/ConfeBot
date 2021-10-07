@@ -2,7 +2,7 @@ import type { TaskStore } from '#lib/structures/TaskStore';
 
 declare module '@sapphire/framework' {
   interface ILogger {
-    log(...values: readonly unknown[]): void;
+    log( ...values: readonly unknown[] ): void;
   }
 }
 
@@ -14,7 +14,7 @@ declare module '@sapphire/pieces' {
 
 declare module 'discord.js' {
   interface Client {
-    logException(err: Error, context?: Record<string, unknown>): void;
+    logException( err: Error, context?: Record<string, unknown>): void;
     readonly version: string;
     // set during the 'ready' event
     cache: {
