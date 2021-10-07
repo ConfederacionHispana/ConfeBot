@@ -10,6 +10,6 @@
     "no-console": "warn",
     "no-duplicate-imports": "off",
     "one-var": "off",
-    "space-in-parens": [ "error", "always" ],
+    "space-in-parens": [ "error", "always" ]
   }
 }
