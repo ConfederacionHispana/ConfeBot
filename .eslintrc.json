@@ -6,8 +6,10 @@
     "@typescript-eslint/member-ordering": "warn",
     "@typescript-eslint/no-extraneous-class": "off",
     "@typescript-eslint/unbound-method": "off",
+    "array-bracket-spacing": [ "error", "always" ],
     "no-console": "warn",
     "no-duplicate-imports": "off",
-    "one-var": "off"
+    "one-var": "off",
+    "space-in-parens": [ "error", "always" ],
   }
 }
