@@ -1,17 +1,17 @@
 import { ApplyOptions } from '@sapphire/decorators';
-import { Event, Events, EventOptions } from '@sapphire/framework';
+import { Events, Listener } from '@sapphire/framework';
 import { URL } from 'url';
-
 import { env } from '#lib/env';
 
+import type { ListenerOptions } from '@sapphire/framework';
 import type { GuildMember, MessageReaction, TextChannel, User } from 'discord.js';
 
-@ApplyOptions<EventOptions>({
+@ApplyOptions<ListenerOptions>({
   event: Events.GuildMemberUpdate
 })
-class MemberUpdateEvent extends Event {
+export class MemberUpdateListener extends Listener {
   public async run(oldMember: GuildMember, newMember: GuildMember): Promise<void> {
-    const { client } = this.context;
+    const { client } = this.container;
 
     if (newMember.guild.id !== env.GUILD_ID) return;
     if (newMember.user.bot) return;
@@ -30,7 +30,7 @@ class MemberUpdateEvent extends Event {
       const ageMS = newMember.user.createdAt.getTime();
       if (minimumMS < ageMS) {
         const guild = client.guilds.resolve(env.GUILD_ID);
-        const invites = await guild?.fetchInvites();
+        const invites = await guild?.invites?.fetch();
         const widgetInvite = invites?.find((invite) => !invite.inviter);
         if (!widgetInvite) client.logger.warn('No he podido encontrar una invitación por widget.');
         else {
@@ -79,31 +79,35 @@ class MemberUpdateEvent extends Event {
         .add(env.NEWUSER_ROLE)
         .then(() => {
           welcomeChannel
-            .send(`¡Bienvenid@ <@!${newMember.user.id}> a la **Confederación de Fandom Hispano**!`, {
-              embed: {
-                color: 2936518,
-                thumbnail: {
-                  url: 'https://vignette4.wikia.nocookie.net/confederacion-hispana/es/images/8/89/Wiki-wordmark.png'
-                },
-                description: `Para acceder a todos los canales del servidor, necesitamos que completes una pequeña verificación:\n\nSi aún no lo has hecho, dirígete a tu perfil de Fandom, y en la parte superior (perfil global) añade tu Discord Tag en el campo destinado a ello. También puedes ingresar a [este enlace](${interactiveVerifyURL.href}) para agregar tu tag automáticamente.\n\nLuego, envía un mensaje en <#${env.VERIF_CHANNEL}> con el comando \`c!verify TuNombreDeUsuario\`.`,
-                fields: [
-                  {
-                    name: '¿No tienes una cuenta en Fandom?',
-                    value: 'Reacciona con el emoji 🌐 para ingresar como invitado.'
+            .send({
+              content: `¡Bienvenid@ <@!${newMember.user.id}> a la **Confederación de Fandom Hispano**!`,
+              embeds: [
+                {
+                  color: 2936518,
+                  thumbnail: {
+                    url: 'https://vignette4.wikia.nocookie.net/confederacion-hispana/es/images/8/89/Wiki-wordmark.png'
                   },
-                  {
-                    name: '¿Tienes algún incoveniente para completar la verificación?',
-                    value: `Menciona a algún miembro del <@&${env.STAFF_ROLE}> e intentaremos ayudarte.`
-                  }
-                ]
-              }
+                  description: `Para acceder a todos los canales del servidor, necesitamos que completes una pequeña verificación:\n\nSi aún no lo has hecho, dirígete a tu perfil de Fandom, y en la parte superior (perfil global) añade tu Discord Tag en el campo destinado a ello. También puedes ingresar a [este enlace](${interactiveVerifyURL.href}) para agregar tu tag automáticamente.\n\nLuego, envía un mensaje en <#${env.VERIF_CHANNEL}> con el comando \`c!verify TuNombreDeUsuario\`.`,
+                  fields: [
+                    {
+                      name: '¿No tienes una cuenta en Fandom?',
+                      value: 'Reacciona con el emoji 🌐 para ingresar como invitado.'
+                    },
+                    {
+                      name: '¿Tienes algún incoveniente para completar la verificación?',
+                      value: `Menciona a algún miembro del <@&${env.STAFF_ROLE}> e intentaremos ayudarte.`
+                    }
+                  ]
+                }
+              ]
             })
             .then((sentMessage) => {
               sentMessage.react('🌐').catch(client.logException);
               const filter = (reaction: MessageReaction, user: User) =>
                 ['🌐'].includes(reaction.emoji.name as string) && user.id === newMember.id;
               sentMessage
-                .awaitReactions(filter, {
+                .awaitReactions({
+                  filter,
                   max: 1,
                   time: 3600000, // 1h
                   errors: ['time']
@@ -150,5 +154,3 @@ class MemberUpdateEvent extends Event {
     }
   }
 }
-
-export default MemberUpdateEvent;

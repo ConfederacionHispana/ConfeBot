@@ -1,8 +1,9 @@
 import axios from 'axios';
 import { addDays, differenceInDays, format as formatDate, parse as parseDate } from 'date-fns';
 import { es } from 'date-fns/locale';
-
 import FandomUtilities from '#lib/fandom/FandomUtilities';
+
+import type { AxiosError } from 'axios';
 
 interface IVerificationResult {
   success: boolean;
@@ -91,7 +92,7 @@ export default class UserVerification {
           'Tu perfil de Fandom no tiene ningún Discord Tag asociado.\nSi acabas de añadir tu tag, espera unos minutos y vuelve a intentar.'
       };
     } catch (err) {
-      if (err.response?.status === 404) {
+      if ((err as AxiosError).response?.status === 404) {
         return {
           success: false,
           error: 'DiscordHandleNotFound',

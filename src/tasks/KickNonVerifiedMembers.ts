@@ -10,7 +10,7 @@ import type { Guild, Role, TextChannel } from 'discord.js';
 @ApplyOptions<PieceOptions>({ enabled: true })
 export class KickNonVerifiedMembers extends Task {
   public run(): void {
-    const { client } = this.context;
+    const { client } = this.container;
 
     client.logger.info('Running scheduled task: KickNonVerifiedMembers');
     const guild = client.guilds.resolve(env.GUILD_ID) as Guild;

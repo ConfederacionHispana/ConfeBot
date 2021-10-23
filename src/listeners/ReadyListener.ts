@@ -1,17 +1,18 @@
 import { ApplyOptions } from '@sapphire/decorators';
-import { Event, Events, EventOptions } from '@sapphire/framework';
+import { Events, Listener } from '@sapphire/framework';
 import { join } from 'path';
-
 import { env } from '#lib/env';
 import { TaskStore } from '#lib/structures/TaskStore';
 
-@ApplyOptions<EventOptions>({
-  event: Events.Ready,
+import type { ListenerOptions } from '@sapphire/framework';
+
+@ApplyOptions<ListenerOptions>({
+  event: Events.ClientReady,
   once: true
 })
-class ReadyEvent extends Event {
+export class ReadyListener extends Listener {
   public async run(): Promise<void> {
-    const { client } = this.context;
+    const { client } = this.container;
 
     client.logger.info('Received ready event', {
       source: 'discord'
@@ -28,7 +29,7 @@ class ReadyEvent extends Event {
     });
 
     const guild = client.guilds.resolve(env.GUILD_ID);
-    const invites = await guild?.fetchInvites();
+    const invites = await guild?.invites?.fetch();
     const widgetInvite = invites?.find((invite) => !invite.inviter);
     if (!widgetInvite) return client.logger.warn('No he podido encontrar una invitación por widget.');
     client.cache.widgetInvite = {
@@ -41,5 +42,3 @@ class ReadyEvent extends Event {
     (client.stores.get('tasks')! as TaskStore).loadAll().catch(client.logException);
   }
 }
-
-export default ReadyEvent;

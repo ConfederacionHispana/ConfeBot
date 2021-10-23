@@ -1,6 +1,7 @@
 import { ApplyOptions } from '@sapphire/decorators';
-import { Event, Events, EventOptions } from '@sapphire/framework';
+import { Events, Listener } from '@sapphire/framework';
 
+import type { ListenerOptions } from '@sapphire/framework';
 import type { Message } from 'discord.js';
 
 const InterwikiPrefixes = {
@@ -16,12 +17,12 @@ const InterwikiPrefixes = {
   wp: 'https://en.wikipedia.org/wiki/$1' // wikipedia alias
 };
 
-@ApplyOptions<EventOptions>({
-  event: Events.Message
+@ApplyOptions<ListenerOptions>({
+  event: Events.MessageCreate
 })
-class WikiLinksParser extends Event {
+class WikiLinksParser extends Listener {
   public run(message: Message): void {
-    const { client } = this.context;
+    const { client } = this.container;
 
     if (!message.content) return;
     const capturedLinks = message.content.match(/\[\[(.*?)(\|(.*?))?\]\](?=(?:[^`]*`[^`]*`)*[^`]*$)/g);
