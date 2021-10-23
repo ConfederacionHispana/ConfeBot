@@ -27,7 +27,7 @@
     "cron": "^1.8.2",
     "date-fns": "^2.23.0",
     "discord.js": "^13.2.0",
-    "mongoose": "^5.13.5",
+    "mongoose": "^6.0.12",
     "string-similarity-js": "^2.1.2",
     "ts-dotenv": "^0.8.3"
   },
