@@ -1,20 +1,21 @@
 import { ApplyOptions } from '@sapphire/decorators';
-import { Event, Events, EventOptions } from '@sapphire/framework';
+import { Events, Listener } from '@sapphire/framework';
 import { Time } from '#lib/util/constants';
 
+import type { ListenerOptions } from '@sapphire/framework';
 import type { GuildMember } from 'discord.js';
 
-@ApplyOptions<EventOptions>({
+@ApplyOptions<ListenerOptions>({
   event: Events.GuildMemberAdd
 })
-class MemberAddEvent extends Event {
+export class MemberAddListener extends Listener {
   public run(member: GuildMember): void {
     this.logNewMember(member);
     this.checkAccountAge(member);
   }
 
   private logNewMember(member: GuildMember): void {
-    const { client } = this.context;
+    const { client } = this.container;
 
     client.logger.info('Nuevo miembro', {
       userId: member.user.id,
@@ -27,8 +28,8 @@ class MemberAddEvent extends Event {
     const created = member.user.createdAt.getTime();
     const now = Date.now();
     const age = Math.floor((now - created) / Time.Day);
-    if (age < MemberAddEvent.MINIMUM_DAYS_AGE) {
-      const { client } = this.context;
+    if (age < MemberAddListener.MINIMUM_DAYS_AGE) {
+      const { client } = this.container;
       member.kick(`Cuenta creada hace menos de 3 días.`).catch((e) => {
         client.logException(e, {
           userId: member.user.id,
@@ -46,5 +47,3 @@ class MemberAddEvent extends Event {
 
   static MINIMUM_DAYS_AGE = 3;
 }
-
-export default MemberAddEvent;

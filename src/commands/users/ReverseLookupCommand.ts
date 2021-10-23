@@ -8,9 +8,9 @@ import type { Message } from 'discord.js';
 @ApplyOptions<CommandOptions>({
   aliases: ['reverselookup', 'finduser']
 })
-class ReverseLookupCommand extends Command {
-  public async run(message: Message, args: Args) {
-    const { client } = this.context;
+export class ReverseLookupCommand extends Command {
+  public async messageRun(message: Message, args: Args) {
+    const { client } = this.container;
 
     const fandomUserMatch = await args.restResult('string');
     if (!fandomUserMatch.success) {
@@ -32,14 +32,14 @@ class ReverseLookupCommand extends Command {
 
     message
       .reply({
-        embed: {
-          title: 'Resultados de la búsqueda',
-          color: 'RANDOM',
-          description: `Se encontró el siguiente usuario de Discord para la cuenta de Fandom **${fandomUser}**:\n<@!${dbUser.id}>`
-        }
+        embeds: [
+          {
+            title: 'Resultados de la búsqueda',
+            color: 'RANDOM',
+            description: `Se encontró el siguiente usuario de Discord para la cuenta de Fandom **${fandomUser}**:\n<@!${dbUser.id}>`
+          }
+        ]
       })
       .catch(client.logException);
   }
 }
-
-export default ReverseLookupCommand;

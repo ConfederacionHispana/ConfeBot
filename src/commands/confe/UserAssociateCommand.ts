@@ -10,16 +10,14 @@ import type { Message, TextChannel } from 'discord.js';
 
 @ApplyOptions<CommandOptions>({
   aliases: ['associate', 'forceverify', 'manualverify'],
-  strategyOptions: {
-    flags: ['guest']
-  }
+  flags: ['guest']
 })
-class UserAssociateCommand extends Command {
-  public async run(message: Message, args: Args): Promise<void> {
+export class UserAssociateCommand extends Command {
+  public async messageRun(message: Message, args: Args): Promise<void> {
     const memberHasRole = message.member?.roles.cache.has(env.STAFF_ROLE);
     if (!memberHasRole) return;
 
-    const { client } = this.context;
+    const { client } = this.container;
 
     const targetUserMatch = await args.pickResult('member');
     if (!targetUserMatch.success) {
@@ -62,10 +60,14 @@ class UserAssociateCommand extends Command {
 
         dbUser.save().catch(client.logException);
       } catch (err) {
-        message
-          .reply(`❌ ${err instanceof NonExistentUser ? 'La cuenta de usuario especificada no existe.' : err.message}`)
-          .catch(client.logException);
-        return;
+        if (err instanceof Error) {
+          message
+            .reply(
+              `❌ ${err instanceof NonExistentUser ? 'La cuenta de usuario especificada no existe.' : err.message}`
+            )
+            .catch(client.logException);
+          return;
+        }
       }
     }
 
@@ -88,5 +90,3 @@ class UserAssociateCommand extends Command {
       .catch(client.logException);
   }
 }
-
-export default UserAssociateCommand;

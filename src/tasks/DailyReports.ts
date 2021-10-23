@@ -11,7 +11,7 @@ import type { PieceOptions } from '@sapphire/pieces';
 @ApplyOptions<PieceOptions>({ enabled: true })
 export class DailyReports extends Task {
   public async run(): Promise<void> {
-    const { client } = this.context;
+    const { client } = this.container;
 
     const todayCalendar = await Vigilancia.getTodaysCalendar();
     const channel = client.channels.resolve(env.REPORTS_CHANNEL);
@@ -47,7 +47,7 @@ export class DailyReports extends Task {
           );
         }
       }
-      await channel.send(embed);
+      await channel.send({ embeds: [embed] });
     }
   }
 
