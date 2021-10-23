@@ -12,7 +12,8 @@
     "lint": "eslint src/ --ext ts",
     "lint:fix": "eslint src/ --ext ts --fix",
     "start": "node --enable-source-maps ./dist/index.js",
-    "test": "mocha -r ts-node/register -r tsconfig-paths/register test/**/*.test.ts"
+    "test": "mocha -r ts-node/register -r tsconfig-paths/register test/**/*.test.ts",
+    "prepare": "husky install"
   },
   "author": "TheNozomi <13172293+TheNozomi@users.noreply.github.com>",
   "license": "MIT",
@@ -46,11 +47,17 @@
     "@types/node": "^16.4.13",
     "chai": "^4.3.4",
     "chai-as-promised": "^7.1.1",
+    "eslint": "^8.1.0",
+    "husky": "^7.0.4",
+    "lint-staged": "^11.2.3",
     "mocha": "^9.0.3",
     "rimraf": "^3.0.2",
     "ts-node": "^10.4.0",
     "tsc-watch": "^4.5.0",
     "tsconfig-paths": "^3.11.0",
     "typescript": "^4.3.5"
+  },
+  "lint-staged": {
+    "*.ts": "eslint --cache --fix"
   }
 }
