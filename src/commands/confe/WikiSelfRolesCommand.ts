@@ -56,6 +56,8 @@ export class WikiSelfRolesCommand extends Command {
 
       const assignableRolesPages: Role[][] = new Array(Math.ceil(assignableRoles.length / rolesPerPage))
         .fill(null)
+        .filter((r) => r.editable)
+        .sort((a, b) => b.position - a.position)
         .map((_) => assignableRoles.splice(0, rolesPerPage));
 
       const pages: MessagePage[] = assignableRolesPages.map((roles, idx) => {
