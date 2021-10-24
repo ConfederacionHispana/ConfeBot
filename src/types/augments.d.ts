@@ -1,4 +1,5 @@
 import type { TaskStore } from '#lib/structures/TaskStore';
+import type { GuildSettingsManager } from '../db/managers/GuildSettingsManager';
 
 declare module '@sapphire/framework' {
   interface ILogger {
@@ -7,6 +8,9 @@ declare module '@sapphire/framework' {
 }
 
 declare module '@sapphire/pieces' {
+  interface Container {
+    settingsManager: GuildSettingsManager;
+  }
   interface StoreRegistryEntries {
     tasks: TaskStore;
   }
