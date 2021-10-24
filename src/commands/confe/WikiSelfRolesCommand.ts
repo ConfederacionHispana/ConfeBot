@@ -48,16 +48,16 @@ export class WikiSelfRolesCommand extends Command {
     } else {
       const assignableRoles: Role[] = [];
       const rolesPerPage = 20;
-      guildRoles.each((role) => {
+      guildRoles
+      .filter((r) => r.editable && r.position < wikiIndexRole.position)
+      .sort((a, b) => b.position - a.position)
+      .each((role) => {
         if (role.position >= wikiIndexRole.position) return;
-        if (role.position === 0) return; // @everyone role
         assignableRoles.push(role);
       });
 
       const assignableRolesPages: Role[][] = new Array(Math.ceil(assignableRoles.length / rolesPerPage))
         .fill(null)
-        .filter((r) => r.editable)
-        .sort((a, b) => b.position - a.position)
         .map((_) => assignableRoles.splice(0, rolesPerPage));
 
       const pages: MessagePage[] = assignableRolesPages.map((roles, idx) => {
