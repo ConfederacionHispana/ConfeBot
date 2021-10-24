@@ -21,6 +21,13 @@ class UserLookupCommand extends Command {
 
     const member = targetMemberResult.value;
     const dbUser = await DBModels.User.findOne({ id: member.user.id });
+    const userStatus = {
+      online: 'Conectado',
+      offline: 'Desconectado',
+      idle: 'Ausente',
+      dnd: 'No Molestar',
+      invisible: 'Invisible'
+    };
 
     const embed = new MessageEmbed()
       .setTitle(`Información de **${member.user.username}#${member.user.discriminator}**`)
@@ -38,7 +45,7 @@ class UserLookupCommand extends Command {
         member.roles.cache.map((role) => (role.id === '@everyone' ? role.id : `<@&${role.id}>`)).join(', ')
       )
       .addField('ID', member.user.id)
-      .addField('Estado', member.presence.status);
+      .addField('Estado', userStatus[member.presence.status]);
 
     message.reply({ embed }).catch(client.logException);
   }
