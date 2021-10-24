@@ -1,14 +1,16 @@
 import { ApplyOptions } from '@sapphire/decorators';
-import { CronJob } from 'cron';
 
 import { Task } from '#lib/structures/Task';
 import { env } from '#lib/env';
 import Vigilancia from '#lib/confe/Vigilancia';
 import FandomUtilities from '#lib/fandom/FandomUtilities';
 
-import type { PieceOptions } from '@sapphire/pieces';
+import type { TaskOptions } from '#lib/structures/Task';
 
-@ApplyOptions<PieceOptions>({ enabled: true })
+@ApplyOptions<TaskOptions>({
+  enabled: true,
+  schedule: '0 0 3 * * *'
+})
 export class DailyReports extends Task {
   public async run(): Promise<void> {
     const { client } = this.container;
@@ -49,9 +51,5 @@ export class DailyReports extends Task {
       }
       await channel.send({ embeds: [embed] });
     }
-  }
-
-  public create(): CronJob {
-    return new CronJob('0 0 3 * * *', () => this.run(), null, true);
   }
 }
