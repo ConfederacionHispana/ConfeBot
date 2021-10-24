@@ -6,12 +6,22 @@ FROM node:16-alpine3.14 AS build
 RUN mkdir /home/node/app/ && chown -R node:node /home/node/app
 WORKDIR /home/node/app
 
+# Copy package.json
 COPY --chown=node:node package*.json ./
+
+# Install prod dependencies
 USER node
-RUN npm install --loglevel info --only=production
+RUN npm set-script prepare ""
+RUN npm ci --loglevel info --only=production
+
+# Copy prod dependencies for later use and install dev dependencies
 RUN cp -r node_modules node_modules_prod
-RUN npm install --loglevel info
+RUN npm ci --loglevel info
+
+# Copy root directory
 COPY --chown=node:node . .
+
+# Build TypeScript
 RUN npm run build
 
 # The second stage of the build copies node_modules_prod and the built JS from the first stage.

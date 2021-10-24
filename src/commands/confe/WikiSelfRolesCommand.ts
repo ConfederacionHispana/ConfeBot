@@ -11,11 +11,11 @@ import type { Message, Role } from 'discord.js';
 @ApplyOptions<CommandOptions>({
   aliases: ['wiki', 'wikis']
 })
-class WikiSelfRolesCommand extends Command {
-  public async run(message: Message, args: Args) {
+export class WikiSelfRolesCommand extends Command {
+  public async messageRun(message: Message, args: Args) {
     if (!message.guild || message.guild.id !== env.GUILD_ID) return;
     if (!message.member) return;
-    const { client } = this.context;
+    const { client } = this.container;
     const guildRoles = message.guild.roles.cache;
     const wikiIndexRole = message.guild.roles.resolve(env.WIKI_ROLE_GROUP) as Role;
     const wikiNamesResolver = Args.make((arg) => Args.ok(arg.split(',').map((arg) => arg.trim())));
@@ -60,14 +60,16 @@ class WikiSelfRolesCommand extends Command {
 
       const pages: MessagePage[] = assignableRolesPages.map((roles, idx) => {
         return {
-          embed: {
-            title: 'Roles de wikis',
-            color: roles[0].color,
-            description: roles.map((role) => `• <@&${role.id}>`).join('\n'),
-            footer: {
-              text: `Página ${idx + 1} de ${assignableRolesPages.length}`
+          embeds: [
+            {
+              title: 'Roles de wikis',
+              color: roles[0].color,
+              description: roles.map((role) => `• <@&${role.id}>`).join('\n'),
+              footer: {
+                text: `Página ${idx + 1} de ${assignableRolesPages.length}`
+              }
             }
-          }
+          ]
         };
       });
 
@@ -77,5 +79,3 @@ class WikiSelfRolesCommand extends Command {
     }
   }
 }
-
-export default WikiSelfRolesCommand;

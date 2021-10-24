@@ -6,11 +6,9 @@ import type { Message } from 'discord.js';
 @ApplyOptions<CommandOptions>({
   aliases: ['ping']
 })
-class PingCommand extends Command {
-  public run(message: Message) {
-    const { client } = this.context;
+export class PingCommand extends Command {
+  public messageRun(message: Message) {
+    const { client } = this.container;
     message.reply(`Pong! ConfeBot v${client.version}`).catch(client.logException);
   }
 }
-
-export default PingCommand;

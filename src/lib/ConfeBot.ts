@@ -13,21 +13,15 @@ class ConfeBot extends SapphireClient {
       intents: ['GUILDS', 'GUILD_PRESENCES', 'GUILD_MEMBERS', 'GUILD_MESSAGES', 'GUILD_MESSAGE_REACTIONS'],
       ...options
     });
-
-    Store.injectedContext.client = this;
   }
 
   public version = process.env.npm_package_version || '2.0.0-dev';
 
   public fetchPrefix = () => 'c!';
 
-  public get context() {
-    return Store.injectedContext;
-  }
-
   logException(err: Error, context: Record<string, unknown> = {}) {
-    if (Object.keys(context).length) Store.injectedContext.client.logger.error(err, '\nContext:', context);
-    else Store.injectedContext.client.logger.error(err);
+    if (Object.keys(context).length) this.logger.error(err, '\nContext:', context);
+    else this.logger.error(err);
 
     if (env.HONEYBADGER_API_KEY) {
       Honeybadger.resetContext(context);
@@ -36,7 +30,7 @@ class ConfeBot extends SapphireClient {
   }
 
   async login(token: string) {
-    // do preparations
+    // do pre-login stuff
     this.logger.log = this.logger.info;
     if (env.HONEYBADGER_API_KEY) {
       Honeybadger.configure({

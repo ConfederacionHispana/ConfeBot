@@ -10,12 +10,12 @@ import type { Message } from 'discord.js';
 @ApplyOptions<CommandOptions>({
   aliases: ['revisar']
 })
-class SecurityReviewCommand extends Command {
-  public async run(message: Message, args: Args): Promise<void> {
+export class SecurityReviewCommand extends Command {
+  public async messageRun(message: Message, args: Args): Promise<void> {
     const memberHasRole = message.member?.roles.cache.has(env.SEGURIDAD_ROLE);
     if (!memberHasRole) return;
 
-    const { client } = this.context;
+    const { client } = this.container;
 
     const { value: qty } = await args.pickResult('number');
 
@@ -35,8 +35,10 @@ class SecurityReviewCommand extends Command {
       embed.addField(item.sitename, fieldValue);
     }
 
-    message.channel.send(embed).catch(client.logException);
+    message.channel
+      .send({
+        embeds: [embed]
+      })
+      .catch(client.logException);
   }
 }
-
-export default SecurityReviewCommand;

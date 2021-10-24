@@ -13,9 +13,9 @@ import type { Message, TextChannel } from 'discord.js';
 @ApplyOptions<CommandOptions>({
   aliases: ['verify']
 })
-class UserVerifyCommand extends Command {
-  public async run(message: Message, args: Args): Promise<void> {
-    const { client } = this.context;
+export class UserVerifyCommand extends Command {
+  public async messageRun(message: Message, args: Args): Promise<void> {
+    const { client } = this.container;
     if (message.channel.id !== env.VERIF_CHANNEL) return;
     if (message.author.bot) return;
     if (!message.guild || !message.member) return;
@@ -36,6 +36,8 @@ class UserVerifyCommand extends Command {
     const discordTag = `${message.author.username}#${message.author.discriminator}`;
 
     const interactiveVerifyURL = new URL('https://confederacion-hispana.fandom.com/es/wiki/Especial:VerifyUser');
+
+    interactiveVerifyURL.searchParams.append('useskin', 'fandomdesktop');
     interactiveVerifyURL.searchParams.append('user', message.author.username);
     interactiveVerifyURL.searchParams.append('tag', message.author.discriminator);
     interactiveVerifyURL.searchParams.append('ch', (message.channel as TextChannel).name);
@@ -53,11 +55,13 @@ class UserVerifyCommand extends Command {
                 .catch(client.logException);
               message.channel
                 .send({
-                  embed: {
-                    color: 4575254,
-                    title: '¡Verificación completada!',
-                    description: `✅ Te has autenticado correctamente con la cuenta de Fandom **${fandomUser.value}** y ahora tienes acceso a todos los canales del servidor.\n\n¡Recuerda visitar <#${env.SELFROLES_CHANNEL}> si deseas elegir más roles de tu interés!`
-                  }
+                  embeds: [
+                    {
+                      color: 4575254,
+                      title: '¡Verificación completada!',
+                      description: `✅ Te has autenticado correctamente con la cuenta de Fandom **${fandomUser.value}** y ahora tienes acceso a todos los canales del servidor.\n\n¡Recuerda visitar <#${env.SELFROLES_CHANNEL}> si deseas elegir más roles de tu interés!`
+                    }
+                  ]
                 })
                 .catch(client.logException);
 
@@ -122,7 +126,7 @@ class UserVerifyCommand extends Command {
             });
           }
 
-          message.channel.send({ embed }).catch(client.logException);
+          message.channel.send({ embeds: [embed] }).catch(client.logException);
         }
       })
       .catch((err) => {
@@ -134,31 +138,33 @@ class UserVerifyCommand extends Command {
 
           message.channel
             .send({
-              embed: {
-                color: 14889515,
-                description: `❌ No es posible completar tu verificación porque la cuenta de Fandom que has indicado (${fandomUser.value}) no existe o está deshabilitada.\n\nVerifica que tu nombre de usuario sea el correcto, e inténtalo nuevamente.`,
-                fields: [
-                  {
-                    name: '¿Tienes algún inconveniente para completar la verificación?',
-                    value: `Menciona a algún miembro del <@&${env.STAFF_ROLE}> e intentaremos ayudarte.`
-                  }
-                ]
-              }
+              embeds: [
+                {
+                  color: 14889515,
+                  description: `❌ No es posible completar tu verificación porque la cuenta de Fandom que has indicado (${fandomUser.value}) no existe o está deshabilitada.\n\nVerifica que tu nombre de usuario sea el correcto, e inténtalo nuevamente.`,
+                  fields: [
+                    {
+                      name: '¿Tienes algún inconveniente para completar la verificación?',
+                      value: `Menciona a algún miembro del <@&${env.STAFF_ROLE}> e intentaremos ayudarte.`
+                    }
+                  ]
+                }
+              ]
             })
             .catch(client.logException);
         } else {
           client.logException(err);
           message.channel
             .send({
-              embed: {
-                color: 14889515,
-                description: `❌ Ocurrió un error interno. Por favor intenta nuevamente.\n\nSi sigues recibiendo este mensaje, probablemente esto sea un bug. Menciona a un miembro del <@&${env.STAFF_ROLE}> e intentaremos ayudarte.`
-              }
+              embeds: [
+                {
+                  color: 14889515,
+                  description: `❌ Ocurrió un error interno. Por favor intenta nuevamente.\n\nSi sigues recibiendo este mensaje, probablemente esto sea un bug. Menciona a un miembro del <@&${env.STAFF_ROLE}> e intentaremos ayudarte.`
+                }
+              ]
             })
             .catch(client.logException);
         }
       });
   }
 }
-
-export default UserVerifyCommand;

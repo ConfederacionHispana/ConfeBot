@@ -9,9 +9,9 @@ import type { Message } from 'discord.js';
 @ApplyOptions<CommandOptions>({
   aliases: ['lookup', 'userlookup', 'userinfo']
 })
-class UserLookupCommand extends Command {
-  public async run(message: Message, args: Args) {
-    const { client } = this.context;
+export class UserLookupCommand extends Command {
+  public async messageRun(message: Message, args: Args) {
+    const { client } = this.container;
 
     const targetMemberResult = await args.pickResult('member');
     if (!targetMemberResult.success) {
@@ -33,8 +33,8 @@ class UserLookupCommand extends Command {
       .setTitle(`Información de **${member.user.username}#${member.user.discriminator}**`)
       .setColor(member.displayColor)
       .setThumbnail(member.user.displayAvatarURL())
-      .addField('Registro', member.user.createdAt)
-      .addField('En el servidor desde', member.joinedAt);
+      .addField('Registro', member.user.createdAt.toString())
+      .addField('En el servidor desde', member.joinedAt?.toString() ?? 'Nunca');
 
     if (dbUser && dbUser.fandomUser)
       embed.addField('Cuenta de Fandom', `${dbUser.fandomUser.username} (${dbUser.fandomUser.userId})`);
@@ -47,8 +47,6 @@ class UserLookupCommand extends Command {
       .addField('ID', member.user.id)
       .addField('Estado', userStatus[member.presence.status]);
 
-    message.reply({ embed }).catch(client.logException);
+    message.reply({ embeds: [embed] }).catch(client.logException);
   }
 }
-
-export default UserLookupCommand;
