@@ -28,7 +28,7 @@ export class UserLookupCommand extends Command {
       dnd: 'No Molestar',
       invisible: 'Invisible',
       unknown: 'Desconocido'
-    }
+    };
 
     const embed = new MessageEmbed()
       .setTitle(`Información de **${member.user.username}#${member.user.discriminator}**`)
