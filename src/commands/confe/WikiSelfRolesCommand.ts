@@ -53,6 +53,7 @@ export class WikiSelfRolesCommand extends Command {
         .sort((a, b) => b.position - a.position)
         .each((role) => {
           if (role.position >= wikiIndexRole.position) return;
+          if (role.position === 0) return; // @everyone role
           assignableRoles.push(role);
         });
 
