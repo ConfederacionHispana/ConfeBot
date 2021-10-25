@@ -23,9 +23,8 @@ export class BirthdayNotifications extends Task {
       const birthdaysChannel = client.channels.cache.get(env.LOGS_CHANNEL) as TextBasedChannels;
       const wiki = new Fandom().getWiki('es.confederacion-hispana');
 
-      const pageName = 'Módulo:Calendario de Cumpleaños/data';
-      const wikiResponse = await wiki.getPages([pageName]);
-      const birthdaysData = parse(wikiResponse[pageName]) as Record<string, Record<string, string[]>>;
+      const wikiResponse = await wiki.getPages('Módulo:Calendario de Cumpleaños/data');
+      const birthdaysData = parse(wikiResponse) as Record<string, Record<string, string[]>>;
       const currentMonth = new Date().getMonth() + 1;
       const currentMonthBirthdays = birthdaysData[currentMonth.toString()];
 
