@@ -1,13 +1,15 @@
 import { ApplyOptions } from '@sapphire/decorators';
-import { CronJob } from 'cron';
 
 import { Task } from '#lib/structures/Task';
 import { env } from '#lib/env';
 
-import type { PieceOptions } from '@sapphire/pieces';
+import type { TaskOptions } from '#lib/structures/Task';
 import type { Guild, Role, TextChannel } from 'discord.js';
 
-@ApplyOptions<PieceOptions>({ enabled: true })
+@ApplyOptions<TaskOptions>({
+  enabled: true,
+  schedule: '0 * * * *'
+})
 export class KickNonVerifiedMembers extends Task {
   public run(): void {
     const { client } = this.container;
@@ -57,9 +59,5 @@ export class KickNonVerifiedMembers extends Task {
           });
       }
     });
-  }
-
-  public create(): CronJob {
-    return new CronJob('0 * * * *', () => this.run(), null, true);
   }
 }

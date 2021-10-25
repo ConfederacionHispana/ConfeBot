@@ -1,24 +1,56 @@
-import { Awaitable, Piece } from '@sapphire/framework';
+import type { PieceContext, PieceOptions } from '@sapphire/pieces';
+import { AliasPiece } from '@sapphire/pieces';
+import type { Awaitable } from '@sapphire/framework';
+import cron from 'node-cron';
+import type { ScheduledTask } from 'node-cron';
+import type { ConfeBot } from '#lib/ConfeBot';
 
-import type { CronJob } from 'cron';
+export abstract class Task extends AliasPiece {
+  private cron: ScheduledTask | null = null;
+  private development: boolean;
+  private schedule: string;
 
-export abstract class Task extends Piece {
-  private _cron: CronJob | null = this.create();
+  protected constructor(context: PieceContext, options: TaskOptions) {
+    super(context, options);
+    this.development = options.development ?? false;
+    this.schedule = options.schedule;
+    this.enabled = (options.enabled ?? true) && (process.env.NODE_ENV !== 'development' || this.development);
 
-  public abstract create(...args: readonly unknown[]): CronJob;
-  public abstract run(...args: readonly unknown[]): Awaitable<void>;
+    if (!this.enabled) return;
+    if (!cron.validate(options.schedule)) throw new Error(`Invalid cron string: ${options.schedule}`);
 
-  public onLoad() {
-    if (!this._cron) this._cron = this.create();
-    this._cron.start();
-    this._cron.fireOnTick();
+    this.cron = this.create();
+    if (options.fireOnStart) void this.run();
+  }
+
+  public override onLoad(): unknown {
+    if (!this.cron) this.cron = this.create();
+    this.cron?.start();
     return super.onLoad();
   }
 
-  public onUnload() {
-    if (this._cron) {
-      this._cron.stop();
-      this._cron = null;
+  public override onUnload(): void {
+    if (this.cron) {
+      this.cron.stop();
+      this.cron = null;
     }
   }
+
+  protected create(): ScheduledTask | null {
+    return cron.schedule(this.schedule, this.run.bind(this) as () => void);
+  }
+
+  public abstract run(): Awaitable<void>;
+}
+
+export interface TaskOptions extends PieceOptions {
+  development?: boolean;
+  fireOnStart?: boolean;
+  schedule: string;
+}
+
+export interface Task {
+  get container(): {
+    client: ConfeBot;
+  } & AliasPiece['container'];
 }

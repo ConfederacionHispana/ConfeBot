@@ -10,6 +10,11 @@ export const schema = {
     optional: true
   },
   OWNER_ID: String,
+  NODE_ENV: {
+    type: String,
+    default: 'development',
+    optional: true
+  },
   MW_API: String,
 
   GUILD_ID: String,
