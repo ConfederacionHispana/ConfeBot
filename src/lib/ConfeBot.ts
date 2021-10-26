@@ -23,7 +23,7 @@ class ConfeBot extends SapphireClient {
     if (Object.keys(context).length) this.logger.error(err, '\nContext:', context);
     else this.logger.error(err);
 
-    if (env.HONEYBADGER_API_KEY) {
+    if (env?.HONEYBADGER_API_KEY) {
       Honeybadger.resetContext(context);
       Honeybadger.notify(err);
     }

@@ -17,6 +17,7 @@ export const schema = {
   },
   MW_API: String,
 
+  // TODO: these should be stored in the database instead
   GUILD_ID: String,
   GUILD_INVITE: String,
 
@@ -31,7 +32,8 @@ export const schema = {
   FDUSER_ROLE: String,
   STAFF_ROLE: String,
   SEGURIDAD_ROLE: String,
-  WIKI_ROLE_GROUP: String
+  WIKI_ROLE_GROUP: String,
+  COUNTRY_ROLE_GROUP: String
 };
 
 export let env: Env;
