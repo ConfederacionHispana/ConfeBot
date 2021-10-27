@@ -5,6 +5,9 @@ export interface IGuild extends Document {
   settings: {
     prefix: string;
   };
+  stats: {
+    [key: string]: number;
+  };
 }
 
 const GuildSchema: Schema = new Schema({
@@ -19,7 +22,8 @@ const GuildSchema: Schema = new Schema({
       required: true,
       default: 'c!'
     }
-  }
+  },
+  stats: Schema.Types.Mixed
 });
 
 export default mongoose.model<IGuild>('Guild', GuildSchema);

@@ -3,8 +3,10 @@ import '@sapphire/plugin-logger/register';
 import Honeybadger from '@honeybadger-io/js';
 import { env } from './env';
 import { GuildSettingsManager } from '../db/managers/GuildSettingsManager';
+import { GuildStatsManager } from '../db/managers/GuildStatsManager';
 
 import type { Message } from 'discord.js';
+
 export class ConfeBot extends SapphireClient {
   constructor(options: SapphireClientOptions) {
     super({
@@ -17,6 +19,7 @@ export class ConfeBot extends SapphireClient {
     });
 
     container.settingsManager = new GuildSettingsManager(this);
+    container.statsManager = new GuildStatsManager(this);
   }
 
   public version = process.env.npm_package_version || '2.0.0-dev';
