@@ -1,23 +1,33 @@
-import { SapphireClient, SapphireClientOptions, Store } from '@sapphire/framework';
+import { container, SapphireClient, SapphireClientOptions } from '@sapphire/framework';
 import '@sapphire/plugin-logger/register';
 import Honeybadger from '@honeybadger-io/js';
-
 import { env } from './env';
+import { GuildSettingsManager } from '../db/managers/GuildSettingsManager';
+import { GuildStatsManager } from '../db/managers/GuildStatsManager';
 
-class ConfeBot extends SapphireClient {
+import type { Message } from 'discord.js';
+
+export class ConfeBot extends SapphireClient {
   constructor(options: SapphireClientOptions) {
     super({
       allowedMentions: {
         parse: ['roles', 'users']
       },
+      defaultPrefix: 'c!',
       intents: ['GUILDS', 'GUILD_PRESENCES', 'GUILD_MEMBERS', 'GUILD_MESSAGES', 'GUILD_MESSAGE_REACTIONS'],
       ...options
     });
+
+    container.settingsManager = new GuildSettingsManager(this);
+    container.statsManager = new GuildStatsManager(this);
   }
 
   public version = process.env.npm_package_version || '2.0.0-dev';
 
-  public fetchPrefix = () => 'c!';
+  public fetchPrefix = async (message: Message) => {
+    const settings = await container.settingsManager.getGuildSettings(message.guild!.id);
+    return settings.prefix || 'c!';
+  };
 
   logException(err: Error, context: Record<string, unknown> = {}) {
     if (Object.keys(context).length) this.logger.error(err, '\nContext:', context);
@@ -44,5 +54,3 @@ class ConfeBot extends SapphireClient {
     return super.login(token);
   }
 }
-
-export { ConfeBot };
