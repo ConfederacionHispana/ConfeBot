@@ -18,14 +18,17 @@ export class WikiSelfRolesCommand extends Command {
     const { client } = this.container;
     const guildRoles = message.guild.roles.cache;
     const wikiIndexRole = message.guild.roles.resolve(env.WIKI_ROLE_GROUP) as Role;
+    const countryIndexRole = message.guild.roles.resolve(env.COUNTRY_ROLE_GROUP) as Role;
+    const assignableRoles: Role[] = Array.from(guildRoles.values())
+      .filter((r) => r.editable && r.position < wikiIndexRole.position && r.position > countryIndexRole.position)
+      .sort((a, b) => b.position - a.position);
+
     const wikiNamesResolver = Args.make((arg) => Args.ok(arg.split(',').map((arg) => arg.trim())));
     const wikiNames = await args.restResult(wikiNamesResolver);
 
     if (wikiNames.success) {
       const assignedRoles: Role[] = [];
-      guildRoles.each((role) => {
-        if (role.position >= wikiIndexRole.position) return;
-        if (role.position === 0) return; // @everyone role
+      assignableRoles.forEach((role) => {
         wikiNames.value.forEach((wikiName: string) => {
           if (!wikiName) return;
           const similarityScore = stringSimilarity(wikiName, role.name);
@@ -46,13 +49,7 @@ export class WikiSelfRolesCommand extends Command {
           .reply('⚠️ No encontré ningún rol de wiki similar a lo que has escrito. Revisa e intenta nuevamente.')
           .catch(client.logException);
     } else {
-      const assignableRoles: Role[] = [];
       const rolesPerPage = 20;
-      guildRoles.each((role) => {
-        if (role.position >= wikiIndexRole.position) return;
-        if (role.position === 0) return; // @everyone role
-        assignableRoles.push(role);
-      });
 
       const assignableRolesPages: Role[][] = new Array(Math.ceil(assignableRoles.length / rolesPerPage))
         .fill(null)
