@@ -34,5 +34,6 @@ export class PrefixCommand extends Command {
         return message.channel.send('Ocurrió un error al intentar cambiar el prefix.');
       }
     }
+    return null; // TODO: remove this
   }
 }
