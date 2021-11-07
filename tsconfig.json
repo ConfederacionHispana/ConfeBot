@@ -22,7 +22,8 @@
       "./node_modules/@types",
       "./src/types"
     ],
-    "skipLibCheck": true
+    "skipLibCheck": true,
+	"experimentalDecorators": true
   },
   "outDir": "../dist",
   "rootDir": "./src",
