@@ -30,6 +30,7 @@ export const schema = {
   NEWUSER_ROLE: String,
   USER_ROLE: String,
   FDUSER_ROLE: String,
+  HELPER_ROLE: String,
   STAFF_ROLE: String,
   SEGURIDAD_ROLE: String,
   WIKI_ROLE_GROUP: String,
