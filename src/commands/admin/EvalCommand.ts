@@ -65,7 +65,7 @@ export class EvalCommand extends Command {
     ]);
   }
 
-  private async eval(_message: Message, args: Args): Promise<IEvalCommandResult> {
+  private async eval(message: Message, args: Args): Promise<IEvalCommandResult> {
     const asyncFlag = args.getFlags('async');
     let code = await args.rest('string');
     if (asyncFlag) code = `( async () => { ${code} } )()`;
@@ -76,7 +76,7 @@ export class EvalCommand extends Command {
     let time2: number;
 
     try {
-	  // eslint-disable-next-line no-eval
+      // eslint-disable-next-line no-eval
       result = await eval(code);
       success = true;
     } catch (error) {
