@@ -1,5 +1,6 @@
 import type { PreconditionOptions, PreconditionResult } from '@sapphire/framework';
 import { ApplyOptions } from '@sapphire/decorators';
+import { env } from '../lib/env';
 import type { Message } from 'discord.js';
 import { Precondition } from '@sapphire/framework';
 
@@ -8,7 +9,9 @@ import { Precondition } from '@sapphire/framework';
 })
 export class UserPrecondition extends Precondition {
   public run(message: Message): PreconditionResult {
-    return message.author.id === process.env.HELPER_ROLE
+    console.log(message.member?.roles.cache);
+    console.log(env.HELPER_ROLE);
+    return message.member && message.member.roles.cache.has(env.HELPER_ROLE)
       ? this.ok()
       : this.error({
           context: { message },
