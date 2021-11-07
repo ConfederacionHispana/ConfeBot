@@ -16,7 +16,7 @@ interface IEvalCommandResult {
   aliases: ['ev'],
   flags: ['async'],
   name: 'eval',
-  preconditions: ['HelperOnly']
+  preconditions: ['StaffOnly']
 })
 export class EvalCommand extends Command {
   public async messageRun(message: Message, args: Args): Promise<void> {

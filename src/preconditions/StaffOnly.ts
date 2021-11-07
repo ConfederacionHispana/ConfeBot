@@ -5,22 +5,22 @@ import type { Message } from 'discord.js';
 import { Precondition } from '@sapphire/framework';
 
 @ApplyOptions<PreconditionOptions>({
-  name: 'HelperOnly'
+  name: 'StaffOnly'
 })
 export class UserPrecondition extends Precondition {
   public run(message: Message): PreconditionResult {
-    return message.member && message.member.roles.cache.has(env.HELPER_ROLE)
+    return message.member && message.member.roles.cache.has(env.STAFF_ROLE)
       ? this.ok()
       : this.error({
           context: { message },
-          identifier: 'HELPER_ONLY',
-          message: `Necesitas el rol de <@&${process.env.HELPER_ROLE}> para usar este comando.`
+          identifier: 'StaffOnly',
+          message: `Necesitas el rol de <@&${process.env.STAFF_ROLE}> para usar este comando.`
         });
   }
 }
 
 declare module '@sapphire/framework' {
   interface Preconditions {
-    HelperOnly: never;
+    StaffOnly: never;
   }
 }
