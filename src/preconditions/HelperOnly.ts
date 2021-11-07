@@ -9,8 +9,6 @@ import { Precondition } from '@sapphire/framework';
 })
 export class UserPrecondition extends Precondition {
   public run(message: Message): PreconditionResult {
-    console.log(message.member?.roles.cache);
-    console.log(env.HELPER_ROLE);
     return message.member && message.member.roles.cache.has(env.HELPER_ROLE)
       ? this.ok()
       : this.error({
