@@ -6,6 +6,7 @@
     "@typescript-eslint/member-ordering": "warn",
     "@typescript-eslint/no-extraneous-class": "off",
     "@typescript-eslint/unbound-method": "off",
+    "guard-for-in": "off",
     "no-console": "warn",
     "no-duplicate-imports": "off",
     "one-var": "off"
