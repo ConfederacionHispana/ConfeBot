@@ -26,6 +26,7 @@ export const schema = {
   LOGS_CHANNEL: String,
   SELFROLES_CHANNEL: String,
   REPORTS_CHANNEL: String,
+  STARBOARD_CHANNEL: String,
 
   NEWUSER_ROLE: String,
   USER_ROLE: String,
