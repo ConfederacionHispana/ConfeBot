@@ -7,7 +7,7 @@ import type { Message } from 'discord.js';
   aliases: ['stat', 'count']
 })
 export class StatCommand extends Command {
-  public async messageRun(message: Message, args: Args) {
+  public async messageRun(message: Message, args: Args): Promise<void> {
     const { client, statsManager } = this.container;
 
     try {

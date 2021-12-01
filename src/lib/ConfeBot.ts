@@ -8,6 +8,8 @@ import { GuildStatsManager } from '../db/managers/GuildStatsManager';
 import type { Message } from 'discord.js';
 
 export class ConfeBot extends SapphireClient {
+  public version = process.env.npm_package_version || '2.0.0-dev';
+
   constructor(options: SapphireClientOptions) {
     super({
       allowedMentions: {
@@ -22,14 +24,12 @@ export class ConfeBot extends SapphireClient {
     container.statsManager = new GuildStatsManager(this);
   }
 
-  public version = process.env.npm_package_version || '2.0.0-dev';
-
-  public fetchPrefix = async (message: Message) => {
+  public fetchPrefix = async (message: Message): Promise<string> => {
     const settings = await container.settingsManager.getGuildSettings(message.guild!.id);
     return settings.prefix || 'c!';
   };
 
-  logException(err: Error, context: Record<string, unknown> = {}) {
+  logException(err: Error, context: Record<string, unknown> = {}): void {
     if (Object.keys(context).length) this.logger.error(err, '\nContext:', context);
     else this.logger.error(err);
 
@@ -39,7 +39,7 @@ export class ConfeBot extends SapphireClient {
     }
   }
 
-  async login(token: string) {
+  async login(token: string): Promise<string> {
     // do pre-login stuff
     this.logger.log = this.logger.info;
     if (env.HONEYBADGER_API_KEY) {

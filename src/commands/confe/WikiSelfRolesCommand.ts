@@ -12,7 +12,7 @@ import type { Message, Role } from 'discord.js';
   aliases: ['wiki', 'wikis']
 })
 export class WikiSelfRolesCommand extends Command {
-  public async messageRun(message: Message, args: Args) {
+  public async messageRun(message: Message, args: Args): Promise<void> {
     if (!message.guild || message.guild.id !== env.GUILD_ID) return;
     if (!message.member) return;
     const { client } = this.container;

@@ -8,10 +8,11 @@ import type { Message } from 'discord.js';
   aliases: ['prefix']
 })
 export class PrefixCommand extends Command {
-  public async messageRun(message: Message, args: Args) {
+  public async messageRun(message: Message, args: Args): Promise<void> {
     const { client, settingsManager } = this.container;
     if (!message.guild) {
-      return message.channel.send('Este comando solo puede ejecutarse en un servidor.');
+      void message.channel.send('Este comando solo puede ejecutarse en un servidor.');
+      return;
     }
     const settings = await settingsManager.getGuildSettings(message.guild.id);
 
@@ -22,18 +23,20 @@ export class PrefixCommand extends Command {
           ...settings,
           prefix: newPrefix
         });
-        return message.channel.send(`Prefix cambiado a: \`${newPrefix}\``);
+        void message.channel.send(`Prefix cambiado a: \`${newPrefix}\``);
+        return;
       }
-      return message.reply('No tienes permisos para cambiar el prefijo.');
+      void message.reply('No tienes permisos para cambiar el prefijo.');
+      return;
     } catch (err) {
       if (err instanceof Error) {
         if (err instanceof UserError) {
-          return message.reply(`El prefix actual es: \`${settings.prefix}\``);
+          void message.reply(`El prefix actual es: \`${settings.prefix}\``);
+          return;
         }
         client.logException(err);
-        return message.channel.send('Ocurrió un error al intentar cambiar el prefix.');
+        void message.channel.send('Ocurrió un error al intentar cambiar el prefix.');
       }
     }
-    return null; // TODO: remove this
   }
 }

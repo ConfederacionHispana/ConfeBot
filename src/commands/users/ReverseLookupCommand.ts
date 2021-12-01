@@ -9,7 +9,7 @@ import type { Message } from 'discord.js';
   aliases: ['reverselookup', 'finduser']
 })
 export class ReverseLookupCommand extends Command {
-  public async messageRun(message: Message, args: Args) {
+  public async messageRun(message: Message, args: Args): Promise<void> {
     const { client } = this.container;
 
     const fandomUserMatch = await args.restResult('string');

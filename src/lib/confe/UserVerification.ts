@@ -45,7 +45,7 @@ export default class UserVerification {
 
     if (mwUser.blockexpiry && mwUser.blockedby) {
       const blockExpiry =
-        mwUser.blockexpiry !== 'infinity' ? parseDate(mwUser.blockexpiry, 'yyyyMMddHHmmss', new Date()) : Infinity;
+        mwUser.blockexpiry === 'infinity' ? Infinity : parseDate(mwUser.blockexpiry, 'yyyyMMddHHmmss', new Date());
       return {
         success: false,
         error: 'Blocked',
