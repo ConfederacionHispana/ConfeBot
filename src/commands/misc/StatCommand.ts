@@ -14,15 +14,16 @@ export class StatCommand extends Command {
       const stat = await args.pick('string');
       const statValue = await statsManager.getGuildStat(message.guild!.id, stat);
 
-      return message.reply(`Cantidad de \`${stat}\`: **${statValue ?? 'sin valor'}**.`);
+      void message.reply(`Cantidad de \`${stat}\`: **${statValue ?? 'sin valor'}**.`);
+      return;
     } catch (err) {
       if (err instanceof Error) {
         if (err instanceof UserError) {
-          return message.channel.send('Se debe especificar el nombre de la estadística a obtener.');
+          void message.channel.send('Se debe especificar el nombre de la estadística a obtener.');
+          return;
         }
         client.logException(err);
       }
     }
-    return null; // TODO: remove this
   }
 }
