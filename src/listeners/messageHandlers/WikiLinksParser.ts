@@ -25,7 +25,7 @@ class WikiLinksParser extends Listener {
     const { client } = this.container;
 
     if (!message.content || message.author.bot) return;
-    
+
     const capturedLinks = message.content.match(/\[\[(.*?)(\|(.*?))?\]\](?=(?:[^`]*`[^`]*`)*[^`]*$)/g);
     if (!capturedLinks || !capturedLinks.length) return;
     let parsedLinks: string[] = [];

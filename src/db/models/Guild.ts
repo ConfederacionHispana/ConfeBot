@@ -4,6 +4,9 @@ export interface IGuild extends Document {
   id: string;
   settings: {
     prefix: string;
+    channels?: {
+      starboard?: string;
+    };
   };
   stats: {
     [key: string]: number;
@@ -21,6 +24,11 @@ const GuildSchema: Schema = new Schema({
       type: String,
       required: true,
       default: 'c!'
+    },
+    channels: {
+      starboard: {
+        type: String
+      }
     }
   },
   stats: Schema.Types.Mixed

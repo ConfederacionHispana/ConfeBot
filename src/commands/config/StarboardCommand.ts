@@ -5,9 +5,9 @@ import { Permissions } from 'discord.js';
 import type { Message } from 'discord.js';
 
 @ApplyOptions<CommandOptions>({
-  aliases: ['prefix']
+  aliases: ['starboard']
 })
-export class PrefixCommand extends Command {
+export class StarboardCommand extends Command {
   public async messageRun(message: Message, args: Args): Promise<void> {
     const { client, settingsManager } = this.container;
     if (!message.guild) {
@@ -17,25 +17,30 @@ export class PrefixCommand extends Command {
     const settings = await settingsManager.getGuildSettings(message.guild.id);
 
     try {
-      const newPrefix = await args.pick('string');
+      const channel = await args.pick('channel').catch(() => null);
+      if (!channel) {
+        if (settings.channels?.starboard) {
+          void message.channel.send(`Canal de pines: <#${settings.channels.starboard}>`);
+        }
+        return;
+      }
+
       if (message.member?.permissions.has(Permissions.FLAGS.MANAGE_GUILD)) {
         await settingsManager.setGuildSettings(message.guild.id, {
           ...settings,
-          prefix: newPrefix
+          channels: {
+            starboard: channel.id
+          }
         });
-        void message.channel.send(`Prefix cambiado a: \`${newPrefix}\``);
+        void message.channel.send(`Canal de pines: <#${channel.id}>`);
         return;
       }
-      void message.reply('No tienes permisos para cambiar el prefijo.');
+      void message.reply('No tienes permisos para cambiar el canal de pines.');
       return;
     } catch (err) {
       if (err instanceof Error) {
-        if (err instanceof UserError) {
-          void message.reply(`El prefix actual es: \`${settings.prefix}\``);
-          return;
-        }
         client.logException(err);
-        void message.channel.send('Ocurrió un error al intentar cambiar el prefix.');
+        void message.channel.send('Ocurrió un error al intentar cambiar el canal de pines.');
       }
     }
   }

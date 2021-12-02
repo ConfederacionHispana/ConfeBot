@@ -1,3 +1,4 @@
+import { container } from '@sapphire/framework';
 import { MessageEmbed } from 'discord.js';
 import axios from 'axios';
 import { format, formatDistance } from 'date-fns';
@@ -104,8 +105,7 @@ class Vigilancia {
       if (confederates.has(interwiki)) continue;
 
       const report = await Vigilancia.checkWiki(interwiki).catch((err) => {
-        // TODO: actually report the error
-        console.error(err);
+        container.logger.error(err);
       });
       if (!report || report.users.length === 0) continue;
 

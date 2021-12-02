@@ -10,7 +10,7 @@ import type { Message } from 'discord.js';
   aliases: ['lookup', 'userlookup', 'userinfo']
 })
 export class UserLookupCommand extends Command {
-  public async messageRun(message: Message, args: Args) {
+  public async messageRun(message: Message, args: Args): Promise<void> {
     const { client } = this.container;
 
     const targetMemberResult = await args.pickResult('member');

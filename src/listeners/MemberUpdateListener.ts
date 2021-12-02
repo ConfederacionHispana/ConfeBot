@@ -32,8 +32,7 @@ export class MemberUpdateListener extends Listener {
         const guild = client.guilds.resolve(env.GUILD_ID);
         const invites = await guild?.invites?.fetch();
         const widgetInvite = invites?.find((invite) => !invite.inviter);
-        if (!widgetInvite) client.logger.warn('No he podido encontrar una invitación por widget.');
-        else {
+        if (widgetInvite) {
           const usedWidgetInvite =
             widgetInvite.code === client.cache.widgetInvite.code &&
             widgetInvite.uses === client.cache.widgetInvite.uses + 1;
@@ -64,6 +63,8 @@ export class MemberUpdateListener extends Listener {
 
             return;
           }
+        } else {
+          client.logger.warn('No he podido encontrar una invitación por widget.');
         }
       }
 

@@ -64,7 +64,7 @@ export default class FandomUtilities {
     return `${url}/api.php`;
   }
 
-  static async apiQuery(interwiki: string, params: Record<string, unknown>) {
+  static async apiQuery(interwiki: string, params: Record<string, unknown>): Promise<any> {
     const api = this.interwiki2api(interwiki);
     const res = await axios.get(api, {
       params: {
