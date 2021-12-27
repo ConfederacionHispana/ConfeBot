@@ -18,6 +18,5 @@ En el archivo `.env.example` se encuentra la lista de las variables de entorno n
 
 Por conveniencia, el `package.json` incluye el script `dev`, que inicia el bot en modo development, reiniciándose al detectar cambios.
 
-#### Ejecutar con Docker
-1. Crear la imagen: `docker build -t confebot .`
-2. Ejecutar: `docker run --env-file .env -it confebot`
+#### Entorno de desarrollo con Docker
+Al utilizar Docker, puede ejecutarse simplemente con `docker compose up`, que iniciará el bot y los servicios de los que depende en contenedores.

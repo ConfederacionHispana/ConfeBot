@@ -2,7 +2,7 @@
 
 # The first stage installs npm prod dependencies and copies them for later use.
 # Then, installs devDependencies and compiles the TypeScript source.
-FROM node:16-alpine3.14 AS build
+FROM node:16-alpine3.14 AS base
 RUN mkdir /home/node/app/ && chown -R node:node /home/node/app
 WORKDIR /home/node/app
 
@@ -18,6 +18,12 @@ RUN npm ci --loglevel info --only=production
 RUN cp -r node_modules node_modules_prod
 RUN npm ci --loglevel info
 
+# Development, used for development only (defaults to dev command)
+FROM base as development
+
+CMD [ "npm", "run", "dev"]
+
+FROM base AS build
 # Copy root directory
 COPY --chown=node:node . .
 
