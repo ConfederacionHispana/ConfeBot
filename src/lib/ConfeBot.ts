@@ -1,6 +1,7 @@
+import Honeybadger from '@honeybadger-io/js';
 import { container, SapphireClient, SapphireClientOptions } from '@sapphire/framework';
 import '@sapphire/plugin-logger/register';
-import Honeybadger from '@honeybadger-io/js';
+import { ScheduledTaskRedisStrategy } from '@sapphire/plugin-scheduled-tasks/register-redis';
 import { env } from './env';
 import { GuildSettingsManager } from '../db/managers/GuildSettingsManager';
 import { GuildStatsManager } from '../db/managers/GuildStatsManager';
@@ -17,6 +18,11 @@ export class ConfeBot extends SapphireClient {
       },
       defaultPrefix: 'c!',
       intents: ['GUILDS', 'GUILD_PRESENCES', 'GUILD_MEMBERS', 'GUILD_MESSAGES', 'GUILD_MESSAGE_REACTIONS'],
+      tasks: {
+        strategy: new ScheduledTaskRedisStrategy({
+          bull: env.REDIS_URI
+        })
+      },
       ...options
     });
 

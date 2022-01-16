@@ -1,16 +1,17 @@
-import { ApplyOptions } from '@sapphire/decorators';
-
-import { Task } from '#lib/structures/Task';
-import { env } from '#lib/env';
-
-import type { TaskOptions } from '#lib/structures/Task';
+import type { PieceContext } from '@sapphire/framework';
+import { ScheduledTask } from '@sapphire/plugin-scheduled-tasks';
 import type { Guild, Role, TextChannel } from 'discord.js';
 
-@ApplyOptions<TaskOptions>({
-  enabled: true,
-  schedule: '0 * * * *'
-})
-export class KickNonVerifiedMembers extends Task {
+import { env } from '#lib/env';
+import { Time } from '#lib/util/constants';
+
+export class IntervalTask extends ScheduledTask {
+  public constructor(context: PieceContext) {
+    super(context, {
+      interval: Time.Hour
+    });
+  }
+
   public run(): void {
     const { client } = this.container;
 
@@ -59,5 +60,11 @@ export class KickNonVerifiedMembers extends Task {
           });
       }
     });
+  }
+}
+
+declare module '@sapphire/framework' {
+  interface ScheduledTasks {
+    interval: never;
   }
 }

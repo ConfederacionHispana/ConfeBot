@@ -10,6 +10,7 @@ services:
       - .env
     environment:
       - DB_URI=mongodb://root:example@mongo:27017/confebot_local?authSource=admin&retryWrites=true&w=majority
+      - REDIS_URI=redis://redis:6379
     volumes:
       - .:/home/node/app
       - bot_node_modules:/home/node/app/node_modules

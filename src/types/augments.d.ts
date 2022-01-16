@@ -13,9 +13,6 @@ declare module '@sapphire/pieces' {
     settingsManager: GuildSettingsManager;
     statsManager: GuildStatsManager;
   }
-  interface StoreRegistryEntries {
-    tasks: TaskStore;
-  }
 }
 
 declare module 'discord.js' {

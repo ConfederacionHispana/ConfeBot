@@ -1,8 +1,6 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { Events, Listener } from '@sapphire/framework';
-import { join, resolve } from 'path';
 import { env } from '#lib/env';
-import { TaskStore } from '#lib/structures/TaskStore';
 
 import type { ListenerOptions } from '@sapphire/framework';
 
@@ -40,10 +38,5 @@ export class ReadyListener extends Listener {
         `Se ha registrado la invitación del widget: ${widgetInvite.code} (${widgetInvite.uses} usos).`
       );
     }
-
-    const taskStore = new TaskStore().registerPath(resolve(__dirname, '../tasks'));
-    taskStore.container.client = this.container.client;
-    this.container.client.stores.register(taskStore);
-    await taskStore.loadAll().catch(client.logException);
   }
 }
