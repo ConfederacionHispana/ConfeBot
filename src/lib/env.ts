@@ -4,6 +4,7 @@ export type Env = EnvType<typeof schema>;
 
 export const schema = {
   DB_URI: String,
+  REDIS_URI: String,
   DISCORD_TOKEN: String,
   HONEYBADGER_API_KEY: {
     type: String,

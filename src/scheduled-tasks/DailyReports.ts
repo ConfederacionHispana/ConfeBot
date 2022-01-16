@@ -1,17 +1,17 @@
-import { ApplyOptions } from '@sapphire/decorators';
+import type { PieceContext } from '@sapphire/framework';
+import { ScheduledTask } from '@sapphire/plugin-scheduled-tasks';
 
-import { Task } from '#lib/structures/Task';
 import { env } from '#lib/env';
 import Vigilancia from '#lib/confe/Vigilancia';
 import FandomUtilities from '#lib/fandom/FandomUtilities';
 
-import type { TaskOptions } from '#lib/structures/Task';
+export class DailyReportsTask extends ScheduledTask {
+  public constructor(context: PieceContext) {
+    super(context, {
+      cron: '0 0 3 * * *'
+    });
+  }
 
-@ApplyOptions<TaskOptions>({
-  enabled: true,
-  schedule: '0 0 3 * * *'
-})
-export class DailyReports extends Task {
   public async run(): Promise<void> {
     const { client } = this.container;
 
@@ -51,5 +51,11 @@ export class DailyReports extends Task {
       }
       await channel.send({ embeds: [embed] });
     }
+  }
+}
+
+declare module '@sapphire/framework' {
+  interface ScheduledTasks {
+    cron: never;
   }
 }
