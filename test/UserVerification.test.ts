@@ -1,8 +1,7 @@
+import 'mocha'
 import chai, { expect } from 'chai';
+import { NonExistentUser, UserVerification } from '@confebot/lib'
 import chaiAsPromised from 'chai-as-promised';
-
-import UserVerification from '#lib/confe/UserVerification';
-import NonExistentUser from '#lib/util/errors/NonExistentUser';
 
 chai.use(chaiAsPromised);
 

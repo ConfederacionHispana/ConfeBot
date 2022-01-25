@@ -4,7 +4,7 @@ import axios from 'axios';
 import { format, formatDistance } from 'date-fns';
 import { es } from 'date-fns/locale';
 
-import FandomUtilities from '#lib/fandom/FandomUtilities';
+import {FandomUtilities} from '../fandom/FandomUtilities';
 import DBModels from '../../db';
 
 type Day = 'lunes' | 'martes' | 'miércoles' | 'jueves' | 'viernes' | 'sábado' | 'domingo';
@@ -19,7 +19,7 @@ interface IWiki {
   sitename: string;
 }
 
-class Vigilancia {
+export class Vigilancia {
   static readonly CALENDAR_URL =
     'https://confederacion-hispana.fandom.com/es/wiki/MediaWiki:Custom-vigilancia.json?action=raw&ctype=application/json';
 
@@ -118,5 +118,3 @@ class Vigilancia {
     return format(Date.now(), 'EEEE', { locale: es }) as Day;
   }
 }
-
-export default Vigilancia;

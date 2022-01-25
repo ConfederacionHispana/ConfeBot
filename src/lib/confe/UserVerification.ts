@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { addDays, differenceInDays, format as formatDate, parse as parseDate } from 'date-fns';
 import { es } from 'date-fns/locale';
-import FandomUtilities from '#lib/fandom/FandomUtilities';
+import { FandomUtilities } from '../fandom/FandomUtilities';
 
 import type { AxiosError } from 'axios';
 
@@ -21,7 +21,7 @@ interface IVerificationResult {
   };
 }
 
-export default class UserVerification {
+export class UserVerification {
   static async verifyUser(
     fandomUsername: string,
     discordUsername: string,

@@ -17,8 +17,6 @@ declare module '@sapphire/pieces' {
 
 declare module 'discord.js' {
   interface Client {
-    logException(err: Error, context?: Record<string, unknown>): void;
-    readonly version: string;
     // set during the 'ready' event
     cache: {
       widgetInvite: {
@@ -26,5 +24,7 @@ declare module 'discord.js' {
         uses: number;
       };
     };
+    readonly version: string;
+    logException(err: Error, context?: Record<string, unknown>): void;
   }
 }

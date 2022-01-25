@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import { ConfeBot } from './lib/ConfeBot';
-import { env, loadEnv } from '#lib/env';
+import { env, loadEnv } from '@confebot/lib/env';
 
 let client: ConfeBot;
 
