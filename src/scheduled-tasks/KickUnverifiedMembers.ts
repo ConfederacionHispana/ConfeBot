@@ -2,8 +2,7 @@ import type { PieceContext } from '@sapphire/framework';
 import { ScheduledTask } from '@sapphire/plugin-scheduled-tasks';
 import type { Guild, Role, TextChannel } from 'discord.js';
 
-import { env } from '#lib/env';
-import { Time } from '#lib/util/constants';
+import { env, Time } from '../lib'
 
 export class IntervalTask extends ScheduledTask {
   public constructor(context: PieceContext) {

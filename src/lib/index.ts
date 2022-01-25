@@ -1,6 +1,5 @@
 export * from './confe'
 export * from './fandom'
-export * from './structures'
 export * from './util'
 export * from './ConfeBot'
 export * from './env'
