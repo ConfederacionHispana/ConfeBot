@@ -1,6 +1,6 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { Events, Listener } from '@sapphire/framework';
-import { env } from '@confebot/lib';
+import { env } from '../lib';
 
 import type { ListenerOptions } from '@sapphire/framework';
 

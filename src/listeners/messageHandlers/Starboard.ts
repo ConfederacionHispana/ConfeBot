@@ -1,5 +1,5 @@
 import { ApplyOptions } from '@sapphire/decorators';
-import { env, sleep } from '@confebot/lib';
+import { env, sleep } from '../../lib';
 import { Events, Listener } from '@sapphire/framework';
 
 import type { ListenerOptions } from '@sapphire/framework';

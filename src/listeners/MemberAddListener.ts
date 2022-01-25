@@ -1,6 +1,6 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { Events, Listener } from '@sapphire/framework';
-import { Time } from '@confebot/lib';
+import { Time } from '../lib';
 
 import type { ListenerOptions } from '@sapphire/framework';
 import type { GuildMember } from 'discord.js';

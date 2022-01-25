@@ -25,10 +25,6 @@
   "outDir": "../dist",
   "rootDir": "./src",
   "include": [
-    "./src/**/*.ts",
-    "./test/**/*.ts"
-  ],
-  "exclude": [
-    "dist"
+    "./src/**/*.ts"
   ]
 }

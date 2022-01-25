@@ -1,6 +1,6 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args, Command } from '@sapphire/framework';
-import { env, FandomUtilities, NonExistentUser } from '@confebot/lib';
+import { env, FandomUtilities, NonExistentUser } from '../../lib';
 import DBModels from '../../db';
 
 import type { CommandOptions } from '@sapphire/framework';

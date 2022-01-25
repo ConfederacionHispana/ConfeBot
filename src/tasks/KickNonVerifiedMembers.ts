@@ -1,8 +1,8 @@
 import { ApplyOptions } from '@sapphire/decorators';
 
-import { env, Task } from '@confebot/lib';
+import { env, Task } from '../lib';
 
-import type { TaskOptions } from '@confebot/lib';
+import type { TaskOptions } from '../lib';
 import type { Guild, Role, TextChannel } from 'discord.js';
 
 @ApplyOptions<TaskOptions>({

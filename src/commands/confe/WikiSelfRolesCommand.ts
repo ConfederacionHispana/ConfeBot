@@ -2,7 +2,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { PaginatedMessage } from '@sapphire/discord.js-utilities';
 import { Args, Command } from '@sapphire/framework';
 import { stringSimilarity } from 'string-similarity-js';
-import { env } from '@confebot/lib';
+import { env } from '../../lib';
 
 import type { MessagePage } from '@sapphire/discord.js-utilities';
 import type { CommandOptions } from '@sapphire/framework';

@@ -1,7 +1,8 @@
 import type { PieceContext } from '@sapphire/framework';
 import { ScheduledTask } from '@sapphire/plugin-scheduled-tasks';
-import { env, FandomUtilities, Vigilancia } from '@confebot/lib';
+import { env, FandomUtilities, Vigilancia } from '../lib';
 
+export class DailyReports extends Task {
   public async run(): Promise<void> {
     const { client } = this.container;
 

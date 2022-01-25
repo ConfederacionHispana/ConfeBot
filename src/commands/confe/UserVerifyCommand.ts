@@ -2,7 +2,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { Args, Command } from '@sapphire/framework';
 import { URL } from 'url';
 import { format as formatDate } from 'date-fns';
-import { env, NonExistentUser, UserVerification } from '@confebot/lib';
+import { env, NonExistentUser, UserVerification } from '../../lib';
 import DBModels from '../../db';
 
 import type { CommandOptions } from '@sapphire/framework';

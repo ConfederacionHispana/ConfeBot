@@ -9,13 +9,12 @@
     "lint": "eslint src/ --ext ts",
     "lint:fix": "eslint src/ --ext ts --fix",
     "start": "node --enable-source-maps ./dist/index.js",
-    "test": "mocha -r ts-node/register -r tsconfig-paths/register test/**/*.test.ts",
+    "test": "mocha dist/test",
     "prepare": "husky install"
   },
   "author": "TheNozomi <13172293+TheNozomi@users.noreply.github.com>",
   "license": "MIT",
   "dependencies": {
-    "@confebot/lib": "link:dist/lib",
     "@honeybadger-io/js": "^3.2.4",
     "@sapphire/decorators": "^3.1.2",
     "@sapphire/discord.js-utilities": "^3.2.2",

@@ -1,7 +1,7 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { Events, Listener } from '@sapphire/framework';
 import { URL } from 'url';
-import { env } from '@confebot/lib';
+import { env } from '../lib';
 
 import type { ListenerOptions } from '@sapphire/framework';
 import type { GuildMember, MessageReaction, TextChannel, User } from 'discord.js';

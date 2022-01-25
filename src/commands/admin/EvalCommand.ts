@@ -1,10 +1,10 @@
 import type { Args, CommandOptions } from '@sapphire/framework';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Command } from '@sapphire/framework';
-import type { ConfeBot } from '@confebot/lib';
+import type { ConfeBot } from '../../lib';
 import type { Message } from 'discord.js';
 import { MessageEmbed } from 'discord.js';
-import { sleep } from '@confebot/lib'
+import { sleep } from '../../lib'
 
 interface IEvalCommandResult {
   result: unknown;

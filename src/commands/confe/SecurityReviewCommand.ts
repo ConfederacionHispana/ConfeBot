@@ -1,6 +1,6 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args, Command } from '@sapphire/framework';
-import { env, FandomUtilities, Vigilancia } from '@confebot/lib';
+import { env, FandomUtilities, Vigilancia } from '../../lib';
 
 import type { CommandOptions } from '@sapphire/framework';
 import type { Message } from 'discord.js';
