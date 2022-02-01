@@ -34,6 +34,7 @@ RUN npm run build
 
 # The second stage of the build copies node_modules_prod and the built JS from the first stage.
 FROM node:16-alpine3.14
+RUN apk update && apk -UvX http://dl-4.alpinelinux.org/alpine/edge/main add -u nodejs && apk add fontconfig
 WORKDIR /home/node/app
 
 COPY --chown=node:node package*.json ./
