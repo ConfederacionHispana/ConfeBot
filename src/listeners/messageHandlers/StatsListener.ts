@@ -10,8 +10,8 @@ import type { Message } from 'discord.js';
 export class StatsListener extends Listener {
   public async run(message: Message): Promise<void> {
     const { statsManager } = this.container;
-    const prefix = await this.container.client.fetchPrefix(message);
-    
+    const prefix = ((await this.container.client.fetchPrefix(message)) || 'c!') as string;
+
     if (!message.guild || message.author.bot || message.content.includes(prefix)) return;
 
     if (/^simps?\.?$/.test(message.content)) {
