@@ -20,7 +20,7 @@
   "dependencies": {
     "@honeybadger-io/js": "^3.2.4",
     "@sapphire/decorators": "^3.1.2",
-    "@sapphire/discord.js-utilities": "^3.2.2",
+    "@sapphire/discord.js-utilities": "^4.5.0",
     "@sapphire/framework": "^2.3.0",
     "@sapphire/pieces": "^3.1.0",
     "@sapphire/plugin-logger": "^2.0.1",
