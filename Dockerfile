@@ -40,8 +40,9 @@ WORKDIR /home/node/app
 COPY --chown=node:node package*.json ./
 USER node
 
-# Copy node_modules and dist from the first stage
+# Copy node_modules, assets and dist from the first stage
 COPY --from=build --chown=node:node /home/node/app/node_modules_prod ./node_modules
+COPY --from=build --chown=node:node /home/node/app/assets ./assets
 COPY --from=build --chown=node:node /home/node/app/dist ./dist
 
 # Run the application
