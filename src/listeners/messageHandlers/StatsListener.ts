@@ -10,7 +10,9 @@ import type { Message } from 'discord.js';
 export class StatsListener extends Listener {
   public async run(message: Message): Promise<void> {
     const { statsManager } = this.container;
-    if (!message.guild || message.author.bot) return;
+    const prefix = await this.container.client.fetchPrefix(message);
+    
+    if (!message.guild || message.author.bot || message.content.includes(prefix)) return;
 
     if (/^simps?\.?$/.test(message.content)) {
       await statsManager.incrementGuildStat(message.guild.id, 'simps');
