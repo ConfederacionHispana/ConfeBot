@@ -106,3 +106,6 @@ dist
 # Lockfiles from other package managers
 pnpm-lock.yaml
 yarn.lock
+
+# Operating system files
+*.DS_Store
