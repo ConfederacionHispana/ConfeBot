@@ -3,6 +3,8 @@
 # The first stage installs npm prod dependencies and copies them for later use.
 # Then, installs devDependencies and compiles the TypeScript source.
 FROM node:16-alpine3.14 AS base
+RUN apk update && apk add fontconfig
+
 RUN mkdir /home/node/app/ && chown -R node:node /home/node/app
 WORKDIR /home/node/app
 
