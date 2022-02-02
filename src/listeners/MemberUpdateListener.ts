@@ -79,7 +79,7 @@ export class MemberUpdateListener extends Listener {
               thumbnail: {
                 url: 'https://vignette4.wikia.nocookie.net/confederacion-hispana/es/images/8/89/Wiki-wordmark.png'
               },
-              description: `<texto genérico sobre que hacer en el servidor>\n\nPuedes elegir roles de tu interés en <#${env.SELFROLES_CHANNEL}>.`,
+              description: `Somos una organización sin ánimo de lucro, y nuestro objetivo es unir wikis de habla hispana en un mismo servidor.`,
               fields: [
                 {
                   name: 'Desbloquea más canales',
