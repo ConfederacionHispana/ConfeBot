@@ -1,56 +1,72 @@
 import { ApplyOptions } from '@sapphire/decorators';
-import { Args, Command, CommandOptions } from '@sapphire/framework';
-import { Canvas, FontLibrary, loadImage } from 'skia-canvas';
-import { resolve } from 'path';
-
+import { Args, Command, CommandOptions, UserError } from '@sapphire/framework';
 import { MessageAttachment, TextChannel, type Message } from 'discord.js';
+import { connect } from 'puppeteer-core';
+import { URL } from 'url';
+import { env } from '#lib/env';
 
 @ApplyOptions<CommandOptions>({
   aliases: ['arrest', 'arrestar']
 })
 export class ArrestCommand extends Command {
   public async messageRun(message: Message, args: Args): Promise<void> {
-    const member = await args.pick('member'),
-      reason = await args.rest('string');
+    const { client } = this.container;
 
-    // TODO: move this to a service
-    FontLibrary.use([
-      resolve(__dirname, '../../../assets/fonts/segoe-ui/Segoe UI.ttf'),
-      resolve(__dirname, '../../../assets/fonts/segoe-ui/Segoe UI Bold.ttf'),
-      resolve(__dirname, '../../../assets/fonts/segoe-ui/Segoe UI Italic.ttf'),
-      resolve(__dirname, '../../../assets/fonts/segoe-ui/Segoe UI Bold Italic.ttf')
-    ]);
+    if (!env.CHROMIUM_URI) {
+      await message.reply({
+        embeds: [
+          {
+            color: 14889515,
+            description: `❌ No se puede ejecutar este comando porque no se ha configurado una instancia de Chromium.`
+          }
+        ]
+      });
+      return;
+    }
 
-    const canvas = new Canvas(1600, 900),
-      ctx = canvas.getContext('2d');
+    try {
+      const member = await args.pick('member'),
+        reason = await args.rest('string');
 
-    const template = await loadImage(resolve(__dirname, '../../../assets/image-templates/arrest.png')),
-      avatar = await loadImage(member.user.displayAvatarURL({ format: 'png', size: 512 }));
+      const reaction = await message.react('⌛');
 
-    ctx.drawImage(avatar, 1020, 160, 440, 440);
-    ctx.drawImage(template, 0, 0);
+      const browser = await connect({
+        browserWSEndpoint: env.CHROMIUM_URI,
+        defaultViewport: {
+          width: 1024,
+          height: 576
+        }
+      });
 
-    ctx.font = 'bold 40px Segoe UI';
+      const page = await browser.newPage();
+      const templateURL = new URL(`${env.TEMPLATE_BASE_URL}/arrest`);
+      templateURL.searchParams.append('user', member.displayName);
+      templateURL.searchParams.append('nameColor', member.displayHexColor.replace('#', ''));
+      templateURL.searchParams.append('channel', (message.channel as TextChannel).name);
+      templateURL.searchParams.append('role', member.roles.hoist?.name ?? member.roles.highest.name);
+      templateURL.searchParams.append('reason', reason);
+      templateURL.searchParams.append('avatar', member.user.displayAvatarURL({ format: 'png', size: 512 }));
+      templateURL.searchParams.append('tag', member.user.tag);
 
-    ctx.fillStyle = member.displayHexColor;
-    ctx.fillText(member.displayName, 282, 328);
+      await page.goto(templateURL.href);
 
-    ctx.fillStyle = '#000';
-    ctx.fillText((message.channel as TextChannel).name, 290, 422);
-    ctx.fillText('Confederación Hispana', 320, 518);
-    ctx.fillText('Usuario', 220, 620);
+      const screenshot = await page.screenshot({
+        type: 'png'
+      });
 
-    ctx.textWrap = true;
-    ctx.fillText(reason, 350, 710, 340);
-    ctx.textWrap = false;
+      const file = new MessageAttachment(screenshot, 'arrest.png');
 
-    ctx.font = 'bold 48px Segoe UI';
-    ctx.fillText(member.user.tag, 1016, 803, 450);
+      await message.reply({
+        files: [file]
+      });
 
-    const file = new MessageAttachment(await canvas.toBuffer('png'), 'arrest.png');
+      await reaction.remove();
 
-    await message.channel.send({
-      files: [file]
-    });
+      await browser.disconnect();
+    } catch (err) {
+      if (err instanceof UserError) {
+        await message.reply('❌ debes indicar un usuario y una razón.');
+      } else client.logException(err);
+    }
   }
 }

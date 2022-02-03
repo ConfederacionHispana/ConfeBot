@@ -5,6 +5,10 @@ export type Env = EnvType<typeof schema>;
 export const schema = {
   DB_URI: String,
   REDIS_URI: String,
+  CHROMIUM_URI: {
+    type: String,
+    optional: true
+  },
   DISCORD_TOKEN: String,
   HONEYBADGER_API_KEY: {
     type: String,
@@ -17,6 +21,7 @@ export const schema = {
     optional: true
   },
   MW_API: String,
+  TEMPLATE_BASE_URL: String,
 
   // TODO: these should be stored in the database instead
   GUILD_ID: String,
