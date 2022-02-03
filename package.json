@@ -43,13 +43,14 @@
     "zlib-sync": "^0.1.7"
   },
   "devDependencies": {
-    "@sapphire/eslint-config": "^4.0.9",
+    "@sapphire/eslint-config": "^4.1.0",
     "@sapphire/ts-config": "^3.1.2",
     "@types/chai": "^4.3.0",
     "@types/chai-as-promised": "^7.1.4",
     "@types/mocha": "^9.1.0",
     "@types/node": "^16.11.22",
     "@types/node-cron": "^3.0.1",
+    "@typescript-eslint/eslint-plugin": "^5.10.2",
     "chai": "^4.3.6",
     "chai-as-promised": "^7.1.1",
     "eslint": "~8.8.0",
