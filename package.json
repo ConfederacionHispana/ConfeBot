@@ -32,6 +32,7 @@
     "discord.js": "^13.6.0",
     "mongoose": "^6.2.0",
     "node-cron": "^3.0.0",
+    "puppeteer-core": "^13.1.3",
     "skia-canvas": "^0.9.28",
     "string-similarity-js": "^2.1.4",
     "ts-dotenv": "^0.8.3"
