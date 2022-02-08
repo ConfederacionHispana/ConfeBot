@@ -33,7 +33,7 @@
     "mongoose": "^6.2.1",
     "node-cron": "^3.0.0",
     "puppeteer-core": "^13.2.0",
-    "skia-canvas": "^0.9.28",
+    "skia-canvas": "^0.9.29",
     "string-similarity-js": "^2.1.4",
     "ts-dotenv": "^0.8.3"
   },
