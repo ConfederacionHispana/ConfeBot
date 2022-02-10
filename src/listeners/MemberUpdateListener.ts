@@ -1,17 +1,17 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { Events, Listener } from '@sapphire/framework';
-import { URL } from 'url';
 import { env } from '../lib';
+import { Time } from '../lib/util/constants';
 
 import type { ListenerOptions } from '@sapphire/framework';
-import type { GuildMember, MessageReaction, TextChannel, User } from 'discord.js';
+import type { GuildMember, TextChannel } from 'discord.js';
 
 @ApplyOptions<ListenerOptions>({
   event: Events.GuildMemberUpdate
 })
 export class MemberUpdateListener extends Listener {
   public async run(oldMember: GuildMember, newMember: GuildMember): Promise<void> {
-    const { client } = this.container;
+    const { client, tasks } = this.container;
 
     if (newMember.guild.id !== env.GUILD_ID) return;
     if (newMember.user.bot) return;
@@ -68,90 +68,40 @@ export class MemberUpdateListener extends Listener {
         }
       }
 
-      const interactiveVerifyURL = new URL('https://confederacion-hispana.fandom.com/es/wiki/Especial:VerifyUser');
+      try {
+        await newMember.roles.add(env.NEWUSER_ROLE).catch(client.logException);
 
-      interactiveVerifyURL.searchParams.append('useskin', 'fandomdesktop');
-      interactiveVerifyURL.searchParams.append('user', newMember.user.username);
-      interactiveVerifyURL.searchParams.append('tag', newMember.user.discriminator);
-      interactiveVerifyURL.searchParams.append('ch', (client.channels.resolve(env.VERIF_CHANNEL) as TextChannel).name);
-      interactiveVerifyURL.searchParams.append('c', 'c!verify');
-
-      newMember.roles
-        .add(env.NEWUSER_ROLE)
-        .then(() => {
-          welcomeChannel
-            .send({
-              content: `¡Bienvenid@ <@!${newMember.user.id}> a la **Confederación de Fandom Hispano**!`,
-              embeds: [
+        await welcomeChannel.send({
+          content: `¡Bienvenid@ <@!${newMember.user.id}> a la **Confederación de Fandom Hispano**!`,
+          embeds: [
+            {
+              color: 2936518,
+              thumbnail: {
+                url: 'https://vignette4.wikia.nocookie.net/confederacion-hispana/es/images/8/89/Wiki-wordmark.png'
+              },
+              description: `Somos una organización sin ánimo de lucro, y nuestro objetivo es unir wikis de habla hispana en un mismo servidor.`,
+              fields: [
                 {
-                  color: 2936518,
-                  thumbnail: {
-                    url: 'https://vignette4.wikia.nocookie.net/confederacion-hispana/es/images/8/89/Wiki-wordmark.png'
-                  },
-                  description: `Para acceder a todos los canales del servidor, necesitamos que completes una pequeña verificación:\n\nSi aún no lo has hecho, dirígete a tu perfil de Fandom, y en la parte superior (perfil global) añade tu Discord Tag en el campo destinado a ello. También puedes ingresar a [este enlace](${interactiveVerifyURL.href}) para agregar tu tag automáticamente.\n\nLuego, envía un mensaje en <#${env.VERIF_CHANNEL}> con el comando \`c!verify TuNombreDeUsuario\`.`,
-                  fields: [
-                    {
-                      name: '¿No tienes una cuenta en Fandom?',
-                      value: 'Reacciona con el emoji 🌐 para ingresar como invitado.'
-                    },
-                    {
-                      name: '¿Tienes algún incoveniente para completar la verificación?',
-                      value: `Menciona a algún miembro del <@&${env.STAFF_ROLE}> e intentaremos ayudarte.`
-                    }
-                  ]
+                  name: 'Desbloquea más canales',
+                  value: `Si tienes una cuenta de Fandom, puedes verificarte y acceder a canales para obtener ayuda con tu wiki, ayuda sobre CSS, y promocionar tu comunidad.\n\nPara verificarte, dirígete a <#${env.VERIF_CHANNEL}> y escribe \`c!verify\`.`
                 }
               ]
-            })
-            .then((sentMessage) => {
-              sentMessage.react('🌐').catch(client.logException);
-              const filter = (reaction: MessageReaction, user: User) =>
-                ['🌐'].includes(reaction.emoji.name as string) && user.id === newMember.id;
-              sentMessage
-                .awaitReactions({
-                  filter,
-                  max: 1,
-                  time: 3600000, // 1h
-                  errors: ['time']
-                })
-                .then((collected) => {
-                  const reaction = collected.first();
-                  if (reaction && reaction.emoji.name === '🌐') {
-                    newMember.roles
-                      .add(env.USER_ROLE)
-                      .then(() => {
-                        newMember.roles.remove(env.NEWUSER_ROLE).catch(client.logException);
-                        // TODO: log in db
-                        client.logger.info('User authenticated as guest', {
-                          member: newMember.user.id
-                        });
-                        logsChannel
-                          .send(`✅ Se verificó a <@!${newMember.user.id}> como invitado`)
-                          .catch(client.logException);
-                      })
-                      .catch((err) => {
-                        client.logException(err, {
-                          user_id: newMember.user.id
-                        });
-                      });
-                  }
-                })
-                .catch(client.logException);
-            })
-            .catch((err) => {
-              logsChannel
-                .send(
-                  `❌ Imposible enviar mensaje de bienvenida a <@!${newMember.user.id}>: ${err.message} (${err.name})`
-                )
-                .catch(client.logException);
-              client.logException(err);
-            });
-        })
-        .catch((err) => {
-          logsChannel
-            .send(`❌ Imposible agregar el rol Nuevo Ingreso a <@!${newMember.user.id}>: ${err.message} (${err.name})`)
-            .catch(client.logException);
-          client.logException(err);
+            }
+          ]
         });
+
+        tasks.create(
+          'AutoVerify',
+          {
+            userId: newMember.user.id
+          },
+          Time.Day * 3
+        );
+      } catch (err) {
+        if (err instanceof Error) {
+          client.logException(err);
+        }
+      }
     }
   }
 }

@@ -18,8 +18,23 @@ export class UserVerifyCommand extends Command {
     if (message.author.bot) return;
     if (!message.guild || !message.member) return;
 
+    const dbUser = await DBModels.User.findOne({ id: message.member.user.id });
+
     // TODO: Allow users to re-verify (e.g. if they changed accs)?
-    if (message.member.roles.cache.has(env.FDUSER_ROLE)) return;
+    if (message.member.roles.cache.has(env.FDUSER_ROLE) && dbUser?.fandomUser) {
+      await message.channel
+        .send({
+          embeds: [
+            {
+              color: 4575254,
+              title: 'Ya te has verificado',
+              description: `✅ Ya has verificado tu cuenta de Fandom: **${dbUser.fandomUser.username}**\n\nSi quieres cambiar o desconectar tu cuenta, contacta con el <@&${env.STAFF_ROLE}> del servidor.`
+            }
+          ]
+        })
+        .catch(client.logException);
+      return;
+    }
 
     const fandomUserResolver = Args.make((arg) => Args.ok(arg.substring(0, 255)));
     const fandomUser = await args.restResult(fandomUserResolver);

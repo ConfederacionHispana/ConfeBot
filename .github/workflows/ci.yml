@@ -5,10 +5,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579 # renovate: tag=v2
 
     - name: Cache node modules
-      uses: actions/cache@v2
+      uses: actions/cache@937d24475381cd9c75ae6db12cb4e79714b926ed # renovate: tag=v2
       env:
         cache-name: cache-node-modules
       with:
@@ -36,10 +36,10 @@ jobs:
     if: github.ref == 'refs/heads/master'
     needs: [build]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579 # renovate: tag=v2
 
       - name: Build and deploy container image
-        uses: gonuit/heroku-docker-deploy@v1.3.3
+        uses: gonuit/heroku-docker-deploy@9ab97585f979857642d66612a2ae4062b3347d53 # renovate: tag=v1.3.3
         with:
           email: ${{ secrets.HEROKU_EMAIL }}
           heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
@@ -47,6 +47,6 @@ jobs:
           process_type: 'worker'
 
       - name: Send deploy notification
-        uses: honeybadger-io/github-notify-deploy-action@v1
+        uses: honeybadger-io/github-notify-deploy-action@50838a23920642c5f587909e759f1e9e6db15a8a # renovate: tag=v1
         with:
           api_key: ${{ secrets.HONEYBADGER_API_KEY }}

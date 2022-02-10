@@ -11,6 +11,7 @@
       "ESNext.Symbol",
       "ESNext.BigInt"
     ],
+    "experimentalDecorators": true,
     "importsNotUsedAsValues": "preserve",
     "noUnusedLocals": false,
     "noUnusedParameters": false,
@@ -20,7 +21,7 @@
       "./src/types"
     ],
     "skipLibCheck": true,
-	"experimentalDecorators": true
+    "useUnknownInCatchVariables": false
   },
   "outDir": "../dist",
   "rootDir": "./src",
