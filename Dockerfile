@@ -1,45 +1,72 @@
-# Dockerfile for ConfeBot
+# ================ #
+#    Base Stage    #
+# ================ #
 
-# The first stage installs npm prod dependencies and copies them for later use.
-# Then, installs devDependencies and compiles the TypeScript source.
-FROM node:16-alpine3.14 AS base
-RUN mkdir /home/node/app/ && chown -R node:node /home/node/app
+FROM node:16-alpine3.14 as base
+
 WORKDIR /home/node/app
 
-# Copy package.json
-COPY --chown=node:node package*.json ./
+ENV HUSKY=0
+ENV CI=true
+ENV NODE_ENV="development"
 
-# Install prod dependencies
-USER node
-RUN npm set-script prepare ""
-RUN npm ci --loglevel info --only=production
+RUN apk add -u --no-cache \
+    dumb-init \
+		fontconfig \
+		nodejs
 
-# Copy prod dependencies for later use and install dev dependencies
-RUN cp -r node_modules node_modules_prod
-RUN npm ci --loglevel info
+COPY --chown=node:node yarn.lock .
+COPY --chown=node:node package.json .
+COPY --chown=node:node .yarnrc.yml .
+COPY --chown=node:node .yarn/ .yarn/
 
-# Development, used for development only (defaults to dev command)
+RUN sed -i 's/"prepare": "husky install"/"prepare": ""/' ./package.json
+
+ENTRYPOINT ["dumb-init", "--"]
+
+# =================== #
+#  Development Stage  #
+# =================== #
 FROM base as development
 
-CMD [ "npm", "run", "dev"]
+ENV NODE_ENV="development"
 
-FROM base AS build
-# Copy root directory
-COPY --chown=node:node . .
+COPY --chown=node:node tsconfig*.json .
+COPY --chown=node:node src/ src/
 
-# Build TypeScript
-RUN npm run build
+RUN yarn install --immutable
 
-# The second stage of the build copies node_modules_prod and the built JS from the first stage.
-FROM node:16-alpine3.14
+CMD [ "yarn", "run", "dev"]
+
+# ================ #
+#   Builder Stage  #
+# ================ #
+
+FROM development as builder
+
+ENV NODE_ENV="development"
+
+COPY --chown=node:node tsconfig*.json .
+COPY --chown=node:node src/ src/
+
+RUN yarn run build
+
+# ================ #
+#   Runner Stage   #
+# ================ #
+
+FROM base AS runner
+
+ENV NODE_ENV="production"
+ENV NODE_OPTIONS="--enable-source-maps --max_old_space_size=4096"
+
 WORKDIR /home/node/app
 
-COPY --chown=node:node package*.json ./
+COPY --chown=node:node --from=BUILDER /home/node/app/dist dist
+
+RUN yarn workspaces focus --all --production
+RUN chown node:node /home/node/app/
+
 USER node
 
-# Copy node_modules and dist from the first stage
-COPY --from=build --chown=node:node /home/node/app/node_modules_prod ./node_modules
-COPY --from=build --chown=node:node /home/node/app/dist ./dist
-
-# Run the application
-ENTRYPOINT ["npm", "start"]
+CMD [ "yarn", "run", "start"]
