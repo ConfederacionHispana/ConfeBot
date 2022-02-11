@@ -1,6 +1,6 @@
 import type { PieceContext } from '@sapphire/framework';
 import { ScheduledTask } from '@sapphire/plugin-scheduled-tasks';
-import { env } from '#lib/env';
+import { env } from '../lib/env';
 
 export class AutoVerifyTask extends ScheduledTask {
   public constructor(context: PieceContext) {
