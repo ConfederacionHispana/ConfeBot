@@ -2,7 +2,7 @@
 #    Base Stage    #
 # ================ #
 
-FROM node:16-alpine3.14 as base
+FROM node:16-alpine3.15 as base
 
 WORKDIR /home/node/app
 
@@ -13,6 +13,7 @@ ENV NODE_ENV="development"
 RUN apk add -u --no-cache \
     dumb-init \
 		fontconfig \
+		jq \
 		nodejs
 
 COPY --chown=node:node yarn.lock .
@@ -68,5 +69,9 @@ RUN yarn workspaces focus --all --production
 RUN chown node:node /home/node/app/
 
 USER node
+
+ARG BUILD_NUMBER=1
+ENV BUILD_NUMBER=${BUILD_NUMBER}
+RUN contents="$(jq ".version += \".${BUILD_NUMBER}\"" package.json)" && echo "${contents}" > package.json
 
 CMD [ "yarn", "run", "start"]
