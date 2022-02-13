@@ -32,6 +32,11 @@ FROM base as development
 
 ENV NODE_ENV="development"
 
+RUN apk add -u --no-cache \
+	g++ \
+	make \
+	python3
+
 COPY --chown=node:node tsconfig*.json .
 COPY --chown=node:node src/ src/
 
