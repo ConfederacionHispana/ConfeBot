@@ -74,7 +74,7 @@ jobs:
         with:
           submodules: true
       - name: Deploy image to production server
-        run: docker run -it caprover/cli-caprover:2.2.3 caprover deploy --caproverUrl ${{ secrets.CAPROVER_URL }} --appToken ${{ secrets.CAPROVER_DEPLOY_TOKEN }} --caproverApp ${{ secrets.CAPROVER_APP }} --imageName ghcr.io/confederacionhispana/confebot:${{ needs.Publish.outputs.deploy_tag }}
+        run: docker run -t caprover/cli-caprover:2.2.3 caprover deploy --caproverUrl ${{ secrets.CAPROVER_URL }} --caproverPassword ${{ secrets.CAPROVER_PASSWORD }} --caproverApp ${{ secrets.CAPROVER_APP }} --imageName ghcr.io/confederacionhispana/confebot:${{ needs.Publish.outputs.deploy_tag }}
       - name: Send deploy notification
         uses: honeybadger-io/github-notify-deploy-action@50838a23920642c5f587909e759f1e9e6db15a8a # renovate: tag=v1
         with:
