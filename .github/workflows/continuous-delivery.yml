@@ -10,6 +10,7 @@ on:
       - 'Dockerfile'
       - '.github/workflows/continuous-delivery.yml'
       - 'package.json'
+      - 'yarn.lock'
 
 env:
   # Uses docker.io for Docker Hub if empty
