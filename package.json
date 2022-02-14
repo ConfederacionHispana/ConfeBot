@@ -3,16 +3,13 @@
   "version": "2.1.0",
   "description": "Bot de la Confederación de Fandom Hispano",
   "main": "dist/index.js",
-  "imports": {
-    "#lib/*": "./dist/lib/*.js"
-  },
   "scripts": {
     "build": "tsc --project tsconfig.build.json --listEmittedFiles",
     "dev": "rimraf dist/ && tsc-watch --project tsconfig.build.json --noClear --onSuccess \"node --enable-source-maps ./dist/index.js\"",
     "lint": "eslint src/ --ext ts",
     "lint:fix": "eslint src/ --ext ts --fix",
     "start": "node --enable-source-maps ./dist/index.js",
-    "test": "mocha -r ts-node/register -r tsconfig-paths/register test/**/*.test.ts",
+    "test": "mocha dist/test",
     "prepare": "husky install"
   },
   "author": "TheNozomi <13172293+TheNozomi@users.noreply.github.com>",
@@ -32,10 +29,10 @@
     "discord.js": "^13.6.0",
     "mongoose": "^6.2.1",
     "node-cron": "^3.0.0",
-    "puppeteer-core": "^13.3.1",
-    "skia-canvas": "^0.9.29",
+    "puppeteer-core": "^13.2.0",
     "string-similarity-js": "^2.1.4",
-    "ts-dotenv": "^0.8.3"
+    "ts-dotenv": "^0.8.3",
+    "tslib": "^2.3.1"
   },
   "optionalDependencies": {
     "bufferutil": "^4.0.6",
@@ -52,12 +49,14 @@
     "@types/node": "^16.11.24",
     "@types/node-cron": "^3.0.1",
     "@typescript-eslint/eslint-plugin": "^5.11.0",
+    "@typescript-eslint/parser": "^5.10.1",
     "chai": "^4.3.6",
     "chai-as-promised": "^7.1.1",
     "eslint": "~8.9.0",
     "husky": "^7.0.4",
     "lint-staged": "^11.2.6",
     "mocha": "^9.2.0",
+    "prettier": "^2.5.1",
     "rimraf": "^3.0.2",
     "ts-node": "^10.5.0",
     "tsc-watch": "^4.6.0",
@@ -66,5 +65,6 @@
   },
   "lint-staged": {
     "*.ts": "eslint --cache --fix"
-  }
+  },
+  "packageManager": "yarn@3.1.1"
 }

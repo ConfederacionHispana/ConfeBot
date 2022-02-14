@@ -2,10 +2,8 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { Args, Command } from '@sapphire/framework';
 import { URL } from 'url';
 import { format as formatDate } from 'date-fns';
-import { env } from '#lib/env';
+import { env, NonExistentUser, UserVerification } from '../../lib';
 import DBModels from '../../db';
-import UserVerification from '#lib/confe/UserVerification';
-import NonExistentUser from '#lib/util/errors/NonExistentUser';
 
 import type { CommandOptions } from '@sapphire/framework';
 import type { Message, TextChannel } from 'discord.js';

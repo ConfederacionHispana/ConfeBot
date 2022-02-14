@@ -1,8 +1,6 @@
 import axios from 'axios';
 
-import InvalidInterwiki from '#lib/util/errors/InvalidInterwiki';
-import NonExistentUser from '#lib/util/errors/NonExistentUser';
-import NonExistentWiki from '#lib/util/errors/NonExistentWiki';
+import {InvalidInterwiki, NonExistentUser, NonExistentWiki} from '../util/errors';
 
 interface IAllUsersQuery {
   query: {
@@ -47,7 +45,7 @@ interface IMediaWikiUser {
   missing?: string;
 }
 
-export default class FandomUtilities {
+export class FandomUtilities {
   static interwiki2url(_interwiki: string): string {
     const interwiki = _interwiki.toLowerCase();
     if (interwiki.match(/[a-z0-9-]+\.[a-z0-9-]+/)) {

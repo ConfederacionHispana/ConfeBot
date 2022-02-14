@@ -1,6 +1,6 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { Events, Listener } from '@sapphire/framework';
-import { Time } from '#lib/util/constants';
+import { Time } from '../lib';
 
 import type { ListenerOptions } from '@sapphire/framework';
 import type { GuildMember } from 'discord.js';
@@ -9,6 +9,8 @@ import type { GuildMember } from 'discord.js';
   event: Events.GuildMemberAdd
 })
 export class MemberAddListener extends Listener {
+  static MINIMUM_DAYS_AGE = 3;
+
   public run(member: GuildMember): void {
     this.logNewMember(member);
     this.checkAccountAge(member);
@@ -44,6 +46,4 @@ export class MemberAddListener extends Listener {
       });
     }
   }
-
-  static MINIMUM_DAYS_AGE = 3;
 }

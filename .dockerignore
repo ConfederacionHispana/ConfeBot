@@ -104,5 +104,14 @@ dist
 .tern-port
 
 # Lockfiles from other package managers
+package-lock.json
 pnpm-lock.yaml
-yarn.lock
+
+# Yarn stuff
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions

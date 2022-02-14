@@ -1,9 +1,7 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args, Command } from '@sapphire/framework';
-import { env } from '#lib/env';
+import { env, FandomUtilities, NonExistentUser } from '../../lib';
 import DBModels from '../../db';
-import FandomUtilities from '#lib/fandom/FandomUtilities';
-import NonExistentUser from '#lib/util/errors/NonExistentUser';
 
 import type { CommandOptions } from '@sapphire/framework';
 import type { Message, TextChannel } from 'discord.js';

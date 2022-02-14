@@ -3,7 +3,7 @@ import { Args, Command, CommandOptions, UserError } from '@sapphire/framework';
 import { MessageAttachment, TextChannel, type Message } from 'discord.js';
 import { connect } from 'puppeteer-core';
 import { URL } from 'url';
-import { env } from '#lib/env';
+import { env } from '../../lib/env';
 
 @ApplyOptions<CommandOptions>({
   aliases: ['arrest', 'arrestar']

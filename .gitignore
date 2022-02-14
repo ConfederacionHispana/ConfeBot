@@ -103,9 +103,18 @@ dist
 # TernJS port file
 .tern-port
 
-# Lockfiles from other package managers
-pnpm-lock.yaml
-yarn.lock
-
 # Operating system files
 *.DS_Store
+
+# Lockfiles from other package managers
+package-lock.json
+pnpm-lock.yaml
+
+# Yarn stuff
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions

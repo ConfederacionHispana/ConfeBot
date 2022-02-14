@@ -26,11 +26,11 @@ jobs:
     - name: ESLint
       run: npm run lint
 
-    - name: Run tests
-      run: npm run test
-
     - name: TypeScript build
       run: npm run build
+
+    - name: Run tests
+      run: npm run test
   deploy:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/master'

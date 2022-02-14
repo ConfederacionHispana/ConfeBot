@@ -1,6 +1,6 @@
 import Guild from '../models/Guild';
 
-import type { ConfeBot } from '#lib/ConfeBot';
+import type { ConfeBot } from '../../lib';
 
 export class GuildStatsManager {
   public client: ConfeBot;

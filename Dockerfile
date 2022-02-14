@@ -1,49 +1,82 @@
-# Dockerfile for ConfeBot
+# ================ #
+#    Base Stage    #
+# ================ #
 
-# The first stage installs npm prod dependencies and copies them for later use.
-# Then, installs devDependencies and compiles the TypeScript source.
-FROM node:16-alpine3.14 AS base
-RUN apk update && apk add fontconfig
+FROM node:16-alpine3.15 as base
 
-RUN mkdir /home/node/app/ && chown -R node:node /home/node/app
 WORKDIR /home/node/app
 
-# Copy package.json
-COPY --chown=node:node package*.json ./
+ENV HUSKY=0
+ENV CI=true
+ENV NODE_ENV="development"
 
-# Install prod dependencies
-USER node
-RUN npm set-script prepare ""
-RUN npm ci --loglevel info --only=production
+RUN apk add -u --no-cache \
+    dumb-init \
+		fontconfig \
+		jq \
+		nodejs
 
-# Copy prod dependencies for later use and install dev dependencies
-RUN cp -r node_modules node_modules_prod
-RUN npm ci --loglevel info
+COPY --chown=node:node yarn.lock .
+COPY --chown=node:node package.json .
+COPY --chown=node:node .yarnrc.yml .
+COPY --chown=node:node .yarn/ .yarn/
 
-# Development, used for development only (defaults to dev command)
+RUN sed -i 's/"prepare": "husky install"/"prepare": ""/' ./package.json
+
+ENTRYPOINT ["dumb-init", "--"]
+
+# =================== #
+#  Development Stage  #
+# =================== #
 FROM base as development
 
-CMD [ "npm", "run", "dev"]
+ENV NODE_ENV="development"
 
-FROM base AS build
-# Copy root directory
-COPY --chown=node:node . .
+RUN apk add -u --no-cache \
+	g++ \
+	make \
+	python3
 
-# Build TypeScript
-RUN npm run build
+COPY --chown=node:node tsconfig*.json .
+COPY --chown=node:node src/ src/
 
-# The second stage of the build copies node_modules_prod and the built JS from the first stage.
-FROM node:16-alpine3.14
-RUN apk update && apk -UvX http://dl-4.alpinelinux.org/alpine/edge/main add -u nodejs && apk add fontconfig
+RUN yarn install --immutable
+
+CMD [ "yarn", "run", "dev"]
+
+# ================ #
+#   Builder Stage  #
+# ================ #
+
+FROM development as builder
+
+ENV NODE_ENV="development"
+
+COPY --chown=node:node tsconfig*.json .
+COPY --chown=node:node src/ src/
+
+RUN yarn run build
+
+# ================ #
+#   Runner Stage   #
+# ================ #
+
+FROM base AS runner
+
+ENV NODE_ENV="production"
+ENV NODE_OPTIONS="--enable-source-maps --max_old_space_size=4096"
+
 WORKDIR /home/node/app
 
-COPY --chown=node:node package*.json ./
+COPY --chown=node:node --from=BUILDER /home/node/app/dist dist
+
+RUN yarn workspaces focus --all --production
+RUN chown node:node /home/node/app/
+
 USER node
 
-# Copy node_modules, assets and dist from the first stage
-COPY --from=build --chown=node:node /home/node/app/node_modules_prod ./node_modules
-COPY --from=build --chown=node:node /home/node/app/assets ./assets
-COPY --from=build --chown=node:node /home/node/app/dist ./dist
+ARG BUILD_NUMBER=1
+ENV BUILD_NUMBER=${BUILD_NUMBER}
+RUN contents="$(jq ".version += \".${BUILD_NUMBER}\"" package.json)" && echo "${contents}" > package.json
 
-# Run the application
-ENTRYPOINT ["npm", "start"]
+CMD [ "yarn", "run", "start"]

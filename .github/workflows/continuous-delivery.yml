@@ -19,13 +19,18 @@ env:
 
 jobs:
   Publish:
-    name: Publish ConfeBot image to GHCR
+    name: Publish image to GHCR
     runs-on: ubuntu-latest
+    outputs:
+      deploy_tag: ${{ steps.save_tag.outputs.tag }}
     steps:
       - name: Checkout Project
         uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579 # renovate: tag=v2
         with:
           submodules: true
+      - name: Extract version from package.json
+        id: package_version
+        uses: saionaro/extract-package-version@v1.0.6
       - name: Setup Docker Buildx
         uses: docker/setup-buildx-action@94ab11c41e45d028884a99163086648e898eed25 # renovate: tag=v1.6.0
       - name: Login to GitHub Container Registry
@@ -34,15 +39,43 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Extract Docker metadata
+      - name: Extract metadata for Docker images
         id: meta
         uses: docker/metadata-action@v3
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+            type=raw,value=${{ steps.package_version.outputs.version }}
+            type=raw,value=${{ steps.package_version.outputs.version }}.${{ github.run_number }}
+            type=raw,value=latest,enable=${{ endsWith(github.ref, github.event.repository.default_branch) }}
       - name: Build and push Docker image
         uses: docker/build-push-action@7f9d37fa544684fb73bfe4835ed7214c255ce02b # renovate: tag=v2.9.0
         with:
           push: true
           context: .
+          build-args: |
+            BUILD_NUMBER=${{ github.run_number }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+      - name: Save image tag for use in deploy job
+        id: save_tag
+        run: echo "::set-output name=tag::${{ steps.package_version.outputs.version }}.${{ github.run_number }}"
+  Deploy:
+    name: Deploy image
+    runs-on: ubuntu-latest
+    needs: [Publish]
+    steps:
+      - name: Checkout Project
+        uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579 # renovate: tag=v2
+        with:
+          submodules: true
+      - name: Deploy image to production server
+        run: docker run -t caprover/cli-caprover:2.2.3 caprover deploy --caproverUrl ${{ secrets.CAPROVER_URL }} --caproverPassword ${{ secrets.CAPROVER_PASSWORD }} --caproverApp ${{ secrets.CAPROVER_APP }} --imageName ghcr.io/confederacionhispana/confebot:${{ needs.Publish.outputs.deploy_tag }}
+      - name: Send deploy notification
+        uses: honeybadger-io/github-notify-deploy-action@50838a23920642c5f587909e759f1e9e6db15a8a # renovate: tag=v1
+        with:
+          api_key: ${{ secrets.HONEYBADGER_API_KEY }}

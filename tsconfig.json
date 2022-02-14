@@ -2,9 +2,6 @@
   "extends": "@sapphire/ts-config",
   "compilerOptions": {
     "baseUrl": "./src",
-    "paths": {
-      "#lib/*": ["lib/*"]
-    },
     "target": "ES2020",
     "lib": [
       "ESNext",
@@ -29,7 +26,6 @@
   "outDir": "../dist",
   "rootDir": "./src",
   "include": [
-    "./src/**/*.ts",
-    "./test/**/*.ts"
+    "./src/**/*.ts"
   ]
 }

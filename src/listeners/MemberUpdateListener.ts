@@ -1,7 +1,7 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { Events, Listener } from '@sapphire/framework';
-import { env } from '#lib/env';
-import { Time } from '#lib/util/constants';
+import { env } from '../lib';
+import { Time } from '../lib/util/constants';
 
 import type { ListenerOptions } from '@sapphire/framework';
 import type { GuildMember, TextChannel } from 'discord.js';
