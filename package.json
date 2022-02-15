@@ -27,6 +27,7 @@
     "bull": "^4.5.2",
     "date-fns": "^2.28.0",
     "discord.js": "^13.6.0",
+    "mongodb": "^4.3.1",
     "mongoose": "^6.2.1",
     "node-cron": "^3.0.0",
     "puppeteer-core": "^13.2.0",
