@@ -5,6 +5,7 @@ import { ScheduledTaskRedisStrategy } from '@sapphire/plugin-scheduled-tasks/reg
 import { env } from './env';
 import { GuildSettingsManager } from '../db/managers/GuildSettingsManager';
 import { GuildStatsManager } from '../db/managers/GuildStatsManager';
+import { MongoClient } from 'mongodb';
 
 import type { Message } from 'discord.js';
 
@@ -26,6 +27,7 @@ export class ConfeBot extends SapphireClient {
       ...options
     });
 
+    container.mongodb = new MongoClient( env.DB_URI );
     container.settingsManager = new GuildSettingsManager(this);
     container.statsManager = new GuildStatsManager(this);
   }
