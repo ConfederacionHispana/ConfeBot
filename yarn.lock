@@ -1274,7 +1274,6 @@ __metadata:
     mocha: ^9.2.0
     mongoose: ^6.2.1
     node-cron: ^3.0.0
-    prettier: ^2.5.1
     puppeteer-core: ^13.2.0
     rimraf: ^3.0.2
     string-similarity-js: ^2.1.4
