@@ -27,7 +27,8 @@ export class ConfeBot extends SapphireClient {
       ...options
     });
 
-    container.mongodb = new MongoClient( env.DB_URI );
+    const client = new MongoClient( env.DB_URI );
+    container.mongodb = client.db()
     container.settingsManager = new GuildSettingsManager(this);
     container.statsManager = new GuildStatsManager(this);
   }
