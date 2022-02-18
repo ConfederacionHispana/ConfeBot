@@ -1,0 +1,45 @@
+diff --git a/dist/index.d.ts b/dist/index.d.ts
+index b8bf2c1662a247f07b846aee92223e0d4e6607cd..08654ec33f52b542d2834a50f306ba2c4d1fe6df 100644
+--- a/dist/index.d.ts
++++ b/dist/index.d.ts
+@@ -2929,6 +2929,7 @@ declare const Events: {
+     MessageCommandTypingError: "messageCommandTypingError";
+     ListenerError: "listenerError";
+     CommandApplicationCommandRegistryError: "commandApplicationCommandRegistryError";
++    CommandApplicationCommandRegistryFinish: "commandApplicationCommandRegistryFinish";
+     PiecePostLoad: "piecePostLoad";
+     PieceUnload: "pieceUnload";
+     PluginLoaded: "pluginLoaded";
+diff --git a/dist/lib/types/Events.js b/dist/lib/types/Events.js
+index 6d1ed7502fe5a640424a34f5e58be669296740ad..4ee65d0d379434fc68c0ed44270ae1466e3326f3 100644
+--- a/dist/lib/types/Events.js
++++ b/dist/lib/types/Events.js
+@@ -90,6 +90,7 @@ exports.Events = {
+     ListenerError: 'listenerError',
+     // Registry errors
+     CommandApplicationCommandRegistryError: 'commandApplicationCommandRegistryError',
++    CommandApplicationCommandRegistryFinish: 'commandApplicationCommandRegistryFinish',
+     // Piece store?
+     PiecePostLoad: 'piecePostLoad',
+     PieceUnload: 'pieceUnload',
+diff --git a/dist/lib/utils/application-commands/ApplicationCommandRegistries.js b/dist/lib/utils/application-commands/ApplicationCommandRegistries.js
+index b2b49415f777cb96972a221b16637c1e4fa48e75..4b6447b807792a8d7034c144ad9596ca77ef052c 100644
+--- a/dist/lib/utils/application-commands/ApplicationCommandRegistries.js
++++ b/dist/lib/utils/application-commands/ApplicationCommandRegistries.js
+@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
+ exports.handleRegistryAPICalls = exports.getDefaultBehaviorWhenNotIdentical = exports.setDefaultBehaviorWhenNotIdentical = exports.acquire = exports.registries = exports.defaultBehaviorWhenNotIdentical = void 0;
+ const pieces_1 = require("@sapphire/pieces");
+ require("../../types/Enums");
++const { Events } = require("../../types/Events");
+ const ApplicationCommandRegistry_1 = require("./ApplicationCommandRegistry");
+ const getNeededParameters_1 = require("./getNeededParameters");
+ exports.defaultBehaviorWhenNotIdentical = "LOG_TO_CONSOLE" /* LogToConsole */;
+@@ -51,6 +52,7 @@ async function handleRegistryAPICalls() {
+             }
+         }
+     }
++    pieces_1.container.client.emit( Events.CommandApplicationCommandRegistryFinish );
+ }
+ exports.handleRegistryAPICalls = handleRegistryAPICalls;
+ //# sourceMappingURL=ApplicationCommandRegistries.js.map
+\ No newline at end of file
