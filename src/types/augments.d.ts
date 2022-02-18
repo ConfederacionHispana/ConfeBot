@@ -1,6 +1,4 @@
-import type { TaskStore } from '#lib/structures/TaskStore';
-import type { GuildSettingsManager } from '../db/managers/GuildSettingsManager';
-import type { GuildStatsManager } from 'db/managers/GuildStatsManager';
+import type { ChatInputCommandsData } from '../lib';
 import type { Db } from 'mongodb';
 
 declare module '@sapphire/framework' {
@@ -24,6 +22,7 @@ declare module 'discord.js' {
         uses: number;
       };
     };
+		chatInputCommandsData: ChatInputCommandsData
     readonly version: string;
     logException(err: Error, context?: Record<string, unknown>): void;
   }

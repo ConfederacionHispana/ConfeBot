@@ -7,6 +7,7 @@ import { MongoClient } from 'mongodb';
 import { ModelStore } from './structures'
 
 import type { Message } from 'discord.js';
+import { ChatInputCommandsData } from './managers';
 
 export class ConfeBot extends SapphireClient {
   public version = process.env.npm_package_version || '2.0.0-dev';
@@ -27,6 +28,7 @@ export class ConfeBot extends SapphireClient {
     });
 
     container.stores.register(new ModelStore())
+		this.chatInputCommandsData = new ChatInputCommandsData()
   }
 
   public fetchPrefix = async (message: Message): Promise<string> => {
