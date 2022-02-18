@@ -14,13 +14,13 @@ export class PrefixCommand extends Command {
       void message.channel.send('Este comando solo puede ejecutarse en un servidor.');
       return;
     }
-    const model = this.container.stores.get( 'models' ).get( 'guild' )
-    const oldPrefix = await model.getPrefix( message.guildId )
+    const model = this.container.stores.get('models').get('guild')
+    const oldPrefix = await model.getPrefix(message.guildId)
 
     try {
       const newPrefix = await args.pick('string');
       if (message.member?.permissions.has(Permissions.FLAGS.MANAGE_GUILD)) {
-        await model.setPrefix( message.guildId, newPrefix )
+        await model.setPrefix(message.guildId, newPrefix)
         void message.channel.send(`Prefix cambiado a: \`${newPrefix}\``);
         return;
       }

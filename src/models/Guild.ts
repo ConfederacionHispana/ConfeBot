@@ -15,11 +15,11 @@ export interface IGuild {
     };
   }
 
-@ApplyOptions<PieceOptions>( {
+@ApplyOptions<PieceOptions>({
     name: 'guild'
-} )
+})
 export class GuildModel extends Model {
-    public getDefaultGuild( id: string ): IGuild {
+    public getDefaultGuild(id: string): IGuild {
         return {
             id,
             settings: {},
@@ -27,29 +27,29 @@ export class GuildModel extends Model {
         }
     }
 
-    public async getGuild( guildId: string ): Promise<IGuild> {
-        const collection = this.container.mongodb.collection<IGuild>( 'guilds' )
-        const guild = await collection.findOne( { id: guildId } ) ?? this.getDefaultGuild( guildId )
+    public async getGuild(guildId: string): Promise<IGuild> {
+        const collection = this.container.mongodb.collection<IGuild>('guilds')
+        const guild = await collection.findOne({ id: guildId }) ?? this.getDefaultGuild(guildId)
         return guild
     }
 
-    public async getChannel( guildId: string, name: 'starboard' ): Promise<string | null> {
-        const guild = await this.getGuild( guildId )
+    public async getChannel(guildId: string, name: 'starboard'): Promise<string | null> {
+        const guild = await this.getGuild(guildId)
         return guild.settings?.channels?.[ name ] ?? null
     }
 
-    public async getPrefix( guildId: string ): Promise<string> {
-        const guild = await this.getGuild( guildId )
+    public async getPrefix(guildId: string): Promise<string> {
+        const guild = await this.getGuild(guildId)
         return guild.settings?.prefix ?? 'c!'
     }
 
-    public async getStat( guildId: string, stat: string ): Promise<number> {
-        const guild = await this.getGuild( guildId )
+    public async getStat(guildId: string, stat: string): Promise<number> {
+        const guild = await this.getGuild(guildId)
         return guild.stats?.[ stat ] ?? 0
     }
 
-    public async setChannel( guildId: string, name: 'starboard', channel: string ): Promise<void> {
-        const collection = this.container.mongodb.collection<IGuild>( 'guilds' )
+    public async setChannel(guildId: string, name: 'starboard', channel: string): Promise<void> {
+        const collection = this.container.mongodb.collection<IGuild>('guilds')
         await collection.updateOne(
             { id: guildId },
             {
@@ -61,8 +61,8 @@ export class GuildModel extends Model {
         )
     }
 
-    public async setPrefix( guildId: string, prefix: string ): Promise<void> {
-        const collection = this.container.mongodb.collection<IGuild>( 'guilds' )
+    public async setPrefix(guildId: string, prefix: string): Promise<void> {
+        const collection = this.container.mongodb.collection<IGuild>('guilds')
         await collection.updateOne(
             { id: guildId },
             {
@@ -74,8 +74,8 @@ export class GuildModel extends Model {
         )
     }
 
-    public async addStat( guildId: string, stat: string ): Promise<void> {
-        const collection = this.container.mongodb.collection<IGuild>( 'guilds' )
+    public async addStat(guildId: string, stat: string): Promise<void> {
+        const collection = this.container.mongodb.collection<IGuild>('guilds')
         await collection.updateOne(
             { id: guildId },
             {

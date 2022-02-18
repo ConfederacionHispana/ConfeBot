@@ -7,7 +7,7 @@ export class AutoVerifyTask extends ScheduledTask {
     super(context, {});
   }
 
-  public async run(payload: { userId: string }) {
+  public async run(payload: { userId: string }): Promise<void> {
     const { client, logger } = this.container;
     const { userId } = payload;
 

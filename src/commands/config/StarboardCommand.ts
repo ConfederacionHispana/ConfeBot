@@ -14,8 +14,8 @@ export class StarboardCommand extends Command {
       void message.channel.send('Este comando solo puede ejecutarse en un servidor.');
       return;
     }
-    const model = this.container.stores.get( 'models' ).get( 'guild' )
-    const oldChannel = await model.getChannel( message.guildId, 'starboard' );
+    const model = this.container.stores.get('models').get('guild')
+    const oldChannel = await model.getChannel(message.guildId, 'starboard');
 
     try {
       const channel = await args.pick('channel').catch(() => null);
@@ -27,7 +27,7 @@ export class StarboardCommand extends Command {
       }
 
       if (message.member?.permissions.has(Permissions.FLAGS.MANAGE_GUILD)) {
-        await model.setChannel( message.guildId, 'starboard', channel.id )
+        await model.setChannel(message.guildId, 'starboard', channel.id)
         void message.channel.send(`Canal de pines: <#${channel.id}>`);
         return;
       }

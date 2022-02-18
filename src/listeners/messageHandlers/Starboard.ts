@@ -37,8 +37,8 @@ export class StatsListener extends Listener {
 
   private async getStarboard(guildId: string): Promise<string | null> {
     if (!this.starboard) {
-      const model = this.container.stores.get( 'models' ).get( 'guild' )
-      this.starboard = await model.getChannel( guildId, 'starboard' )
+      const model = this.container.stores.get('models').get('guild')
+      this.starboard = await model.getChannel(guildId, 'starboard')
     }
     return this.starboard;
   }
