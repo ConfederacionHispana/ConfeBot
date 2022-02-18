@@ -2,12 +2,10 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { ApplicationCommandRegistry, Args, Command } from '@sapphire/framework';
 import { URL } from 'url';
 import { format as formatDate } from 'date-fns';
-import { env, NonExistentUser, UserVerification } from '../../lib';
+import { env, UserVerification } from '../../lib';
 
 import type { CommandOptions } from '@sapphire/framework';
 import type { CommandInteraction, Guild, GuildMember, Message, ReplyMessageOptions, TextChannel } from 'discord.js';
-import client from '@honeybadger-io/js/dist/server/types/core/client';
-import { model } from 'mongoose';
 
 @ApplyOptions<CommandOptions>({
   aliases: ['verify'],
