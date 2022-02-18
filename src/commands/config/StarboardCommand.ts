@@ -9,29 +9,25 @@ import type { Message } from 'discord.js';
 })
 export class StarboardCommand extends Command {
   public async messageRun(message: Message, args: Args): Promise<void> {
-    const { client, settingsManager } = this.container;
-    if (!message.guild) {
+    const { client } = this.container;
+    if (!message.guildId) {
       void message.channel.send('Este comando solo puede ejecutarse en un servidor.');
       return;
     }
-    const settings = await settingsManager.getGuildSettings(message.guild.id);
+    const model = this.container.stores.get('models').get('guild')
+    const oldChannel = await model.getChannel(message.guildId, 'starboard');
 
     try {
       const channel = await args.pick('channel').catch(() => null);
       if (!channel) {
-        if (settings.channels?.starboard) {
-          void message.channel.send(`Canal de pines: <#${settings.channels.starboard}>`);
+        if (oldChannel) {
+          void message.channel.send(`Canal de pines: <#${oldChannel}>`);
         }
         return;
       }
 
       if (message.member?.permissions.has(Permissions.FLAGS.MANAGE_GUILD)) {
-        await settingsManager.setGuildSettings(message.guild.id, {
-          ...settings,
-          channels: {
-            starboard: channel.id
-          }
-        });
+        await model.setChannel(message.guildId, 'starboard', channel.id)
         void message.channel.send(`Canal de pines: <#${channel.id}>`);
         return;
       }

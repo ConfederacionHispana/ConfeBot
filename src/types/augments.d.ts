@@ -1,6 +1,7 @@
 import type { TaskStore } from '#lib/structures/TaskStore';
 import type { GuildSettingsManager } from '../db/managers/GuildSettingsManager';
 import type { GuildStatsManager } from 'db/managers/GuildStatsManager';
+import type { Db } from 'mongodb';
 
 declare module '@sapphire/framework' {
   interface ILogger {
@@ -10,8 +11,7 @@ declare module '@sapphire/framework' {
 
 declare module '@sapphire/pieces' {
   interface Container {
-    settingsManager: GuildSettingsManager;
-    statsManager: GuildStatsManager;
+    mongodb: Db;
   }
 }
 

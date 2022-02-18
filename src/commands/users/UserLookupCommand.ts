@@ -1,7 +1,6 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { Command } from '@sapphire/framework';
 import { MessageEmbed } from 'discord.js';
-import DBModels from '../../db';
 
 import type { Args, CommandOptions } from '@sapphire/framework';
 import type { Message } from 'discord.js';
@@ -19,8 +18,9 @@ export class UserLookupCommand extends Command {
       return;
     }
 
+    const model = this.container.stores.get('models').get('user')
     const member = targetMemberResult.value;
-    const dbUser = await DBModels.User.findOne({ id: member.user.id });
+    const dbUser = await model.findUserBySnowflake(member.user.id)
     const userStatus = {
       online: 'Conectado',
       offline: 'Desconectado',
