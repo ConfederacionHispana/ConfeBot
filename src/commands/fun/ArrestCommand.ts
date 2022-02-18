@@ -1,35 +1,54 @@
 import { ApplyOptions } from '@sapphire/decorators';
-import { Args, Command, CommandOptions, UserError } from '@sapphire/framework';
-import { MessageAttachment, TextChannel, type Message } from 'discord.js';
+import { ApplicationCommandRegistry, Args, Command, CommandOptions } from '@sapphire/framework';
+import { CommandInteraction, GuildMember, MessageAttachment, ReplyMessageOptions, type Message } from 'discord.js';
 import { connect } from 'puppeteer-core';
 import { URL } from 'url';
 import { env } from '../../lib/env';
 
 @ApplyOptions<CommandOptions>({
-  aliases: ['arrest', 'arrestar']
+  aliases: ['arrest'],
+  description: 'Usuario a arrestar',
+  name: 'arrestar'
 })
 export class ArrestCommand extends Command {
-  public async messageRun(message: Message, args: Args): Promise<void> {
-    const { client } = this.container;
 
+  public override registerApplicationCommands(registry: ApplicationCommandRegistry): void {
+    registry.registerChatInputCommand(
+      {
+        description: this.description,
+        name: this.name,
+        options: [
+          {
+            description: 'Usuario a arrestar',
+            name: 'usuario',
+            required: true,
+            type: 'USER'
+          },
+          {
+            description: 'Motivo del arresto',
+            name: 'motivo',
+            required: true,
+            type: 'STRING'
+          }
+        ]
+      },
+      this.container.client.chatInputCommandsData.get(this.name)
+    );
+  }
+
+  public async run({ member, place, reason }: { member: GuildMember, place: string, reason: string }): Promise<ReplyMessageOptions> {
     if (!env.CHROMIUM_URI) {
-      await message.reply({
+      return {
         embeds: [
           {
             color: 14889515,
             description: `❌ No se puede ejecutar este comando porque no se ha configurado una instancia de Chromium.`
           }
         ]
-      });
-      return;
+      };
     }
 
     try {
-      const member = await args.pick('member'),
-        reason = await args.rest('string');
-
-      const reaction = await message.react('⌛');
-
       const browser = await connect({
         browserWSEndpoint: env.CHROMIUM_URI,
         defaultViewport: {
@@ -42,7 +61,7 @@ export class ArrestCommand extends Command {
       const templateURL = new URL(`${env.TEMPLATE_BASE_URL}/arrest`);
       templateURL.searchParams.append('user', member.displayName);
       templateURL.searchParams.append('nameColor', member.displayHexColor.replace('#', ''));
-      templateURL.searchParams.append('channel', (message.channel as TextChannel).name);
+      templateURL.searchParams.append('channel', place);
       templateURL.searchParams.append('role', member.roles.hoist?.name ?? member.roles.highest.name);
       templateURL.searchParams.append('reason', reason);
       templateURL.searchParams.append('avatar', member.user.displayAvatarURL({ format: 'png', size: 512 }));
@@ -55,18 +74,62 @@ export class ArrestCommand extends Command {
       });
 
       const file = new MessageAttachment(screenshot, 'arrest.png');
-
-      await message.reply({
-        files: [file]
-      });
-
-      await reaction.remove();
-
       await browser.disconnect();
+
+      return {
+        files: [file]
+      };
     } catch (err) {
-      if (err instanceof UserError) {
-        await message.reply('❌ debes indicar un usuario y una razón.');
-      } else client.logException(err);
+      this.container.client.logException(err);
+      return {
+        content: 'Ha ocurrido un error inesperado.'
+      };
     }
+  }
+
+  public async messageRun(message: Message, args: Args): Promise<void> {
+    const reaction = await message.react('⌛');
+    if (!('name' in message.channel)) return;
+    const member = await args.pick('member')
+      .catch(() => null);
+    
+    if (!member) {
+      void message.reply(`Debes de especificar primero a algún usuario.`);
+      return;
+    }
+
+    const reason = await args.rest('string')
+      .catch(() => null);
+    if (!reason || reason.length === 0) {
+      void message.reply(`Debes de especificar un motivo para el arresto.`);
+      return;
+    }
+
+    const reply = await this.run({
+      member,
+      place: message.channel.name,
+      reason
+    });
+    void message.reply(reply)
+      .catch(e => this.container.client.logException(e));
+    void reaction.remove();
+  }
+
+  public async chatInputRun(interaction: CommandInteraction<'present'>): Promise<void> {
+    const user = interaction.options.getUser('usuario', true);
+    const reason = interaction.options.getString('motivo', true);
+    const guild = interaction.guild ?? await this.container.client.guilds.fetch(interaction.guildId);
+    const member = await guild.members.fetch(user.id)
+      .catch(() => null);
+    if (!member) {
+      void interaction.editReply(`El usuario no se encuentra en el servidor.`);
+      return;
+    }
+    const channel = interaction.channel ?? await guild.channels.fetch(interaction.channelId);
+    const reply = await this.run({
+      member,
+      place: channel?.name ?? 'Un lugar desconocido',
+      reason
+    });
   }
 }
