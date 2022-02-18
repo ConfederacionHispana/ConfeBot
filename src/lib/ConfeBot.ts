@@ -19,6 +19,7 @@ export class ConfeBot extends SapphireClient {
       },
       defaultPrefix: 'c!',
       intents: ['GUILDS', 'GUILD_PRESENCES', 'GUILD_MEMBERS', 'GUILD_MESSAGES', 'GUILD_MESSAGE_REACTIONS'],
+      loadMessageCommandListeners: true,
       tasks: {
         strategy: new ScheduledTaskRedisStrategy({
           bull: env.REDIS_URI
