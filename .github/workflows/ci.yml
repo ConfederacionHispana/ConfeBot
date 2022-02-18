@@ -4,33 +4,35 @@ on: [push, pull_request, workflow_dispatch]
 jobs:
   build:
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
     steps:
-    - uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579 # renovate: tag=v2
+    - uses: actions/checkout@v2
 
-    - name: Cache node modules
-      uses: actions/cache@937d24475381cd9c75ae6db12cb4e79714b926ed # renovate: tag=v2
-      env:
-        cache-name: cache-node-modules
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
       with:
-        # npm cache files are stored in `~/.npm` on Linux/macOS
-        path: ~/.npm
-        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package.json') }}
-        restore-keys: |
-          ${{ runner.os }}-build-${{ env.cache-name }}-
-          ${{ runner.os }}-build-
-          ${{ runner.os }}-
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
 
+    - name: Install yarn
+      run: npm i -g yarn
+    
     - name: Install dependencies
-      run: npm install
+      run: yarn install
 
     - name: ESLint
-      run: npm run lint
+      run: yarn lint
 
     - name: TypeScript build
-      run: npm run build
+      run: yarn build
 
     - name: Run tests
-      run: npm run test
+      run: yarn test
   deploy:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/master'
