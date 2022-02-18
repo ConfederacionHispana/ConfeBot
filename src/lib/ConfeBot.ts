@@ -28,7 +28,7 @@ export class ConfeBot extends SapphireClient {
     });
 
     container.stores.register(new ModelStore());
-		this.chatInputCommandsData = new ChatInputCommandsData();
+    this.chatInputCommandsData = new ChatInputCommandsData();
   }
 
   public fetchPrefix = async (message: Message): Promise<string> => {

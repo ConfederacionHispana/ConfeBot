@@ -12,10 +12,10 @@ export class UserPrecondition extends Precondition {
     return message.member && message.member.roles.cache.has(env.STAFF_ROLE)
       ? this.ok()
       : this.error({
-          context: { message },
-          identifier: 'StaffOnly',
-          message: `Necesitas el rol de <@&${process.env.STAFF_ROLE}> para usar este comando.`
-        });
+        context: { message },
+        identifier: 'StaffOnly',
+        message: `Necesitas el rol de <@&${process.env.STAFF_ROLE}> para usar este comando.`
+      });
   }
 }
 

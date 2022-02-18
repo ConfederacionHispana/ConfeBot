@@ -25,40 +25,40 @@ export interface IUser {
 
   
 @ApplyOptions<PieceOptions>({
-    name: 'user'
+  name: 'user'
 })
 export class UserModel extends Model {
-    public async create(user: IUser): Promise<void> {
-        const collection = this.container.mongodb.collection<IUser>('users');
-        await collection.findOneAndReplace(
-            { id: user.id },
-            user,
-            { upsert: true }
-        );
-    }
+  public async create(user: IUser): Promise<void> {
+    const collection = this.container.mongodb.collection<IUser>('users');
+    await collection.findOneAndReplace(
+      { id: user.id },
+      user,
+      { upsert: true }
+    );
+  }
 
-    public async findUserByName(username: string): Promise<IUser | null> {
-        const collection = this.container.mongodb.collection<IUser>('users');
-        return collection.findOne({ 'fandomUser.username': username });
-    }
+  public async findUserByName(username: string): Promise<IUser | null> {
+    const collection = this.container.mongodb.collection<IUser>('users');
+    return collection.findOne({ 'fandomUser.username': username });
+  }
 
-    public async findUserBySnowflake(snowflake: string): Promise<IUser | null> {
-        const collection = this.container.mongodb.collection<IUser>('users');
-        return collection.findOne({ id: snowflake });
-    }
+  public async findUserBySnowflake(snowflake: string): Promise<IUser | null> {
+    const collection = this.container.mongodb.collection<IUser>('users');
+    return collection.findOne({ id: snowflake });
+  }
 
-    public getDefaultUser(snowflake: string): IUser {
-        return {
-            id: snowflake,
-            fandomUser: {
-                username: '',
-                userId: 0,
-                verifiedAt: new Date()
-            },
-            serverEvents: [],
-            fandomAccountEvents: []
-        };
-    }
+  public getDefaultUser(snowflake: string): IUser {
+    return {
+      id: snowflake,
+      fandomUser: {
+        username: '',
+        userId: 0,
+        verifiedAt: new Date()
+      },
+      serverEvents: [],
+      fandomAccountEvents: []
+    };
+  }
 }
 
 declare global {

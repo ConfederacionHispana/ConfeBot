@@ -5,56 +5,56 @@ import path from 'path';
 import { RegisterBehavior } from '@sapphire/framework';
 
 export class ChatInputCommandsData {
-	public readonly chatInputCommandsRegisterOptions: Record<string, Pick<ApplicationCommandRegistry.RegisterOptions, 'guildIds' | 'idHints'>> = {};
+  public readonly chatInputCommandsRegisterOptions: Record<string, Pick<ApplicationCommandRegistry.RegisterOptions, 'guildIds' | 'idHints'>> = {};
 
-	public readonly chatInputCommandDefaultOptions = {
-		behaviorWhenNotIdentical: RegisterBehavior.LogToConsole,
-		guildIds: env.NODE_ENV === 'development' ? [env.GUILD_ID] : [],
-		register: true
-	} as const;
+  public readonly chatInputCommandDefaultOptions = {
+    behaviorWhenNotIdentical: RegisterBehavior.LogToConsole,
+    guildIds: env.NODE_ENV === 'development' ? [env.GUILD_ID] : [],
+    register: true
+  } as const;
 
-	public readonly filepath: string;
+  public readonly filepath: string;
 
-	public constructor(filepath?: string) {
-		this.filepath = filepath ?? path.resolve(__dirname, '../../../slash-settings.json');
+  public constructor(filepath?: string) {
+    this.filepath = filepath ?? path.resolve(__dirname, '../../../slash-settings.json');
 
-		if (fs.existsSync(this.filepath)) {
-			try {
-				this.chatInputCommandsRegisterOptions = fs.readJsonSync(this.filepath) as typeof this[ 'chatInputCommandsRegisterOptions' ];
-			} catch {
-				// eslint-disable-line no-empty
-			}
-		}
-	}
+    if (fs.existsSync(this.filepath)) {
+      try {
+        this.chatInputCommandsRegisterOptions = fs.readJsonSync(this.filepath) as typeof this[ 'chatInputCommandsRegisterOptions' ];
+      } catch {
+        // eslint-disable-line no-empty
+      }
+    }
+  }
 
-	public get(name: string): ApplicationCommandRegistry.RegisterOptions {
-		const options = this.chatInputCommandsRegisterOptions[ name ] ?? {};
-		return {
-			...this.chatInputCommandDefaultOptions,
-			...options
-		};
-	}
+  public get(name: string): ApplicationCommandRegistry.RegisterOptions {
+    const options = this.chatInputCommandsRegisterOptions[ name ] ?? {};
+    return {
+      ...this.chatInputCommandDefaultOptions,
+      ...options
+    };
+  }
 
-	public addGuildId(name: string, guild: string): void {
-		this.setProperty(name, 'guildIds', guild);
-	}
+  public addGuildId(name: string, guild: string): void {
+    this.setProperty(name, 'guildIds', guild);
+  }
 
-	public addIdHint(name: string, id: string): void {
-		this.setProperty(name, 'idHints', id);
-	}
+  public addIdHint(name: string, id: string): void {
+    this.setProperty(name, 'idHints', id);
+  }
 
-	public save(): void {
-		fs.writeJsonSync(this.filepath, this.chatInputCommandsRegisterOptions, {
-			spaces: '\t'
-		});
-	}
+  public save(): void {
+    fs.writeJsonSync(this.filepath, this.chatInputCommandsRegisterOptions, {
+      spaces: '\t'
+    });
+  }
 
-	protected setProperty(name: string, property: 'guildIds' | 'idHints', value: string): void {
-		const options = this.chatInputCommandsRegisterOptions[ name ] ?? {};
-		const array = options[ property ] ?? [];
-		if (array.includes(value)) return;
-		array.push(value);
-		if (!options[ property ]) options[ property ] = array;
-		if (!this.chatInputCommandsRegisterOptions[ name ]) this.chatInputCommandsRegisterOptions[ name ] = options;
-	}
+  protected setProperty(name: string, property: 'guildIds' | 'idHints', value: string): void {
+    const options = this.chatInputCommandsRegisterOptions[ name ] ?? {};
+    const array = options[ property ] ?? [];
+    if (array.includes(value)) return;
+    array.push(value);
+    if (!options[ property ]) options[ property ] = array;
+    if (!this.chatInputCommandsRegisterOptions[ name ]) this.chatInputCommandsRegisterOptions[ name ] = options;
+  }
 }
