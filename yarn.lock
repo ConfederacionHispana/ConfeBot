@@ -48,6 +48,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@discordjs/builders@npm:*":
+  version: 0.12.0
+  resolution: "@discordjs/builders@npm:0.12.0"
+  dependencies:
+    "@sindresorhus/is": ^4.3.0
+    discord-api-types: ^0.26.1
+    ts-mixer: ^6.0.0
+    tslib: ^2.3.1
+    zod: ^3.11.6
+  checksum: 3c4ef256371121938d5d75571e19f0697b1575dd9fb31a7ca47337d00a1ec45b2c1ce19a1261650a5f6393ac4116f8ed9e82120ce5de534be562dde919a2a6d7
+  languageName: node
+  linkType: hard
+
 "@discordjs/builders@npm:^0.11.0":
   version: 0.11.0
   resolution: "@discordjs/builders@npm:0.11.0"
@@ -373,7 +386,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sindresorhus/is@npm:^4.2.0":
+"@sindresorhus/is@npm:^4.2.0, @sindresorhus/is@npm:^4.3.0":
   version: 4.4.0
   resolution: "@sindresorhus/is@npm:4.4.0"
   checksum: 1d2471a75e03ce2182c3a3d014d027addeaeae1a7a2adfdb03c91cce17900b207e493db012e35ffa21808c563ce3b8e2e7c24646b3d5c27467e08bef8b0e16f0
@@ -470,6 +483,15 @@ __metadata:
     "@types/qs": "*"
     "@types/serve-static": "*"
   checksum: 12a2a0e6c4b993fc0854bec665906788aea0d8ee4392389d7a98a5de1eefdd33c9e1e40a91f3afd274011119c506f7b4126acb97fae62ae20b654974d44cba12
+  languageName: node
+  linkType: hard
+
+"@types/fs-extra@npm:^9.0.13":
+  version: 9.0.13
+  resolution: "@types/fs-extra@npm:9.0.13"
+  dependencies:
+    "@types/node": "*"
+  checksum: add79e212acd5ac76b97b9045834e03a7996aef60a814185e0459088fd290519a3c1620865d588fa36c4498bf614210d2a703af5cf80aa1dbc125db78f6edac3
   languageName: node
   linkType: hard
 
@@ -1300,6 +1322,7 @@ __metadata:
     "@sapphire/ts-config": ^3.3.1
     "@types/chai": ^4.3.0
     "@types/chai-as-promised": ^7.1.5
+    "@types/fs-extra": ^9.0.13
     "@types/mocha": ^9.1.0
     "@types/node": ^16.11.24
     "@types/node-cron": ^3.0.1
@@ -1314,6 +1337,7 @@ __metadata:
     discord.js: ^13.6.0
     erlpack: "github:discord/erlpack"
     eslint: ~8.9.0
+    fs-extra: ^10.0.0
     husky: ^7.0.4
     lint-staged: ^11.2.6
     mocha: ^9.2.0
@@ -1520,7 +1544,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"discord-api-types@npm:^0.26.0":
+"discord-api-types@npm:^0.26.0, discord-api-types@npm:^0.26.1":
   version: 0.26.1
   resolution: "discord-api-types@npm:0.26.1"
   checksum: e53bfa7589b24108e6b403dbe213da34c4592f72e2b8fde6800dcb6c703065887ecbd644e1cdf694e4c7796954bc51462ced868f26ec45dc1e0dc4fa8d3c723c
@@ -2039,6 +2063,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"fs-extra@npm:^10.0.0":
+  version: 10.0.0
+  resolution: "fs-extra@npm:10.0.0"
+  dependencies:
+    graceful-fs: ^4.2.0
+    jsonfile: ^6.0.1
+    universalify: ^2.0.0
+  checksum: 5285a3d8f34b917cf2b66af8c231a40c1623626e9d701a20051d3337be16c6d7cac94441c8b3732d47a92a2a027886ca93c69b6a4ae6aee3c89650d2a8880c0a
+  languageName: node
+  linkType: hard
+
 "fs-minipass@npm:^2.0.0":
   version: 2.1.0
   resolution: "fs-minipass@npm:2.1.0"
@@ -2197,7 +2232,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"graceful-fs@npm:^4.2.6":
+"graceful-fs@npm:^4.1.6, graceful-fs@npm:^4.2.0, graceful-fs@npm:^4.2.6":
   version: 4.2.9
   resolution: "graceful-fs@npm:4.2.9"
   checksum: 68ea4e07ff2c041ada184f9278b830375f8e0b75154e3f080af6b70f66172fabb4108d19b3863a96b53fc068a310b9b6493d86d1291acc5f3861eb4b79d26ad6
@@ -2540,6 +2575,19 @@ __metadata:
   bin:
     json5: lib/cli.js
   checksum: e76ea23dbb8fc1348c143da628134a98adf4c5a4e8ea2adaa74a80c455fc2cdf0e2e13e6398ef819bfe92306b610ebb2002668ed9fc1af386d593691ef346fc3
+  languageName: node
+  linkType: hard
+
+"jsonfile@npm:^6.0.1":
+  version: 6.1.0
+  resolution: "jsonfile@npm:6.1.0"
+  dependencies:
+    graceful-fs: ^4.1.6
+    universalify: ^2.0.0
+  dependenciesMeta:
+    graceful-fs:
+      optional: true
+  checksum: 7af3b8e1ac8fe7f1eccc6263c6ca14e1966fcbc74b618d3c78a0a2075579487547b94f72b7a1114e844a1e15bb00d440e5d1720bfc4612d790a6f285d5ea8354
   languageName: node
   linkType: hard
 
@@ -4224,6 +4272,13 @@ __metadata:
   dependencies:
     imurmurhash: ^0.1.4
   checksum: 5b6876a645da08d505dedb970d1571f6cebdf87044cb6b740c8dbb24f0d6e1dc8bdbf46825fd09f994d7cf50760e6f6e063cfa197d51c5902c00a861702eb75a
+  languageName: node
+  linkType: hard
+
+"universalify@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "universalify@npm:2.0.0"
+  checksum: 2406a4edf4a8830aa6813278bab1f953a8e40f2f63a37873ffa9a3bc8f9745d06cc8e88f3572cb899b7e509013f7f6fcc3e37e8a6d914167a5381d8440518c44
   languageName: node
   linkType: hard
 
