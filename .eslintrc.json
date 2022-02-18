@@ -291,6 +291,7 @@
     "require-await": "off",
     "require-jsdoc": "off",
     "require-yield": "warn",
+    "semi": ["error", "always"],
     "sort-imports": "off",
     "sort-keys": "off",
     "sort-vars": "off",
