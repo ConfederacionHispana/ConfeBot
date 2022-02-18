@@ -45,7 +45,6 @@ export class StatCommand extends Command {
       return;
     }
 
-    const { client } = this.container;
     const reply = await this.run(message.guildId, stat);
     void message.reply(reply);
   }
