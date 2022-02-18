@@ -1,4 +1,4 @@
-import 'mocha'
+import 'mocha';
 import chai, { expect } from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 

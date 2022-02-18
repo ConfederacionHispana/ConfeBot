@@ -17,8 +17,8 @@ export class UserVerifyCommand extends Command {
     if (message.author.bot) return;
     if (!message.guild || !message.member) return;
 
-    const model = this.container.stores.get('models').get('user')
-    const dbUser = await model.findUserBySnowflake(message.author.id)
+    const model = this.container.stores.get('models').get('user');
+    const dbUser = await model.findUserBySnowflake(message.author.id);
 
     // TODO: Allow users to re-verify (e.g. if they changed accs)?
     if (message.member.roles.cache.has(env.FDUSER_ROLE) && dbUser?.fandomUser) {
@@ -78,7 +78,7 @@ export class UserVerifyCommand extends Command {
                 })
                 .catch(client.logException);
 
-              const dbUser = await model.findUserBySnowflake(message.author.id) ?? model.getDefaultUser(message.author.id)
+              const dbUser = await model.findUserBySnowflake(message.author.id) ?? model.getDefaultUser(message.author.id);
 
               dbUser.fandomUser = {
                 username: result.user!.name,

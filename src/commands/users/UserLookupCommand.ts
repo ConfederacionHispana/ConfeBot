@@ -18,9 +18,9 @@ export class UserLookupCommand extends Command {
       return;
     }
 
-    const model = this.container.stores.get('models').get('user')
+    const model = this.container.stores.get('models').get('user');
     const member = targetMemberResult.value;
-    const dbUser = await model.findUserBySnowflake(member.user.id)
+    const dbUser = await model.findUserBySnowflake(member.user.id);
     const userStatus = {
       online: 'Conectado',
       offline: 'Desconectado',

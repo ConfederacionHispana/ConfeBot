@@ -38,8 +38,8 @@ export class UserAssociateCommand extends Command {
         const mwUser = await FandomUtilities.getUserInfo('comunidad', fandomUser);
 
         const { id } = targetUser;
-        const model = this.container.stores.get('models').get('user')
-        const dbUser = await model.findUserBySnowflake(id) ?? model.getDefaultUser(id)
+        const model = this.container.stores.get('models').get('user');
+        const dbUser = await model.findUserBySnowflake(id) ?? model.getDefaultUser(id);
 
         dbUser.fandomUser = {
           username: mwUser.name,

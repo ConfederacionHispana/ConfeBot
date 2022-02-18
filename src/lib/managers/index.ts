@@ -1,1 +1,1 @@
-export * from './ChatInputCommandsData'
+export * from './ChatInputCommandsData';

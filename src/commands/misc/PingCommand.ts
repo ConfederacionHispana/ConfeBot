@@ -9,22 +9,22 @@ import type { CommandInteraction, Message } from 'discord.js';
   name: 'ping'
 })
 export class PingCommand extends Command {
-	public override registerApplicationCommands( registry: ApplicationCommandRegistry ): void {
+  protected get reply(): string {
+    return `Pong! ConfeBot v${this.container.client.version}`;
+  }
+
+	public override registerApplicationCommands(registry: ApplicationCommandRegistry): void {
 		registry.registerChatInputCommand(
 			{
 				description: this.description,
 				name: this.name
 			},
-			this.container.client.chatInputCommandsData.get( this.name )
-		)
+			this.container.client.chatInputCommandsData.get(this.name)
+		);
 	}
 
-  protected get reply(): string {
-    return `Pong! ConfeBot v${this.container.client.version}`
-  }
-
   public messageRun(message: Message): void {
-    void message.reply(this.reply)
+    void message.reply(this.reply);
   }
 
   public chatInputRun(interaction: CommandInteraction): void {

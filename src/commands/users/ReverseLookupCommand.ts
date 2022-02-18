@@ -18,8 +18,8 @@ export class ReverseLookupCommand extends Command {
     }
 
     const fandomUser = fandomUserMatch.value;
-    const model = this.container.stores.get('models').get('user')
-    const dbUser = await model.findUserByName(fandomUser)
+    const model = this.container.stores.get('models').get('user');
+    const dbUser = await model.findUserByName(fandomUser);
 
     if (!dbUser) {
       message

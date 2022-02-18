@@ -1,1 +1,1 @@
-export * from './FandomUtilities'
+export * from './FandomUtilities';

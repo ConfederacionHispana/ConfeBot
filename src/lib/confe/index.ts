@@ -1,1 +1,1 @@
-export * from './UserVerification'
+export * from './UserVerification';
