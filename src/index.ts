@@ -1,4 +1,3 @@
-import mongoose from 'mongoose';
 import { ConfeBot, env, loadEnv } from './lib';
 
 let client: ConfeBot;
@@ -10,7 +9,6 @@ let client: ConfeBot;
   });
   client.logger.info(`ConfeBot v${client.version} is starting`);
   client.logger.info('Environment', env);
-  await mongoose.connect(env.DB_URI);
   await client.login(env.DISCORD_TOKEN);
 })().catch((err) => {
   client.logException(err);

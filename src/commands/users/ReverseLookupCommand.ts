@@ -1,6 +1,5 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { Command } from '@sapphire/framework';
-import DBModels from '../../db';
 
 import type { Args, CommandOptions } from '@sapphire/framework';
 import type { Message } from 'discord.js';
@@ -19,9 +18,8 @@ export class ReverseLookupCommand extends Command {
     }
 
     const fandomUser = fandomUserMatch.value;
-    const dbUser = await DBModels.User.findOne({
-      'fandomUser.username': fandomUser
-    });
+    const model = this.container.stores.get( 'models' ).get( 'user' )
+    const dbUser = await model.findUserByName( fandomUser )
 
     if (!dbUser) {
       message

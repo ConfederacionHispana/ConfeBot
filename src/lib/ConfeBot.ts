@@ -3,9 +3,8 @@ import { container, SapphireClient, SapphireClientOptions } from '@sapphire/fram
 import '@sapphire/plugin-logger/register';
 import { ScheduledTaskRedisStrategy } from '@sapphire/plugin-scheduled-tasks/register-redis';
 import { env } from './env';
-import { GuildSettingsManager } from '../db/managers/GuildSettingsManager';
-import { GuildStatsManager } from '../db/managers/GuildStatsManager';
 import { MongoClient } from 'mongodb';
+import { ModelStore } from './structures'
 
 import type { Message } from 'discord.js';
 
@@ -27,20 +26,18 @@ export class ConfeBot extends SapphireClient {
       ...options
     });
 
-    const client = new MongoClient( env.DB_URI );
-    container.mongodb = client.db()
-    container.settingsManager = new GuildSettingsManager(this);
-    container.statsManager = new GuildStatsManager(this);
+    container.stores.register( new ModelStore() )
   }
 
   public fetchPrefix = async (message: Message): Promise<string> => {
-    const settings = await container.settingsManager.getGuildSettings(message.guild!.id);
-    return settings.prefix || 'c!';
+    if ( !message.guildId ) return 'c!'
+    const model = container.stores.get( 'models' ).get( 'guild' )
+    return model.getPrefix( message.guildId )
   };
 
   logException(err: Error, context: Record<string, unknown> = {}): void {
-    if (Object.keys(context).length) this.logger.error(err, '\nContext:', context);
-    else this.logger.error(err);
+    if (Object.keys(context).length) container.logger.error(err, '\nContext:', context);
+    else container.logger.error(err);
 
     if (env?.HONEYBADGER_API_KEY) {
       Honeybadger.resetContext(context);
@@ -50,6 +47,9 @@ export class ConfeBot extends SapphireClient {
 
   async login(token: string): Promise<string> {
     // do pre-login stuff
+    const client = new MongoClient( env.DB_URI );
+    await client.connect()
+    container.mongodb = client.db()
     this.logger.log = this.logger.info;
     if (env.HONEYBADGER_API_KEY) {
       Honeybadger.configure({

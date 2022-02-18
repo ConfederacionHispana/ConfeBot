@@ -1,7 +1,6 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args, Command } from '@sapphire/framework';
 import { env, FandomUtilities, NonExistentUser } from '../../lib';
-import DBModels from '../../db';
 
 import type { CommandOptions } from '@sapphire/framework';
 import type { Message, TextChannel } from 'discord.js';
@@ -39,7 +38,8 @@ export class UserAssociateCommand extends Command {
         const mwUser = await FandomUtilities.getUserInfo('comunidad', fandomUser);
 
         const { id } = targetUser;
-        const dbUser = (await DBModels.User.findOne({ id })) || new DBModels.User({ id });
+        const model = this.container.stores.get( 'models' ).get( 'user' )
+        const dbUser = await model.findUserBySnowflake( message.author.id ) ?? model.getDefaultUser( message.author.id )
 
         dbUser.fandomUser = {
           username: mwUser.name,
@@ -56,7 +56,8 @@ export class UserAssociateCommand extends Command {
           }
         });
 
-        dbUser.save().catch(client.logException);
+        await model.create( dbUser )
+          .catch(client.logException);
       } catch (err) {
         if (err instanceof Error) {
           message

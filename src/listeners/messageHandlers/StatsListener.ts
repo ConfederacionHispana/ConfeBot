@@ -9,21 +9,21 @@ import type { Message } from 'discord.js';
 })
 export class StatsListener extends Listener {
   public async run(message: Message): Promise<void> {
-    const { statsManager } = this.container;
-    const prefix = ((await this.container.client.fetchPrefix(message)) || 'c!') as string;
+    if ( !message.guildId ) return
+
+    const model = this.container.stores.get( 'models' ).get( 'guild' )
+    const prefix = await model.getPrefix( message.guildId )
 
     if (!message.guild || message.author.bot || message.content.includes(prefix)) return;
 
-    if (/^simps?\.?$/.test(message.content)) {
-      await statsManager.incrementGuildStat(message.guild.id, 'simps');
-    }
-
-    if (/^f\.?$/.test(message.content)) {
-      await statsManager.incrementGuildStat(message.guild.id, 'f');
-    }
-
-    if (message.content.includes('aDarkGames')) {
-      await statsManager.incrementGuildStat(message.guild.id, 'aDarkGames');
+    const matches = message.content.match( /(simps?|f|adarkgames)\b/gi )
+    if ( !matches ) return
+    const counted = new Set<string>()
+    for ( const match of matches ) {
+      const stat = match.toLowerCase() === 'simp' ? 'simps' : match.toLowerCase()
+      if ( counted.has( stat ) ) continue
+      counted.add( stat )
+      await model.addStat( message.guildId, stat )
     }
   }
 }

@@ -3,7 +3,6 @@ import { Args, Command } from '@sapphire/framework';
 import { URL } from 'url';
 import { format as formatDate } from 'date-fns';
 import { env, NonExistentUser, UserVerification } from '../../lib';
-import DBModels from '../../db';
 
 import type { CommandOptions } from '@sapphire/framework';
 import type { Message, TextChannel } from 'discord.js';
@@ -18,7 +17,8 @@ export class UserVerifyCommand extends Command {
     if (message.author.bot) return;
     if (!message.guild || !message.member) return;
 
-    const dbUser = await DBModels.User.findOne({ id: message.member.user.id });
+    const model = this.container.stores.get( 'models' ).get( 'user' )
+    const dbUser = await model.findUserBySnowflake( message.author.id )
 
     // TODO: Allow users to re-verify (e.g. if they changed accs)?
     if (message.member.roles.cache.has(env.FDUSER_ROLE) && dbUser?.fandomUser) {
@@ -78,9 +78,7 @@ export class UserVerifyCommand extends Command {
                 })
                 .catch(client.logException);
 
-              const dbUser =
-                (await DBModels.User.findOne({ id: message.author.id })) ||
-                new DBModels.User({ id: message.author.id });
+              const dbUser = await model.findUserBySnowflake( message.author.id ) ?? model.getDefaultUser( message.author.id )
 
               dbUser.fandomUser = {
                 username: result.user!.name,
@@ -97,7 +95,8 @@ export class UserVerifyCommand extends Command {
                 }
               });
 
-              dbUser.save().catch(client.logException);
+              await model.create( dbUser )
+                .catch(client.logException);
             })
             .catch(client.logException);
         } else {

@@ -9,20 +9,18 @@ import type { Message } from 'discord.js';
 })
 export class PrefixCommand extends Command {
   public async messageRun(message: Message, args: Args): Promise<void> {
-    const { client, settingsManager } = this.container;
-    if (!message.guild) {
+    const { client } = this.container;
+    if (!message.guildId) {
       void message.channel.send('Este comando solo puede ejecutarse en un servidor.');
       return;
     }
-    const settings = await settingsManager.getGuildSettings(message.guild.id);
+    const model = this.container.stores.get( 'models' ).get( 'guild' )
+    const oldPrefix = await model.getPrefix( message.guildId )
 
     try {
       const newPrefix = await args.pick('string');
       if (message.member?.permissions.has(Permissions.FLAGS.MANAGE_GUILD)) {
-        await settingsManager.setGuildSettings(message.guild.id, {
-          ...settings,
-          prefix: newPrefix
-        });
+        await model.setPrefix( message.guildId, newPrefix )
         void message.channel.send(`Prefix cambiado a: \`${newPrefix}\``);
         return;
       }
@@ -31,7 +29,7 @@ export class PrefixCommand extends Command {
     } catch (err) {
       if (err instanceof Error) {
         if (err instanceof UserError) {
-          void message.reply(`El prefix actual es: \`${settings.prefix}\``);
+          void message.reply(`El prefix actual es: \`${oldPrefix}\``);
           return;
         }
         client.logException(err);

@@ -12,8 +12,6 @@ declare module '@sapphire/framework' {
 declare module '@sapphire/pieces' {
   interface Container {
     mongodb: Db;
-    settingsManager: GuildSettingsManager;
-    statsManager: GuildStatsManager;
   }
 }
 
