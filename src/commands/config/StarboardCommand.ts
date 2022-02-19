@@ -35,22 +35,22 @@ export class StarboardCommand extends Command {
     if (!channelId) {
       if (oldChannel) {
         return `Canal de pines: <#${oldChannel}>`;
-      } 
+      }
       return `No hay un canal de pines configurado.`;
-      
+
     } else if (permissions?.has(Permissions.FLAGS.MANAGE_GUILD)) {
       await model.setChannel(guildId, 'starboard', channelId);
       return `Se ha configurado el canal de pines: <#${channelId}>.`;
-    } 
+    }
     return 'No tienes permisos para cambiar el canal de pines.';
-    
+
   }
 
   public async messageRun(message: Message, args: Args): Promise<void> {
     if (!message.guildId) return;
     const channel = await args.pick('guildTextChannel')
       .catch(() => null);
-    
+
     const reply = await this.run(message.guildId, channel?.id, message.member?.permissions);
     void message.reply(reply);
   }
@@ -61,7 +61,7 @@ export class StarboardCommand extends Command {
     const guild = interaction.guild ?? await this.container.client.guilds.fetch(interaction.guildId);
     const member = await guild.members.fetch(interaction.user.id)
       .catch(() => null);
-    
+
     const reply = await this.run(interaction.guildId, channel?.id, member?.permissions);
     void interaction.editReply(reply);
   }

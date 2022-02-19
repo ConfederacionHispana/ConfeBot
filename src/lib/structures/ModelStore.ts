@@ -7,12 +7,12 @@ export class ModelStore extends AliasStore<Model> {
     super(Model, {
       name: 'models'
     });
-        
+
   }
 
   public override get<K extends keyof ModelRegistryEntries>(key: K): ModelRegistryEntries[ K ] {
     return super.get(key) as unknown as ModelRegistryEntries[ K ];
-        
+
   }
 }
 

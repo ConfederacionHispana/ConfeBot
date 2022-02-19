@@ -23,7 +23,7 @@ export interface IUser {
     }[];
   }
 
-  
+
 @ApplyOptions<PieceOptions>({
   name: 'user'
 })

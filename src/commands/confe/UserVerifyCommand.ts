@@ -120,7 +120,7 @@ export class UserVerifyCommand extends Command {
           ? '**nunca**'
           : `el ${formatDate(verificationResult.blockinfo?.expiry as Date, 'dd/MM/yyyy')}`
       }.`;
-      
+
       void logsChannel
         .send(
           `⚠️ <@!${member.user.id}> intentó autenticarse con la cuenta de Fandom bloqueada **${username}**.`

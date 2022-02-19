@@ -50,7 +50,7 @@ export class UserLookupCommand extends Command {
         content: `El usuario no se encuentra en el servidor.`
       };
     }
-  
+
     const model = this.container.stores.get('models').get('user');
     const dbUser = await model.findUserBySnowflake(member.user.id);
 
@@ -71,7 +71,7 @@ export class UserLookupCommand extends Command {
       )
       .addField('ID', member.user.id)
       .addField('Estado', UserLookupCommand.userStatus[member.presence?.status ?? 'unknown']);
-    
+
     return {
       embeds: [embed]
     };

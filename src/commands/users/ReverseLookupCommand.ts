@@ -53,7 +53,7 @@ export class ReverseLookupCommand extends Command {
       void message.reply('❌ Debes ingresar un nombre de usuario para buscar.');
       return;
     }
-    
+
     const reply = await this.run(username);
     void message.reply(reply);
   }

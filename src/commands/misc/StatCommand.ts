@@ -39,7 +39,7 @@ export class StatCommand extends Command {
 
     const stat = await args.pick('string')
       .catch(() => null);
-    
+
     if (!stat) {
       void message.channel.send('Se debe especificar el nombre de la estadística a obtener.');
       return;
