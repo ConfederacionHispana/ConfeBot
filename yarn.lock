@@ -85,7 +85,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@honeybadger-io/js@npm:^3.2.7":
+"@honeybadger-io/js@npm:^3.2.8":
   version: 3.2.8
   resolution: "@honeybadger-io/js@npm:3.2.8"
   dependencies:
@@ -516,7 +516,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^16.11.24":
+"@types/node@npm:^16.11.25":
   version: 16.11.25
   resolution: "@types/node@npm:16.11.25"
   checksum: 0b6e25a81364be89256ad1a36341e27b387e646d3186e270108a8bb7b6ecdfdf5ae037aa1c75a5117b8a7509c80093b75431cd5cfcfbc4d553b52e7db2ca272e
@@ -582,7 +582,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/eslint-plugin@npm:^5.11.0":
+"@typescript-eslint/eslint-plugin@npm:^5.11.0, @typescript-eslint/eslint-plugin@npm:^5.12.0":
   version: 5.12.0
   resolution: "@typescript-eslint/eslint-plugin@npm:5.12.0"
   dependencies:
@@ -605,7 +605,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/parser@npm:^5.10.1, @typescript-eslint/parser@npm:^5.11.0":
+"@typescript-eslint/parser@npm:^5.11.0, @typescript-eslint/parser@npm:^5.12.0":
   version: 5.12.0
   resolution: "@typescript-eslint/parser@npm:5.12.0"
   dependencies:
@@ -1007,7 +1007,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bull@npm:^4.5.2":
+"bull@npm:^4.5.5":
   version: 4.5.5
   resolution: "bull@npm:4.5.5"
   dependencies:
@@ -1253,7 +1253,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "confebot@workspace:."
   dependencies:
-    "@honeybadger-io/js": ^3.2.7
+    "@honeybadger-io/js": ^3.2.8
     "@sapphire/decorators": ^3.1.6
     "@sapphire/discord.js-utilities": ^3.2.2
     "@sapphire/eslint-config": ^4.2.0
@@ -1267,13 +1267,13 @@ __metadata:
     "@types/chai-as-promised": ^7.1.5
     "@types/fs-extra": ^9.0.13
     "@types/mocha": ^9.1.0
-    "@types/node": ^16.11.24
+    "@types/node": ^16.11.25
     "@types/node-cron": ^3.0.1
-    "@typescript-eslint/eslint-plugin": ^5.11.0
-    "@typescript-eslint/parser": ^5.10.1
+    "@typescript-eslint/eslint-plugin": ^5.12.0
+    "@typescript-eslint/parser": ^5.12.0
     axios: ^0.26.0
     bufferutil: ^4.0.6
-    bull: ^4.5.2
+    bull: ^4.5.5
     chai: ^4.3.6
     chai-as-promised: ^7.1.1
     date-fns: ^2.28.0
@@ -1283,10 +1283,10 @@ __metadata:
     fs-extra: ^10.0.0
     husky: ^7.0.4
     lint-staged: ^12.3.4
-    mocha: ^9.2.0
-    mongodb: ^4.3.1
+    mocha: ^9.2.1
+    mongodb: ^4.4.0
     node-cron: ^3.0.0
-    puppeteer-core: ^13.2.0
+    puppeteer-core: ^13.3.2
     rimraf: ^3.0.2
     string-similarity-js: ^2.1.4
     ts-dotenv: ^0.8.3
@@ -2838,9 +2838,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mocha@npm:^9.2.0":
-  version: 9.2.0
-  resolution: "mocha@npm:9.2.0"
+"mocha@npm:^9.2.1":
+  version: 9.2.1
+  resolution: "mocha@npm:9.2.1"
   dependencies:
     "@ungap/promise-all-settled": 1.1.2
     ansi-colors: 4.1.1
@@ -2869,7 +2869,7 @@ __metadata:
   bin:
     _mocha: bin/_mocha
     mocha: bin/mocha
-  checksum: 49efc4724cf17087c7e107bc8f6890db24525e6dcc153b801da58de3c2a2f940e22f7600ef195b8ac62a0dfd7baee5cf289fc4641a6b1fdf8bc9c819efc1a8ba
+  checksum: 10debdf2ee2232368852d80d8a7650a2c10d2bf5f47022c4d8111323b7fcd3115b2153f760b841d39207347a4d2df602fe96013f855587d80ff23332261b260e
   languageName: node
   linkType: hard
 
@@ -2899,7 +2899,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mongodb@npm:^4.3.1":
+"mongodb@npm:^4.4.0":
   version: 4.4.0
   resolution: "mongodb@npm:4.4.0"
   dependencies:
@@ -3358,7 +3358,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"puppeteer-core@npm:^13.2.0":
+"puppeteer-core@npm:^13.3.2":
   version: 13.3.2
   resolution: "puppeteer-core@npm:13.3.2"
   dependencies:

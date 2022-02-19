@@ -31,11 +31,11 @@ jobs:
           submodules: true
       - name: Extract version from package.json
         id: package_version
-        uses: saionaro/extract-package-version@edc5aa9dd3438692240f9df69b3b8ef1966186c6 # tag=v1.0.6
+        uses: saionaro/extract-package-version@de8268c348d3a9ed3514c86a9ad8d4568ab8b49e # tag=v1.1.1
       - name: Setup Docker Buildx
         uses: docker/setup-buildx-action@94ab11c41e45d028884a99163086648e898eed25 # renovate: tag=v1.6.0
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@42d299face0c5c43a0487c477f595ac9cf22f1a7 # renovate: tag=v1.12.0
+        uses: docker/login-action@6af3c118c8376c675363897acf1757f7a9be6583 # tag=v1.13.0
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
