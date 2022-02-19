@@ -83,7 +83,7 @@ export class UserAssociateCommand extends Command {
         return `❌ Ha ocurrido un error inesperado.`;
       }
     }
-  
+
     const logsChannel = await guild.channels.fetch(env.LOGS_CHANNEL) as TextChannel;
     const rolesToAdd = username ? [env.USER_ROLE, env.FDUSER_ROLE] : [env.USER_ROLE];
     const logReason = `✅ <@!${author.id}> verificó a <@!${member.user.id}> ${
@@ -104,8 +104,6 @@ export class UserAssociateCommand extends Command {
 
   public async messageRun(message: Message, args: Args): Promise<void> {
     if (!message.guild) return;
-
-    const { client } = this.container;
 
     const targetUserMatch = await args.pickResult('member');
     if (!targetUserMatch.success) {
