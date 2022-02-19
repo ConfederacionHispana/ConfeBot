@@ -18,7 +18,7 @@ export class ChatInputCommandsData {
   public constructor(filepath?: string) {
     this.filepath = filepath ?? path.resolve(__dirname, '../../../slash-settings.json');
 
-    if (fs.existsSync(this.filepath)) {
+    if (env.NODE_ENV === 'development' && fs.existsSync(this.filepath)) {
       try {
         this.chatInputCommandsRegisterOptions = fs.readJsonSync(this.filepath) as typeof this[ 'chatInputCommandsRegisterOptions' ];
       } catch {
@@ -44,6 +44,8 @@ export class ChatInputCommandsData {
   }
 
   public save(): void {
+    if (env.NODE_ENV !== 'development') return;
+
     fs.writeJsonSync(this.filepath, this.chatInputCommandsRegisterOptions, {
       spaces: '\t'
     });
