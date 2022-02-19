@@ -1,34 +1,58 @@
 import { ApplyOptions } from '@sapphire/decorators';
-import { Command } from '@sapphire/framework';
-import { MessageEmbed } from 'discord.js';
+import { ApplicationCommandRegistry, Command } from '@sapphire/framework';
+import { CommandInteraction, Guild, GuildMember, MessageEmbed, ReplyMessageOptions, User } from 'discord.js';
 
 import type { Args, CommandOptions } from '@sapphire/framework';
 import type { Message } from 'discord.js';
 
 @ApplyOptions<CommandOptions>({
-  aliases: ['lookup', 'userlookup', 'userinfo']
+  aliases: ['lookup', 'userlookup', 'userinfo'],
+  description: 'Consulta la información de un miembro del servidor',
+  name: 'user-lookup',
+  runIn: 'GUILD_ANY'
 })
 export class UserLookupCommand extends Command {
-  public async messageRun(message: Message, args: Args): Promise<void> {
-    const { client } = this.container;
+  public static readonly userStatus = {
+    online: 'Conectado',
+    offline: 'Desconectado',
+    idle: 'Ausente',
+    dnd: 'No Molestar',
+    invisible: 'Invisible',
+    unknown: 'Desconocido'
+  };
 
-    const targetMemberResult = await args.pickResult('member');
-    if (!targetMemberResult.success) {
-      message.reply('❓ No encontré al usuario que buscas.').catch(client.logException);
-      return;
+  public override registerApplicationCommands(registry: ApplicationCommandRegistry): void {
+    registry.registerChatInputCommand(
+      {
+        description: this.description,
+        name: this.name,
+        options: [
+          {
+            description: 'Usuario a consultar',
+            name: 'usuario',
+            required: true,
+            type: 'USER'
+          }
+        ]
+      },
+      this.container.client.chatInputCommandsData.get(this.name)
+    );
+  }
+
+  public async run(user: User, guild: Guild): Promise<ReplyMessageOptions>
+  public async run(user: GuildMember): Promise<ReplyMessageOptions>
+  public async run(user: GuildMember | User, guild?: Guild): Promise<ReplyMessageOptions> {
+    const member = user instanceof GuildMember
+      ? user
+      : await guild?.members.fetch(user.id).catch(() => null);
+    if (!member) {
+      return {
+        content: `El usuario no se encuentra en el servidor.`
+      };
     }
 
-    const model = this.container.stores.get('models').get('user')
-    const member = targetMemberResult.value;
-    const dbUser = await model.findUserBySnowflake(member.user.id)
-    const userStatus = {
-      online: 'Conectado',
-      offline: 'Desconectado',
-      idle: 'Ausente',
-      dnd: 'No Molestar',
-      invisible: 'Invisible',
-      unknown: 'Desconocido'
-    };
+    const model = this.container.stores.get('models').get('user');
+    const dbUser = await model.findUserBySnowflake(member.user.id);
 
     const embed = new MessageEmbed()
       .setTitle(`Información de **${member.user.username}#${member.user.discriminator}**`)
@@ -46,8 +70,30 @@ export class UserLookupCommand extends Command {
         member.roles.cache.map((role) => (role.id === '@everyone' ? role.id : `<@&${role.id}>`)).join(', ')
       )
       .addField('ID', member.user.id)
-      .addField('Estado', userStatus[member.presence?.status ?? 'unknown']);
+      .addField('Estado', UserLookupCommand.userStatus[member.presence?.status ?? 'unknown']);
 
-    message.reply({ embeds: [embed] }).catch(client.logException);
+    return {
+      embeds: [embed]
+    };
+  }
+
+  public async messageRun(message: Message, args: Args): Promise<void> {
+    const member = await args.pick('member')
+      .catch(() => null);
+    if (!member) {
+      void message.reply('❓ No encontré al usuario que buscas.');
+      return;
+    }
+
+    const reply = await this.run(member);
+    void message.reply(reply);
+  }
+
+  public async chatInputRun(interaction: CommandInteraction<'present'>): Promise<void> {
+    await interaction.deferReply();
+    const user = interaction.options.getUser('usuario', true);
+    const guild = interaction.guild ?? await this.container.client.guilds.fetch(interaction.guildId);
+    const reply = await this.run(user, guild);
+    void interaction.editReply(reply);
   }
 }

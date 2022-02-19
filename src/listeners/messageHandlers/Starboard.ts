@@ -9,7 +9,7 @@ import type { Message } from 'discord.js';
   event: Events.MessageCreate
 })
 export class StatsListener extends Listener {
-  public starboard?: string | null
+  public starboard?: string | null;
 
   public async run(message: Message): Promise<void> {
     if (
@@ -37,8 +37,8 @@ export class StatsListener extends Listener {
 
   private async getStarboard(guildId: string): Promise<string | null> {
     if (!this.starboard) {
-      const model = this.container.stores.get('models').get('guild')
-      this.starboard = await model.getChannel(guildId, 'starboard')
+      const model = this.container.stores.get('models').get('guild');
+      this.starboard = await model.getChannel(guildId, 'starboard');
     }
     return this.starboard;
   }

@@ -120,3 +120,4 @@ pnpm-lock.yaml
 !.yarn/versions
 
 mongodb
+slash-settings.json

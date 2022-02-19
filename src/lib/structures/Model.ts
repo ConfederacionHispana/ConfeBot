@@ -1,5 +1,5 @@
-import { AliasPiece } from '@sapphire/pieces'
+import { AliasPiece } from '@sapphire/pieces';
 
 export abstract class Model extends AliasPiece {
-    
+
 }

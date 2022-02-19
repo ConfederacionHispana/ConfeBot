@@ -4,7 +4,7 @@ import { Command } from '@sapphire/framework';
 import type { ConfeBot } from '../../lib';
 import type { Message } from 'discord.js';
 import { MessageEmbed } from 'discord.js';
-import { sleep } from '../../lib'
+import { sleep } from '../../lib';
 
 interface IEvalCommandResult {
   result: unknown;

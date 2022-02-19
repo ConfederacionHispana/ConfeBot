@@ -11,6 +11,7 @@ import type { ListenerOptions } from '@sapphire/framework';
 export class ReadyListener extends Listener {
   public async run(): Promise<void> {
     const { client } = this.container;
+    client.cache = client.cache ?? {};
 
     client.logger.info('Received ready event', {
       source: 'discord'
