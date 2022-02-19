@@ -15,7 +15,7 @@ export class UserEvent extends Listener {
       : await this.container.client.application?.commands.fetch();
     if (!loadedCommands) return;
     const registries = this.container.applicationCommandRegistries;
-    for (const [_, command] of loadedCommands) {
+    for (const [, command] of loadedCommands) {
       const registry = registries.acquire(command.name);
       if (registry.chatInputCommands.size === 0) continue;
       this.container.client.chatInputCommandsData.addIdHint(command.name, command.id);
