@@ -5,6 +5,9 @@ declare module '@sapphire/framework' {
   interface ILogger {
     log(...values: readonly unknown[]): void;
   }
+  interface Precondition {
+    allowedRoles?: string[]
+  }
 }
 
 declare module '@sapphire/pieces' {

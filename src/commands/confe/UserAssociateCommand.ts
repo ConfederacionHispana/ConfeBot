@@ -17,6 +17,7 @@ export class UserAssociateCommand extends Command {
   public override registerApplicationCommands(registry: ApplicationCommandRegistry): void {
     registry.registerChatInputCommand(
       {
+        defaultPermission: false,
         description: this.description,
         name: this.name,
         options: [
