@@ -92,7 +92,7 @@ export class ArrestCommand extends Command {
     if (!('name' in message.channel)) return;
     const member = await args.pick('member')
       .catch(() => null);
-    
+
     if (!member) {
       void message.reply(`Debes de especificar primero a algún usuario.`);
       return;
@@ -126,10 +126,15 @@ export class ArrestCommand extends Command {
       return;
     }
     const channel = interaction.channel ?? await guild.channels.fetch(interaction.channelId);
+
+    await interaction.deferReply();
+
     const reply = await this.run({
       member,
       place: channel?.name ?? 'Un lugar desconocido',
       reason
     });
+
+    await interaction.editReply(reply);
   }
 }
