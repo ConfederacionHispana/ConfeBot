@@ -8,6 +8,8 @@ import { Precondition } from '@sapphire/framework';
   name: 'StaffOnly'
 })
 export class UserPrecondition extends Precondition {
+  public allowedRoles = [env.STAFF_ROLE];
+
   public run(hasRole: boolean | null): PreconditionResult {
     return hasRole
       ? this.ok()
