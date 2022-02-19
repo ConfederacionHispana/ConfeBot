@@ -8,7 +8,7 @@ export class ChatInputCommandsData {
   public readonly chatInputCommandsRegisterOptions: Record<string, Pick<ApplicationCommandRegistry.RegisterOptions, 'guildIds' | 'idHints'>> = {};
 
   public readonly chatInputCommandDefaultOptions = {
-    behaviorWhenNotIdentical: RegisterBehavior.LogToConsole,
+    behaviorWhenNotIdentical: RegisterBehavior.Overwrite,
     guildIds: env.NODE_ENV === 'development' ? [env.GUILD_ID] : [],
     register: true
   } as const;
