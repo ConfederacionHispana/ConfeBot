@@ -9,7 +9,7 @@ export class ChatInputCommandsData {
 
   public readonly chatInputCommandDefaultOptions = {
     behaviorWhenNotIdentical: RegisterBehavior.Overwrite,
-    guildIds: [env.GUILD_ID],
+    guildIds: [env.GUILD_ID as string],
     register: true
   } as const;
 
