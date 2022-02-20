@@ -49,7 +49,6 @@ export class UserEvent extends Listener {
         permission: true,
         type: 'ROLE'
       }));
-      console.log(permissions);
       if (applicationCommandManager instanceof GuildApplicationCommandManager) {
         await applicationCommandManager.permissions.set({
           fullPermissions: [{
