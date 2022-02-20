@@ -12,16 +12,12 @@ import type { ApplicationCommandPermissionData } from 'discord.js';
 })
 export class UserEvent extends Listener {
   public async run(): Promise<void> {
-    const guilds = await this.container.client.guilds.fetch();
-    const applicationCommandManager = env.NODE_ENV === 'development'
-      ? (await this.container.client.guilds.fetch(env.GUILD_ID)).commands
-      : this.container.client.application?.commands;
+    const applicationCommandManager = (await this.container.client.guilds.fetch(env.GUILD_ID)).commands;
     if (!applicationCommandManager) return;
     
-    const loadedCommands = await applicationCommandManager.fetch({});
+    const loadedCommands = await applicationCommandManager.fetch();
 
     const registries = this.container.applicationCommandRegistries;
-    const guildIds = guilds.map(i => i.id);
 
     for (const [, chatInputCommand] of loadedCommands) {
       const registry = registries.acquire(chatInputCommand.name);
@@ -49,22 +45,12 @@ export class UserEvent extends Listener {
         permission: true,
         type: 'ROLE'
       }));
-      if (applicationCommandManager instanceof GuildApplicationCommandManager) {
-        await applicationCommandManager.permissions.set({
-          fullPermissions: [{
-            id: chatInputCommand.id,
-            permissions
-          }]
-        });
-      } else {
-        for (const guildId of guildIds) {
-          await applicationCommandManager.permissions.set({
-            command: chatInputCommand.id,
-            guild: guildId,
-            permissions
-          });
-        }
-      }
+      await applicationCommandManager.permissions.set({
+        fullPermissions: [{
+          id: chatInputCommand.id,
+          permissions
+        }]
+      });
     }
   }
 }
