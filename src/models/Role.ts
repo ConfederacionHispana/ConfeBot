@@ -19,6 +19,11 @@ export class RoleModel extends Model {
     await collection.insertOne(document);
   }
 
+  public async delete(message: string, role: string): Promise<void> {
+    const collection = this.container.mongodb.collection<IRole>('roles');
+    await collection.findOneAndDelete({ message, role });
+  }
+
   public countRolesInMessage(message: string): Promise<number> {
     const collection = this.container.mongodb.collection<IRole>('roles');
     return collection.countDocuments({ message });
