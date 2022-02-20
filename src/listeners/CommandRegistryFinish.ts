@@ -2,8 +2,7 @@ import { Events, Listener, PreconditionContainerSingle } from '@sapphire/framewo
 import { ApplyOptions } from '@sapphire/decorators';
 import { env } from '../lib';
 import type { ListenerOptions } from '@sapphire/framework';
-import { GuildApplicationCommandManager } from 'discord.js';
-import type { ApplicationCommandPermissionData } from 'discord.js';
+import type { ApplicationCommandPermissionData, GuildApplicationCommandPermissionData } from 'discord.js';
 
 @ApplyOptions<ListenerOptions>({
   enabled: true,
@@ -19,6 +18,7 @@ export class UserEvent extends Listener {
 
     const registries = this.container.applicationCommandRegistries;
 
+    const fullPermissions: GuildApplicationCommandPermissionData[] = [];
     for (const [, chatInputCommand] of loadedCommands) {
       const registry = registries.acquire(chatInputCommand.name);
       if (registry.chatInputCommands.size === 0) continue;
@@ -45,12 +45,11 @@ export class UserEvent extends Listener {
         permission: true,
         type: 'ROLE'
       }));
-      await applicationCommandManager.permissions.set({
-        fullPermissions: [{
-          id: chatInputCommand.id,
-          permissions
-        }]
+      fullPermissions.push({
+        id: chatInputCommand.id,
+        permissions
       });
     }
+    await applicationCommandManager.permissions.set({ fullPermissions });
   }
 }
