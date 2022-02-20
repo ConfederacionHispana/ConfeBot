@@ -10,7 +10,7 @@ import type { IRole } from '../../models/Role';
   preconditions: ['StaffOnly'],
   runIn: 'GUILD_ANY'
 })
-export class PingCommand extends Command {
+export class RolesCommand extends Command {
   public override registerApplicationCommands(registry: ApplicationCommandRegistry): void {
     registry.registerChatInputCommand(
       {
@@ -124,9 +124,10 @@ export class PingCommand extends Command {
     if (subcommand === 'canal') {
       await this.setChannel(interaction);
       return;
-    } 
-    const record = await keyv.get(interaction.guildId, 'roles-channel');
-    if (!record) {
+    }
+    const guild = this.container.stores.get('models').get('guild');
+    const channel = await guild.getChannel(interaction.guildId, 'roles');
+    if (!channel) {
       await interaction.editReply({
         embeds: [{
           color: 0xff6f00,
@@ -135,7 +136,7 @@ export class PingCommand extends Command {
       });
       return;
     }
-    
+
 
     if (subcommand === 'mensaje') {
       await this.setMessage(interaction);
@@ -168,8 +169,8 @@ export class PingCommand extends Command {
 
   private async setChannel(interaction: CommandInteraction<'present'>): Promise<void> {
     const channel = interaction.options.getChannel('canal', true);
-    const keyv = this.container.stores.get('models').get('keyv');
-    await keyv.set(interaction.guildId, 'roles-channel', channel.id);
+    const guild = this.container.stores.get('models').get('guild');
+    await guild.setChannel(interaction.guildId, 'roles', channel.id);
     await interaction.editReply({
       embeds: [{
         color: 0x1b5e20,
@@ -181,9 +182,10 @@ export class PingCommand extends Command {
   private async setMessage(interaction: CommandInteraction<'present'>): Promise<void> {
     const messageId = interaction.options.getString('mensaje', true);
     const guild = await getInteractionGuild(interaction);
-      
+
     const keyv = this.container.stores.get('models').get('keyv');
-    const channelId = await keyv.get(interaction.guildId, 'roles-channel');
+    const dbGuild = this.container.stores.get('models').get('guild');
+    const channelId = await dbGuild.getChannel(interaction.guildId, 'roles');
     const channel = channelId
       ? await guild.channels.fetch(channelId).catch(() => null)
       : null;
@@ -244,7 +246,8 @@ export class PingCommand extends Command {
     const keyv = this.container.stores.get('models').get('keyv');
     const guild = await getInteractionGuild(interaction);
 
-    const rolesChannelId = await keyv.get(interaction.guildId, 'roles-channel');
+    const dbGuild = this.container.stores.get('models').get('guild');
+    const rolesChannelId = await dbGuild.getChannel(interaction.guildId, 'roles');
     const rolesChannel = rolesChannelId
       ? await guild.channels.fetch(rolesChannelId).catch(() => null)
       : null;

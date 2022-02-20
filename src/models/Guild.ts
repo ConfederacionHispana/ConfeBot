@@ -2,18 +2,21 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { Model } from '../lib';
 import type { PieceOptions } from '@sapphire/pieces';
 
+type SettingsChannels = 'starboard' | 'roles';
+
 export interface IGuild {
     id: string;
     settings?: {
       prefix?: string;
       channels?: {
         starboard?: string;
+        roles?: string;
       };
     };
     stats?: {
       [key: string]: number;
     };
-  }
+}
 
 @ApplyOptions<PieceOptions>({
   name: 'guild'
@@ -33,7 +36,7 @@ export class GuildModel extends Model {
     return guild;
   }
 
-  public async getChannel(guildId: string, name: 'starboard'): Promise<string | null> {
+  public async getChannel(guildId: string, name: SettingsChannels): Promise<string | null> {
     const guild = await this.getGuild(guildId);
     return guild.settings?.channels?.[ name ] ?? null;
   }
@@ -48,7 +51,7 @@ export class GuildModel extends Model {
     return guild.stats?.[ stat ] ?? 0;
   }
 
-  public async setChannel(guildId: string, name: 'starboard', channel: string): Promise<void> {
+  public async setChannel(guildId: string, name: SettingsChannels, channel: string): Promise<void> {
     const collection = this.container.mongodb.collection<IGuild>('guilds');
     await collection.updateOne(
       { id: guildId },
