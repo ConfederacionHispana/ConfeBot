@@ -1124,9 +1124,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bull@npm:^4.6.1":
-  version: 4.6.1
-  resolution: "bull@npm:4.6.1"
+"bull@npm:^4.6.2":
+  version: 4.6.2
+  resolution: "bull@npm:4.6.2"
   dependencies:
     cron-parser: ^4.2.1
     debuglog: ^1.0.0
@@ -1137,7 +1137,7 @@ __metadata:
     p-timeout: ^3.2.0
     semver: ^7.3.2
     uuid: ^8.3.0
-  checksum: 525ea51f277742e3e73f41f88e01ff659a74cc7b77120cd8e5ab75f417cb0102739b4b885b2d99c32b7980f08164bc267098f0eca1917d791db7c1f50d7f5e44
+  checksum: a154719b24ac5de0bfbc1b8b0fc17724f3aaa838c548ec051fcd5396762581933c7ef5501569a4112239805e8e5bd516b823d9cf01ca8893d7b60c8d2a468d3e
   languageName: node
   linkType: hard
 
@@ -1390,7 +1390,7 @@ __metadata:
     "@typescript-eslint/parser": ^5.12.1
     axios: ^0.26.0
     bufferutil: ^4.0.6
-    bull: ^4.6.1
+    bull: ^4.6.2
     chai: ^4.3.6
     chai-as-promised: ^7.1.1
     date-fns: ^2.28.0
