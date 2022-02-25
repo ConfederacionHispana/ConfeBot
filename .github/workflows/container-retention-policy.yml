@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Delete images older than a week
-        uses: snok/container-retention-policy@v1
+        uses: snok/container-retention-policy@81ba73785bb8207a451a0de928aa6a3c57d6fd77 # tag=v1
         with:
           image-names: confebot
           cut-off: A week ago UTC
