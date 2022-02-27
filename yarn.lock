@@ -5,6 +5,18 @@ __metadata:
   version: 6
   cacheKey: 8
 
+"@bitomic/plugin-application-commands@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "@bitomic/plugin-application-commands@npm:1.0.0"
+  dependencies:
+    "@sapphire/decorators": 4.2.5
+    "@sapphire/framework": 2.3.0
+    "@sapphire/pieces": 3.2.0
+    discord.js: 13.6.0
+  checksum: 719115fee47874ee5e0a675a7dcff173cf10b1d8d113c87c0c127608e965e4e3d365f55b6f0080191b99bd126ccaf1422e3000a9f6d1410ef52d4eecdf81e9c4
+  languageName: node
+  linkType: hard
+
 "@cspotcode/source-map-consumer@npm:0.8.0":
   version: 0.8.0
   resolution: "@cspotcode/source-map-consumer@npm:0.8.0"
@@ -184,6 +196,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@sapphire/decorators@npm:4.2.5":
+  version: 4.2.5
+  resolution: "@sapphire/decorators@npm:4.2.5"
+  dependencies:
+    tslib: ^2.3.1
+  checksum: 658041ebdf2ab7e6223b3b8c844ad6d9ebf179518e60d7a85c2e176996ca53d3cbaea11fb410911b44d64a830cfc1950765268dd091181304d9eec5be3a7f16e
+  languageName: node
+  linkType: hard
+
 "@sapphire/decorators@npm:^3.1.6":
   version: 3.1.6
   resolution: "@sapphire/decorators@npm:3.1.6"
@@ -193,7 +214,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sapphire/discord-utilities@npm:^2.2.2, @sapphire/discord-utilities@npm:^2.8.0":
+"@sapphire/discord-utilities@npm:^2.2.2, @sapphire/discord-utilities@npm:^2.4.0, @sapphire/discord-utilities@npm:^2.8.0":
   version: 2.8.0
   resolution: "@sapphire/discord-utilities@npm:2.8.0"
   dependencies:
@@ -202,7 +223,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sapphire/discord.js-utilities@npm:*, @sapphire/discord.js-utilities@npm:^4.8.1":
+"@sapphire/discord.js-utilities@npm:*, @sapphire/discord.js-utilities@npm:^4.1.5, @sapphire/discord.js-utilities@npm:^4.8.1":
   version: 4.8.1
   resolution: "@sapphire/discord.js-utilities@npm:4.8.1"
   dependencies:
@@ -255,7 +276,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sapphire/pieces@npm:^3.2.0":
+"@sapphire/framework@npm:2.3.0":
+  version: 2.3.0
+  resolution: "@sapphire/framework@npm:2.3.0"
+  dependencies:
+    "@sapphire/discord-utilities": ^2.4.0
+    "@sapphire/discord.js-utilities": ^4.1.5
+    "@sapphire/pieces": ^3.2.0
+    "@sapphire/ratelimits": ^2.1.10
+    "@sapphire/utilities": ^3.1.0
+    lexure: ^0.17.0
+    tslib: ^2.3.1
+  checksum: 675c8322d4351b2e7349f2dc6df18df9fcf93d1279acad9ff2ad7b4244f01733022f6c8fc807744f8c9471bd3bd6dd36a090ce9f681a1589eace5c1d56f7d00f
+  languageName: node
+  linkType: hard
+
+"@sapphire/pieces@npm:3.2.0, @sapphire/pieces@npm:^3.2.0":
   version: 3.2.0
   resolution: "@sapphire/pieces@npm:3.2.0"
   dependencies:
@@ -287,7 +323,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sapphire/ratelimits@npm:^2.3.1":
+"@sapphire/ratelimits@npm:^2.1.10, @sapphire/ratelimits@npm:^2.3.1":
   version: 2.3.1
   resolution: "@sapphire/ratelimits@npm:2.3.1"
   dependencies:
@@ -1346,6 +1382,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "confebot@workspace:."
   dependencies:
+    "@bitomic/plugin-application-commands": ^1.0.0
     "@honeybadger-io/js": ^3.2.8
     "@sapphire/decorators": ^3.1.6
     "@sapphire/discord.js-utilities": ^3.2.2
@@ -1573,7 +1610,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"discord.js@npm:*, discord.js@npm:^13.6.0":
+"discord.js@npm:*, discord.js@npm:13.6.0, discord.js@npm:^13.6.0":
   version: 13.6.0
   resolution: "discord.js@npm:13.6.0"
   dependencies:
