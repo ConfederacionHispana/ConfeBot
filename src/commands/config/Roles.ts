@@ -114,6 +114,7 @@ import type { IRole } from '../../models/Role';
   name: 'roles'
 })
 export class RolesCommand extends Command {
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   public messageRun(): void {
 
   }

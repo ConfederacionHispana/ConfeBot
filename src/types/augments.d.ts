@@ -1,12 +1,8 @@
-import type { ChatInputCommandsData } from '../lib';
 import type { Db } from 'mongodb';
 
 declare module '@sapphire/framework' {
   interface ILogger {
     log(...values: readonly unknown[]): void;
-  }
-  interface Precondition {
-    allowedRoles?: string[]
   }
 }
 

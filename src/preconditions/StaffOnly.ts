@@ -1,15 +1,13 @@
 import type { PreconditionOptions, PreconditionResult } from '@sapphire/framework';
 import { ApplyOptions } from '@sapphire/decorators';
 import { env } from '../lib/env';
-import type { CommandInteraction, Message } from 'discord.js';
+import type { Message } from 'discord.js';
 import { Precondition } from '@sapphire/framework';
 
 @ApplyOptions<PreconditionOptions>({
   name: 'StaffOnly'
 })
 export class UserPrecondition extends Precondition {
-  public allowedRoles = [env.STAFF_ROLE];
-
   public evaluate(hasRole: boolean | null): PreconditionResult {
     return hasRole
       ? this.ok()

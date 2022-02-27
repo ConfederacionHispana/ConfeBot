@@ -9,7 +9,7 @@ import type { ListenerOptions } from '@sapphire/framework';
   event: Constants.Events.INTERACTION_CREATE
 })
 export class UserEvent extends Listener {
-  public async run(interaction: Interaction) {
+  public async run(interaction: Interaction): Promise<void> {
     if (!interaction.isButton() || !interaction.inGuild() || !interaction.customId.startsWith('role-')) return;
     const roleId = interaction.customId.split('-').pop();
     if (!roleId) return; // dumb check
