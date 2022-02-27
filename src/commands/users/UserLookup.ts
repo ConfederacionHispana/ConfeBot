@@ -1,5 +1,5 @@
 import { ApplyOptions } from '@sapphire/decorators';
-import { ApplicationCommandRegistry, Command } from '@sapphire/framework';
+import { Command, container } from '@sapphire/framework';
 import { CommandInteraction, Guild, GuildMember, MessageEmbed, ReplyMessageOptions, User } from 'discord.js';
 
 import type { Args, CommandOptions } from '@sapphire/framework';
@@ -7,7 +7,19 @@ import type { Message } from 'discord.js';
 
 @ApplyOptions<CommandOptions>({
   aliases: ['lookup', 'userlookup', 'userinfo'],
-  description: 'Consulta la información de un miembro del servidor',
+  chatInputApplicationOptions: {
+    description: 'Consulta la información de un miembro del servidor',
+    guildIds: container.client.applicationCommandsGuilds,
+    name: 'user-lookup',
+    options: [
+      {
+        description: 'Usuario a consultar',
+        name: 'usuario',
+        required: true,
+        type: 'USER'
+      }
+    ]
+  },
   name: 'user-lookup',
   runIn: 'GUILD_ANY'
 })
@@ -21,27 +33,9 @@ export class UserLookupCommand extends Command {
     unknown: 'Desconocido'
   };
 
-  public override registerApplicationCommands(registry: ApplicationCommandRegistry): void {
-    registry.registerChatInputCommand(
-      {
-        description: this.description,
-        name: this.name,
-        options: [
-          {
-            description: 'Usuario a consultar',
-            name: 'usuario',
-            required: true,
-            type: 'USER'
-          }
-        ]
-      },
-      this.container.client.chatInputCommandsData.get(this.name)
-    );
-  }
-
-  public async run(user: User, guild: Guild): Promise<ReplyMessageOptions>
-  public async run(user: GuildMember): Promise<ReplyMessageOptions>
-  public async run(user: GuildMember | User, guild?: Guild): Promise<ReplyMessageOptions> {
+  public async evaluate(user: User, guild: Guild): Promise<ReplyMessageOptions>
+  public async evaluate(user: GuildMember): Promise<ReplyMessageOptions>
+  public async evaluate(user: GuildMember | User, guild?: Guild): Promise<ReplyMessageOptions> {
     const member = user instanceof GuildMember
       ? user
       : await guild?.members.fetch(user.id).catch(() => null);
@@ -85,15 +79,15 @@ export class UserLookupCommand extends Command {
       return;
     }
 
-    const reply = await this.run(member);
+    const reply = await this.evaluate(member);
     void message.reply(reply);
   }
 
-  public async chatInputRun(interaction: CommandInteraction<'present'>): Promise<void> {
+  public async chatInputApplicationRun(interaction: CommandInteraction<'present'>): Promise<void> {
     await interaction.deferReply();
     const user = interaction.options.getUser('usuario', true);
     const guild = interaction.guild ?? await this.container.client.guilds.fetch(interaction.guildId);
-    const reply = await this.run(user, guild);
+    const reply = await this.evaluate(user, guild);
     void interaction.editReply(reply);
   }
 }
