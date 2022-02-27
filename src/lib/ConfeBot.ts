@@ -1,6 +1,7 @@
+import '@bitomic/plugin-application-commands/register'
+import '@sapphire/plugin-logger/register';
 import Honeybadger from '@honeybadger-io/js';
 import { container, SapphireClient, SapphireClientOptions } from '@sapphire/framework';
-import '@sapphire/plugin-logger/register';
 import { ScheduledTaskRedisStrategy } from '@sapphire/plugin-scheduled-tasks/register-redis';
 import { env } from './env';
 import { MongoClient } from 'mongodb';
