@@ -10,7 +10,7 @@ import { Precondition } from '@sapphire/framework';
 export class UserPrecondition extends Precondition {
   public allowedRoles = [env.STAFF_ROLE];
 
-  public run(hasRole: boolean | null): PreconditionResult {
+  public evaluate(hasRole: boolean | null): PreconditionResult {
     return hasRole
       ? this.ok()
       : this.error({
@@ -19,16 +19,8 @@ export class UserPrecondition extends Precondition {
       });
   }
 
-  public messageRun(message: Message): PreconditionResult {
-    return this.run(message.member && message.member.roles.cache.has(env.STAFF_ROLE));
-  }
-
-  public chatInputRun(interaction: CommandInteraction<'present'>): PreconditionResult {
-    const hasRole = Array.isArray(interaction.member.roles)
-      ? interaction.member.roles.includes(env.STAFF_ROLE)
-      : interaction.member.roles.cache.has(env.STAFF_ROLE);
-    
-    return this.run(hasRole);
+  public run(message: Message): PreconditionResult {
+    return this.evaluate(message.member && message.member.roles.cache.has(env.STAFF_ROLE));
   }
 }
 
