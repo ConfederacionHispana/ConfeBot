@@ -1,35 +1,29 @@
 import { ApplyOptions } from '@sapphire/decorators';
-import { ApplicationCommandRegistry, Args, Command, CommandOptions } from '@sapphire/framework';
+import { Args, Command, CommandOptions, container } from '@sapphire/framework';
 import { CommandInteraction, Permissions } from 'discord.js';
 
 import type { Message } from 'discord.js';
 
 @ApplyOptions<CommandOptions>({
-  description: 'Configura (o consulta) el canal de pines',
+  chatInputApplicationOptions: {
+    description: 'Configura (o consulta) el canal de pines',
+    guildIds: container.client.applicationCommandsGuilds,
+    name: 'starboard',
+    options: [
+      {
+        channelTypes: ['GUILD_TEXT'],
+        description: 'Configurar canal de pines',
+        name: 'canal',
+        required: false,
+        type: 'CHANNEL'
+      }
+    ]
+  },
   name: 'starboard',
   runIn: 'GUILD_ANY'
 })
 export class StarboardCommand extends Command {
-  public override registerApplicationCommands(registry: ApplicationCommandRegistry): void {
-    registry.registerChatInputCommand(
-      {
-        description: this.description,
-        name: this.name,
-        options: [
-          {
-            channelTypes: ['GUILD_TEXT'],
-            description: 'Configurar canal de pines',
-            name: 'canal',
-            required: false,
-            type: 'CHANNEL'
-          }
-        ]
-      },
-      this.container.client.chatInputCommandsData.get(this.name)
-    );
-  }
-
-  public async run(guildId: string, channelId?: string, permissions?: Permissions): Promise<string> {
+  public async evaluate(guildId: string, channelId?: string, permissions?: Permissions): Promise<string> {
     const model = this.container.stores.get('models').get('guild');
     const oldChannel = await model.getChannel(guildId, 'starboard');
     if (!channelId) {
@@ -51,18 +45,18 @@ export class StarboardCommand extends Command {
     const channel = await args.pick('guildTextChannel')
       .catch(() => null);
 
-    const reply = await this.run(message.guildId, channel?.id, message.member?.permissions);
+    const reply = await this.evaluate(message.guildId, channel?.id, message.member?.permissions);
     void message.reply(reply);
   }
 
-  public async chatInputRun(interaction: CommandInteraction<'present'>): Promise<void> {
+  public async chatInputApplicationRun(interaction: CommandInteraction<'present'>): Promise<void> {
     await interaction.deferReply();
     const channel = interaction.options.getChannel('canal');
     const guild = interaction.guild ?? await this.container.client.guilds.fetch(interaction.guildId);
     const member = await guild.members.fetch(interaction.user.id)
       .catch(() => null);
 
-    const reply = await this.run(interaction.guildId, channel?.id, member?.permissions);
+    const reply = await this.evaluate(interaction.guildId, channel?.id, member?.permissions);
     void interaction.editReply(reply);
   }
 }

@@ -1,5 +1,5 @@
 import { ApplyOptions } from '@sapphire/decorators';
-import { ApplicationCommandRegistry, Args, Command } from '@sapphire/framework';
+import { Args, Command, container } from '@sapphire/framework';
 import { env, FandomUtilities, NonExistentUser } from '../../lib';
 
 import type { CommandOptions } from '@sapphire/framework';
@@ -7,45 +7,46 @@ import type { CommandInteraction, Guild, GuildMember, Message, TextChannel, User
 
 @ApplyOptions<CommandOptions>({
   aliases: ['forceverify', 'manualverify'],
-  description: 'Verifica manualmente a un usuario.',
+  chatInputApplicationOptions: {
+    defaultPermission: false,
+    description: 'Verifica manualmente a un usuario',
+    guildIds: container.client.applicationCommandsGuilds,
+    name: 'associate',
+    options: [
+      {
+        description: 'Miembro del servidor a verificar',
+        name: 'miembro',
+        required: true,
+        type: 'USER'
+      },
+      {
+        description: 'Nombre de usuario en Fandom',
+        name: 'usuario',
+        required: false,
+        type: 'STRING'
+      },
+      {
+        description: 'Verificar como invitado',
+        name: 'invitado',
+        required: false,
+        type: 'BOOLEAN'
+      }
+    ],
+    permissions: [
+      {
+        id: env.STAFF_ROLE,
+        permission: true,
+        type: 'ROLE'
+      }
+    ]
+  },
   flags: ['guest'],
   name: 'associate',
   preconditions: ['StaffOnly'],
   runIn: 'GUILD_ANY'
 })
 export class UserAssociateCommand extends Command {
-  public override registerApplicationCommands(registry: ApplicationCommandRegistry): void {
-    registry.registerChatInputCommand(
-      {
-        defaultPermission: false,
-        description: this.description,
-        name: this.name,
-        options: [
-          {
-            description: 'Miembro del servidor a verificar',
-            name: 'miembro',
-            required: true,
-            type: 'USER'
-          },
-          {
-            description: 'Nombre de usuario en Fandom',
-            name: 'usuario',
-            required: false,
-            type: 'STRING'
-          },
-          {
-            description: 'Verificar como invitado',
-            name: 'invitado',
-            required: false,
-            type: 'BOOLEAN'
-          }
-        ]
-      },
-      this.container.client.chatInputCommandsData.get(this.name)
-    );
-  }
-
-  public async run({ author, guild, member, username, guest }: { author: User, guild: Guild, member: GuildMember, username?: string | null, guest?: boolean | null }): Promise<string> {
+  public async evaluate({ author, guild, member, username, guest }: { author: User, guild: Guild, member: GuildMember, username?: string | null, guest?: boolean | null }): Promise<string> {
     if (!username && !guest) {
       return '❓ Se requiere un nombre de usuario de Fandom, o el flag `--guest` para verificar como invitado.';
     }
@@ -115,7 +116,7 @@ export class UserAssociateCommand extends Command {
     const guestFlag = args.getFlags('guest');
     const fandomUserMatch = await args.restResult('string');
 
-    const reply = await this.run({
+    const reply = await this.evaluate({
       author: message.author,
       guild: message.guild,
       member: targetUser,
@@ -125,7 +126,7 @@ export class UserAssociateCommand extends Command {
     void message.reply(reply);
   }
 
-  public async chatInputRun(interaction: CommandInteraction<'present'>): Promise<void> {
+  public async chatInputApplicationRun(interaction: CommandInteraction<'present'>): Promise<void> {
     await interaction.deferReply();
     const user = interaction.options.getUser('miembro', true);
     const fandomUsername = interaction.options.getString('usuario');
@@ -140,7 +141,7 @@ export class UserAssociateCommand extends Command {
       return;
     }
 
-    const reply = await this.run({
+    const reply = await this.evaluate({
       author: interaction.user,
       guild,
       member,

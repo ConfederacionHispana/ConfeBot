@@ -1,121 +1,124 @@
 import { ApplyOptions } from '@sapphire/decorators';
-import { ApplicationCommandRegistry, Command, CommandOptions } from '@sapphire/framework';
+import { Command, CommandOptions, container } from '@sapphire/framework';
 import { CommandInteraction, MessageActionRowOptions, MessageButtonOptions, MessageEmbed, NewsChannel, NonThreadGuildBasedChannel, TextChannel, Webhook } from 'discord.js';
-import { chunkify, getInteractionChannel, getInteractionGuild } from '../../lib';
+import { chunkify, env, getInteractionChannel, getInteractionGuild } from '../../lib';
 import type { IRole } from '../../models/Role';
 
 @ApplyOptions<CommandOptions>({
-  description: 'Configura un mensaje con botones para roles.',
-  name: 'roles',
-  preconditions: ['StaffOnly'],
-  runIn: 'GUILD_ANY'
-})
-export class RolesCommand extends Command {
-  public override registerApplicationCommands(registry: ApplicationCommandRegistry): void {
-    registry.registerChatInputCommand(
+  chatInputApplicationOptions: {
+    defaultPermission: false,
+    description: 'Configura un mensaje con botones para roles',
+    guildIds: container.client.applicationCommandsGuilds,
+    name: 'roles',
+    options: [
       {
-        defaultPermission: false,
-        description: this.description,
-        name: this.name,
+        description: 'Especifica el canal a configurar.',
+        name: 'canal',
         options: [
           {
-            description: 'Especifica el canal a configurar.',
+            channelTypes: [
+              'GUILD_NEWS', 'GUILD_TEXT'
+            ],
+            description: 'Mención del canal',
             name: 'canal',
-            options: [
-              {
-                channelTypes: [
-                  'GUILD_NEWS', 'GUILD_TEXT'
-                ],
-                description: 'Mención del canal',
-                name: 'canal',
-                required: true,
-                type: 'CHANNEL'
-              }
-            ],
-            type: 'SUB_COMMAND'
-          },
-          {
-            description: 'Especifica el mensaje a configurar.',
-            name: 'mensaje',
-            options: [
-              {
-                description: 'Identificador del mensaje',
-                name: 'mensaje',
-                required: true,
-                type: 'STRING'
-              }
-            ],
-            type: 'SUB_COMMAND'
-          },
-          {
-            description: 'Copia un mensaje del canal actual para usarlo en el canal especificado.',
-            name: 'copiar-mensaje',
-            options: [
-              {
-                description: 'Identificador del mensaje',
-                name: 'mensaje',
-                required: true,
-                type: 'STRING'
-              }
-            ],
-            type: 'SUB_COMMAND'
-          },
-          {
-            description: 'Edita el mensaje usando un mensaje del canal actual.',
-            name: 'editar-mensaje',
-            options: [
-              {
-                description: 'Identificador del mensaje',
-                name: 'mensaje',
-                required: true,
-                type: 'STRING'
-              }
-            ],
-            type: 'SUB_COMMAND'
-          },
-          {
-            description: 'Añade el botón para un rol.',
-            name: 'agregar-rol',
-            options: [
-              {
-                description: 'Rol a colocar',
-                name: 'rol',
-                required: true,
-                type: 'ROLE'
-              },
-              {
-                description: 'Texto del botón',
-                name: 'etiqueta',
-                type: 'STRING'
-              },
-              {
-                description: 'Emoji del botón',
-                name: 'emoji',
-                type: 'STRING'
-              }
-            ],
-            type: 'SUB_COMMAND'
-          },
-          {
-            description: 'Elimina el botón para un rol.',
-            name: 'eliminar-rol',
-            options: [
-              {
-                description: 'Rol a quitar',
-                name: 'rol',
-                required: true,
-                type: 'ROLE'
-              }
-            ],
-            type: 'SUB_COMMAND'
+            required: true,
+            type: 'CHANNEL'
           }
-        ]
+        ],
+        type: 'SUB_COMMAND'
       },
-      this.container.client.chatInputCommandsData.get(this.name)
-    );
+      {
+        description: 'Especifica el mensaje a configurar.',
+        name: 'mensaje',
+        options: [
+          {
+            description: 'Identificador del mensaje',
+            name: 'mensaje',
+            required: true,
+            type: 'STRING'
+          }
+        ],
+        type: 'SUB_COMMAND'
+      },
+      {
+        description: 'Copia un mensaje del canal actual para usarlo en el canal especificado.',
+        name: 'copiar-mensaje',
+        options: [
+          {
+            description: 'Identificador del mensaje',
+            name: 'mensaje',
+            required: true,
+            type: 'STRING'
+          }
+        ],
+        type: 'SUB_COMMAND'
+      },
+      {
+        description: 'Edita el mensaje usando un mensaje del canal actual.',
+        name: 'editar-mensaje',
+        options: [
+          {
+            description: 'Identificador del mensaje',
+            name: 'mensaje',
+            required: true,
+            type: 'STRING'
+          }
+        ],
+        type: 'SUB_COMMAND'
+      },
+      {
+        description: 'Añade el botón para un rol.',
+        name: 'agregar-rol',
+        options: [
+          {
+            description: 'Rol a colocar',
+            name: 'rol',
+            required: true,
+            type: 'ROLE'
+          },
+          {
+            description: 'Texto del botón',
+            name: 'etiqueta',
+            type: 'STRING'
+          },
+          {
+            description: 'Emoji del botón',
+            name: 'emoji',
+            type: 'STRING'
+          }
+        ],
+        type: 'SUB_COMMAND'
+      },
+      {
+        description: 'Elimina el botón para un rol.',
+        name: 'eliminar-rol',
+        options: [
+          {
+            description: 'Rol a quitar',
+            name: 'rol',
+            required: true,
+            type: 'ROLE'
+          }
+        ],
+        type: 'SUB_COMMAND'
+      }
+    ],
+    permissions: [
+      {
+        id: env.STAFF_ROLE,
+        permission: true,
+        type: 'ROLE'
+      }
+    ]
+  },
+  name: 'roles'
+})
+export class RolesCommand extends Command {
+  public messageRun(): void {
+
   }
 
-  public async chatInputRun(interaction: CommandInteraction<'present'>): Promise<void> {
+  public async chatInputApplicationRun(interaction: CommandInteraction<'present'>): Promise<void> {
     await interaction.deferReply();
 
     const subcommand = interaction.options.getSubcommand();

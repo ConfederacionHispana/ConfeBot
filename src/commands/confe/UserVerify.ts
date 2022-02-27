@@ -1,5 +1,5 @@
 import { ApplyOptions } from '@sapphire/decorators';
-import { ApplicationCommandRegistry, Args, Command } from '@sapphire/framework';
+import { Args, Command, container } from '@sapphire/framework';
 import { URL } from 'url';
 import { format as formatDate } from 'date-fns';
 import { env, UserVerification } from '../../lib';
@@ -9,30 +9,24 @@ import type { CommandInteraction, Guild, GuildMember, Message, ReplyMessageOptio
 
 @ApplyOptions<CommandOptions>({
   aliases: ['verify'],
-  description: 'Verifícate usando tu cuenta de Fandom',
+  chatInputApplicationOptions: {
+    description: 'Verifícate usando tu cuenta de Fandom',
+    guildIds: container.client.applicationCommandsGuilds,
+    name: 'verificar',
+    options: [
+      {
+        description: 'Nombre de usuario en Fandom',
+        name: 'usuario',
+        required: true,
+        type: 'STRING'
+      }
+    ]
+  },
   name: 'verificar',
   runIn: 'GUILD_ANY'
 })
 export class UserVerifyCommand extends Command {
-  public override registerApplicationCommands(registry: ApplicationCommandRegistry): void {
-    registry.registerChatInputCommand(
-      {
-        description: this.description,
-        name: this.name,
-        options: [
-          {
-            description: 'Nombre de usuario en Fandom',
-            name: 'usuario',
-            required: true,
-            type: 'STRING'
-          }
-        ]
-      },
-      this.container.client.chatInputCommandsData.get(this.name)
-    );
-  }
-
-  public async run(guild: Guild, channel: string, member: GuildMember, username: string): Promise<ReplyMessageOptions | string> {
+  public async evaluate(guild: Guild, channel: string, member: GuildMember, username: string): Promise<ReplyMessageOptions | string> {
     const model = this.container.stores.get('models').get('user');
     const dbUser = await model.findUserBySnowflake(member.user.id);
 
@@ -144,11 +138,11 @@ export class UserVerifyCommand extends Command {
       return;
     }
 
-    const reply = await this.run(message.guild, message.channel.name, message.member, fandomUser.value);
+    const reply = await this.evaluate(message.guild, message.channel.name, message.member, fandomUser.value);
     void message.reply(reply);
   }
 
-  public async chatInputRun(interaction: CommandInteraction<'present'>): Promise<void> {
+  public async chatInputApplicationRun(interaction: CommandInteraction<'present'>): Promise<void> {
     await interaction.deferReply();
     const username = interaction.options.getString('usuario', true);
 
@@ -162,7 +156,7 @@ export class UserVerifyCommand extends Command {
       return;
     }
 
-    const reply = await this.run(guild, interaction.channel?.name ?? 'desconocido', member, username);
+    const reply = await this.evaluate(guild, interaction.channel?.name ?? 'desconocido', member, username);
     void interaction.editReply(reply);
   }
 }
