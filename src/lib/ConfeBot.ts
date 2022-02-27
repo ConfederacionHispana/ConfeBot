@@ -1,4 +1,4 @@
-import '@bitomic/plugin-application-commands/register'
+import '@bitomic/plugin-application-commands/register';
 import '@sapphire/plugin-logger/register';
 import Honeybadger from '@honeybadger-io/js';
 import { container, SapphireClient, SapphireClientOptions } from '@sapphire/framework';
@@ -28,6 +28,7 @@ export class ConfeBot extends SapphireClient {
     });
 
     container.stores.register(new ModelStore());
+    this.applicationCommandsGuilds = [env.GUILD_ID];
   }
 
   public fetchPrefix = async (message: Message): Promise<string> => {

@@ -25,7 +25,7 @@ declare module 'discord.js' {
         uses: number;
       };
     };
-		chatInputCommandsData: ChatInputCommandsData
+		applicationCommandsGuilds: string[]
     readonly version: string;
     logException(err: Error, context?: Record<string, unknown>): void;
   }
