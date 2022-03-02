@@ -10,8 +10,6 @@ import type { CommandInteraction, Guild, GuildMember, Message, ReplyMessageOptio
 @ApplyOptions<CommandOptions>({
   aliases: ['verify'],
   chatInputApplicationOptions: {
-    description: 'Verifícate usando tu cuenta de Fandom',
-    name: 'verificar',
     options: [
       {
         description: 'Nombre de usuario en Fandom',
@@ -21,6 +19,7 @@ import type { CommandInteraction, Guild, GuildMember, Message, ReplyMessageOptio
       }
     ]
   },
+  description: 'Verifícate usando tu cuenta de Fandom',
   name: 'verificar',
   runIn: 'GUILD_ANY'
 })

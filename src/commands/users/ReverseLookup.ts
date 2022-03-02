@@ -7,8 +7,6 @@ import type { CommandInteraction, Message, ReplyMessageOptions } from 'discord.j
 @ApplyOptions<CommandOptions>({
   aliases: ['reverselookup', 'finduser'],
   chatInputApplicationOptions: {
-    description: 'Encuentra a un usuario a partir de su nombre en Fandom',
-    name: 'reverse-lookup',
     options: [
       {
         description: 'Usuario a buscar',
@@ -18,7 +16,7 @@ import type { CommandInteraction, Message, ReplyMessageOptions } from 'discord.j
       }
     ]
   },
-  description: '',
+  description: 'Encuentra a un usuario a partir de su nombre en Fandom',
   name: 'reverse-lookup'
 })
 export class ReverseLookupCommand extends Command {

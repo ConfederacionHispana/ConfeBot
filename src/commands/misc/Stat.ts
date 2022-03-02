@@ -6,8 +6,6 @@ import type { CommandInteraction, Message } from 'discord.js';
 @ApplyOptions<CommandOptions>({
   aliases: ['count'],
   chatInputApplicationOptions: {
-    description: 'Consulta las estadísticas de una palabra',
-    name: 'stat',
     options: [
       {
         description: 'Palabra a consultar',
@@ -17,6 +15,7 @@ import type { CommandInteraction, Message } from 'discord.js';
       }
     ]
   },
+  description: 'Consulta las estadísticas de una palabra',
   name: 'stat'
 })
 export class StatCommand extends Command {

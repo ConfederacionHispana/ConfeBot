@@ -7,8 +7,6 @@ import type { IRole } from '../../models/Role';
 @ApplyOptions<CommandOptions>({
   chatInputApplicationOptions: {
     defaultPermission: false,
-    description: 'Configura un mensaje con botones para roles',
-    name: 'roles',
     options: [
       {
         description: 'Especifica el canal a configurar.',
@@ -110,6 +108,7 @@ import type { IRole } from '../../models/Role';
       }
     ]
   },
+  description: 'Configura un mensaje con botones para roles',
   name: 'roles'
 })
 export class RolesCommand extends Command {

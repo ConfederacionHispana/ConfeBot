@@ -9,8 +9,6 @@ import type { CommandInteraction, Guild, GuildMember, Message, TextChannel, User
   aliases: ['forceverify', 'manualverify'],
   chatInputApplicationOptions: {
     defaultPermission: false,
-    description: 'Verifica manualmente a un usuario',
-    name: 'associate',
     options: [
       {
         description: 'Miembro del servidor a verificar',
@@ -39,6 +37,7 @@ import type { CommandInteraction, Guild, GuildMember, Message, TextChannel, User
       }
     ]
   },
+  description: 'Verifica manualmente a un usuario',
   flags: ['guest'],
   name: 'associate',
   preconditions: ['StaffOnly'],

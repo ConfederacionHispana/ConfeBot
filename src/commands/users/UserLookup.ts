@@ -8,8 +8,6 @@ import type { Message } from 'discord.js';
 @ApplyOptions<CommandOptions>({
   aliases: ['lookup', 'userlookup', 'userinfo'],
   chatInputApplicationOptions: {
-    description: 'Consulta la información de un miembro del servidor',
-    name: 'user-lookup',
     options: [
       {
         description: 'Usuario a consultar',
@@ -19,6 +17,7 @@ import type { Message } from 'discord.js';
       }
     ]
   },
+  description: 'Consulta la información de un miembro del servidor',
   name: 'user-lookup',
   runIn: 'GUILD_ANY'
 })

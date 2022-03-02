@@ -6,8 +6,6 @@ import type { Message } from 'discord.js';
 
 @ApplyOptions<CommandOptions>({
   chatInputApplicationOptions: {
-    description: 'Configura (o consulta) el canal de pines',
-    name: 'starboard',
     options: [
       {
         channelTypes: ['GUILD_TEXT'],
@@ -18,6 +16,7 @@ import type { Message } from 'discord.js';
       }
     ]
   },
+  description: 'Configura (o consulta) el canal de pines',
   name: 'starboard',
   runIn: 'GUILD_ANY'
 })

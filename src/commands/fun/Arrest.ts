@@ -8,8 +8,6 @@ import { env } from '../../lib/env';
 @ApplyOptions<CommandOptions>({
   aliases: ['arrest'],
   chatInputApplicationOptions: {
-    description: 'Arresta a un usuario',
-    name: 'arrestar',
     options: [
       {
         description: 'Usuario a arrestar',
@@ -25,7 +23,7 @@ import { env } from '../../lib/env';
       }
     ]
   },
-  description: 'Usuario a arrestar',
+  description: 'Arresta a un usuario',
   name: 'arrestar'
 })
 export class ArrestCommand extends Command {

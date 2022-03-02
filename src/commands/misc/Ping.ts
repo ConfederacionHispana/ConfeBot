@@ -5,10 +5,7 @@ import type { CommandInteraction, Message } from 'discord.js';
 
 @ApplyOptions<CommandOptions>({
   aliases: ['ping'],
-  chatInputApplicationOptions: {
-    description: 'Pong!',
-    name: 'ping'
-  },
+  chatInputApplicationOptions: {},
   description: 'Pong!',
   name: 'ping'
 })
