@@ -1,5 +1,5 @@
 import { ApplyOptions } from '@sapphire/decorators';
-import { Command, container } from '@sapphire/framework';
+import { Command } from '@sapphire/framework';
 
 import type { Args, CommandOptions } from '@sapphire/framework';
 import type { CommandInteraction, Message, ReplyMessageOptions } from 'discord.js';

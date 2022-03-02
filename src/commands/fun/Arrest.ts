@@ -1,5 +1,5 @@
 import { ApplyOptions } from '@sapphire/decorators';
-import { Args, Command, CommandOptions, container } from '@sapphire/framework';
+import { Args, Command, CommandOptions } from '@sapphire/framework';
 import { CommandInteraction, GuildMember, MessageAttachment, ReplyMessageOptions, type Message } from 'discord.js';
 import { connect } from 'puppeteer-core';
 import { URL } from 'url';

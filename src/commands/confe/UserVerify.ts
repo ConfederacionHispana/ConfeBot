@@ -1,5 +1,5 @@
 import { ApplyOptions } from '@sapphire/decorators';
-import { Args, Command, container } from '@sapphire/framework';
+import { Args, Command } from '@sapphire/framework';
 import { URL } from 'url';
 import { format as formatDate } from 'date-fns';
 import { env, UserVerification } from '../../lib';

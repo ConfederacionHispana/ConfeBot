@@ -1,5 +1,5 @@
 import { ApplyOptions } from '@sapphire/decorators';
-import { Args, Command, container } from '@sapphire/framework';
+import { Args, Command } from '@sapphire/framework';
 import { env, FandomUtilities, NonExistentUser } from '../../lib';
 
 import type { CommandOptions } from '@sapphire/framework';

@@ -1,5 +1,5 @@
 import { ApplyOptions } from '@sapphire/decorators';
-import { Command, CommandOptions, container } from '@sapphire/framework';
+import { Command, CommandOptions } from '@sapphire/framework';
 import { CommandInteraction, MessageActionRowOptions, MessageButtonOptions, MessageEmbed, NewsChannel, NonThreadGuildBasedChannel, TextChannel, Webhook } from 'discord.js';
 import { chunkify, env, getInteractionChannel, getInteractionGuild } from '../../lib';
 import type { IRole } from '../../models/Role';
