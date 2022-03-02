@@ -15,7 +15,7 @@
   "author": "TheNozomi <13172293+TheNozomi@users.noreply.github.com>",
   "license": "MIT",
   "dependencies": {
-    "@bitomic/plugin-application-commands": "1.0.1",
+    "@bitomic/plugin-application-commands": "^1.1.1",
     "@honeybadger-io/js": "^3.2.8",
     "@sapphire/decorators": "^3.1.6",
     "@sapphire/discord.js-utilities": "^3.2.2",
