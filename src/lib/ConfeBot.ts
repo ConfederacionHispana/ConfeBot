@@ -1,13 +1,13 @@
+import '@bitomic/plugin-application-commands/register';
+import '@sapphire/plugin-logger/register';
 import Honeybadger from '@honeybadger-io/js';
 import { container, SapphireClient, SapphireClientOptions } from '@sapphire/framework';
-import '@sapphire/plugin-logger/register';
 import { ScheduledTaskRedisStrategy } from '@sapphire/plugin-scheduled-tasks/register-redis';
 import { env } from './env';
 import { MongoClient } from 'mongodb';
 import { ModelStore } from './structures';
 
 import type { Message } from 'discord.js';
-import { ChatInputCommandsData } from './managers';
 
 export class ConfeBot extends SapphireClient {
   public version = process.env.npm_package_version || '2.0.0-dev';
@@ -17,9 +17,9 @@ export class ConfeBot extends SapphireClient {
       allowedMentions: {
         parse: ['roles', 'users']
       },
+      applicationCommandsHintProvider: () => ({ guildIds: [env.GUILD_ID] }),
       defaultPrefix: 'c!',
       intents: ['GUILDS', 'GUILD_PRESENCES', 'GUILD_MEMBERS', 'GUILD_MESSAGES', 'GUILD_MESSAGE_REACTIONS'],
-      loadMessageCommandListeners: true,
       tasks: {
         strategy: new ScheduledTaskRedisStrategy({
           bull: env.REDIS_URI
@@ -29,7 +29,6 @@ export class ConfeBot extends SapphireClient {
     });
 
     container.stores.register(new ModelStore());
-    this.chatInputCommandsData = new ChatInputCommandsData();
   }
 
   public fetchPrefix = async (message: Message): Promise<string> => {

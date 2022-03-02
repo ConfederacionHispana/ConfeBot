@@ -4,4 +4,3 @@ export * from './util';
 export * from './ConfeBot';
 export * from './env';
 export * from './structures';
-export * from './managers';

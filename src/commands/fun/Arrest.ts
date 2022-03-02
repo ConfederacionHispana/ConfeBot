@@ -1,5 +1,5 @@
 import { ApplyOptions } from '@sapphire/decorators';
-import { ApplicationCommandRegistry, Args, Command, CommandOptions } from '@sapphire/framework';
+import { Args, Command, CommandOptions } from '@sapphire/framework';
 import { CommandInteraction, GuildMember, MessageAttachment, ReplyMessageOptions, type Message } from 'discord.js';
 import { connect } from 'puppeteer-core';
 import { URL } from 'url';
@@ -7,36 +7,27 @@ import { env } from '../../lib/env';
 
 @ApplyOptions<CommandOptions>({
   aliases: ['arrest'],
-  description: 'Usuario a arrestar',
+  chatInputApplicationOptions: {
+    options: [
+      {
+        description: 'Usuario a arrestar',
+        name: 'usuario',
+        required: true,
+        type: 'USER'
+      },
+      {
+        description: 'Motivo del arresto',
+        name: 'motivo',
+        required: true,
+        type: 'STRING'
+      }
+    ]
+  },
+  description: 'Arresta a un usuario',
   name: 'arrestar'
 })
 export class ArrestCommand extends Command {
-
-  public override registerApplicationCommands(registry: ApplicationCommandRegistry): void {
-    registry.registerChatInputCommand(
-      {
-        description: this.description,
-        name: this.name,
-        options: [
-          {
-            description: 'Usuario a arrestar',
-            name: 'usuario',
-            required: true,
-            type: 'USER'
-          },
-          {
-            description: 'Motivo del arresto',
-            name: 'motivo',
-            required: true,
-            type: 'STRING'
-          }
-        ]
-      },
-      this.container.client.chatInputCommandsData.get(this.name)
-    );
-  }
-
-  public async run({ member, place, reason }: { member: GuildMember, place: string, reason: string }): Promise<ReplyMessageOptions> {
+  public async evaluate({ member, place, reason }: { member: GuildMember, place: string, reason: string }): Promise<ReplyMessageOptions> {
     if (!env.CHROMIUM_URI) {
       return {
         embeds: [
@@ -105,7 +96,7 @@ export class ArrestCommand extends Command {
       return;
     }
 
-    const reply = await this.run({
+    const reply = await this.evaluate({
       member,
       place: message.channel.name,
       reason
@@ -115,7 +106,7 @@ export class ArrestCommand extends Command {
     void reaction.remove();
   }
 
-  public async chatInputRun(interaction: CommandInteraction<'present'>): Promise<void> {
+  public async chatInputApplicationRun(interaction: CommandInteraction<'present'>): Promise<void> {
     const user = interaction.options.getUser('usuario', true);
     const reason = interaction.options.getString('motivo', true);
     const guild = interaction.guild ?? await this.container.client.guilds.fetch(interaction.guildId);
@@ -129,7 +120,7 @@ export class ArrestCommand extends Command {
 
     await interaction.deferReply();
 
-    const reply = await this.run({
+    const reply = await this.evaluate({
       member,
       place: channel?.name ?? 'Un lugar desconocido',
       reason
