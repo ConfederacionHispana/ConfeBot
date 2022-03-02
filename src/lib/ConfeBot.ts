@@ -17,7 +17,7 @@ export class ConfeBot extends SapphireClient {
       allowedMentions: {
         parse: ['roles', 'users']
       },
-      applicationCommandsHintProvider: () => ( { guildIds: [ env.GUILD_ID ] } ),
+      applicationCommandsHintProvider: () => ({ guildIds: [env.GUILD_ID] }),
       defaultPrefix: 'c!',
       intents: ['GUILDS', 'GUILD_PRESENCES', 'GUILD_MEMBERS', 'GUILD_MESSAGES', 'GUILD_MESSAGE_REACTIONS'],
       tasks: {
