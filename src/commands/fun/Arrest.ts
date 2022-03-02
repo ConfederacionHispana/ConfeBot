@@ -9,7 +9,6 @@ import { env } from '../../lib/env';
   aliases: ['arrest'],
   chatInputApplicationOptions: {
     description: 'Arresta a un usuario',
-    guildIds: container.client.applicationCommandsGuilds,
     name: 'arrestar',
     options: [
       {

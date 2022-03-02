@@ -8,7 +8,6 @@ import type { CommandInteraction, Message, ReplyMessageOptions } from 'discord.j
   aliases: ['reverselookup', 'finduser'],
   chatInputApplicationOptions: {
     description: 'Encuentra a un usuario a partir de su nombre en Fandom',
-    guildIds: container.client.applicationCommandsGuilds,
     name: 'reverse-lookup',
     options: [
       {

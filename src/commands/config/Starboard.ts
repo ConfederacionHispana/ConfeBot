@@ -7,7 +7,6 @@ import type { Message } from 'discord.js';
 @ApplyOptions<CommandOptions>({
   chatInputApplicationOptions: {
     description: 'Configura (o consulta) el canal de pines',
-    guildIds: container.client.applicationCommandsGuilds,
     name: 'starboard',
     options: [
       {

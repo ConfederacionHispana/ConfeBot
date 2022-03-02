@@ -7,7 +7,6 @@ import type { CommandInteraction, Message } from 'discord.js';
   aliases: ['count'],
   chatInputApplicationOptions: {
     description: 'Consulta las estadísticas de una palabra',
-    guildIds: container.client.applicationCommandsGuilds,
     name: 'stat',
     options: [
       {

@@ -11,7 +11,6 @@ import type { CommandInteraction, Guild, GuildMember, Message, ReplyMessageOptio
   aliases: ['verify'],
   chatInputApplicationOptions: {
     description: 'Verifícate usando tu cuenta de Fandom',
-    guildIds: container.client.applicationCommandsGuilds,
     name: 'verificar',
     options: [
       {

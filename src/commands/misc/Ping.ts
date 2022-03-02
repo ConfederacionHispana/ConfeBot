@@ -7,7 +7,6 @@ import type { CommandInteraction, Message } from 'discord.js';
   aliases: ['ping'],
   chatInputApplicationOptions: {
     description: 'Pong!',
-    guildIds: container.client.applicationCommandsGuilds,
     name: 'ping'
   },
   description: 'Pong!',

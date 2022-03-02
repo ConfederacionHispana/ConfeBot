@@ -10,7 +10,6 @@ import type { CommandInteraction, Guild, GuildMember, Message, TextChannel, User
   chatInputApplicationOptions: {
     defaultPermission: false,
     description: 'Verifica manualmente a un usuario',
-    guildIds: container.client.applicationCommandsGuilds,
     name: 'associate',
     options: [
       {

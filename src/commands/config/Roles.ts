@@ -8,7 +8,6 @@ import type { IRole } from '../../models/Role';
   chatInputApplicationOptions: {
     defaultPermission: false,
     description: 'Configura un mensaje con botones para roles',
-    guildIds: container.client.applicationCommandsGuilds,
     name: 'roles',
     options: [
       {

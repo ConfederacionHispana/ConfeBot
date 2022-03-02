@@ -17,6 +17,7 @@ export class ConfeBot extends SapphireClient {
       allowedMentions: {
         parse: ['roles', 'users']
       },
+      applicationCommandsHintProvider: () => ( { guildIds: [ env.GUILD_ID ] } ),
       defaultPrefix: 'c!',
       intents: ['GUILDS', 'GUILD_PRESENCES', 'GUILD_MEMBERS', 'GUILD_MESSAGES', 'GUILD_MESSAGE_REACTIONS'],
       tasks: {
@@ -28,7 +29,6 @@ export class ConfeBot extends SapphireClient {
     });
 
     container.stores.register(new ModelStore());
-    this.applicationCommandsGuilds = [env.GUILD_ID];
   }
 
   public fetchPrefix = async (message: Message): Promise<string> => {

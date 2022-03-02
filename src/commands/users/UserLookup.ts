@@ -9,7 +9,6 @@ import type { Message } from 'discord.js';
   aliases: ['lookup', 'userlookup', 'userinfo'],
   chatInputApplicationOptions: {
     description: 'Consulta la información de un miembro del servidor',
-    guildIds: container.client.applicationCommandsGuilds,
     name: 'user-lookup',
     options: [
       {
