@@ -38,8 +38,7 @@ export const schema = {
   FDUSER_ROLE: String,
   STAFF_ROLE: String,
   SEGURIDAD_ROLE: String,
-  WIKI_ROLE_GROUP: String,
-  COUNTRY_ROLE_GROUP: String
+  WIKI_ROLE_GROUP: String
 };
 
 export let env: Env;

@@ -18,9 +18,8 @@ export class WikiSelfRolesCommand extends Command {
     const { client } = this.container;
     const guildRoles = message.guild.roles.cache;
     const wikiIndexRole = message.guild.roles.resolve(env.WIKI_ROLE_GROUP) as Role;
-    const countryIndexRole = message.guild.roles.resolve(env.COUNTRY_ROLE_GROUP) as Role;
     const assignableRoles: Role[] = Array.from(guildRoles.values())
-      .filter((r) => r.editable && r.position < wikiIndexRole.position && r.position > countryIndexRole.position)
+      .filter((r) => r.editable && r.position < wikiIndexRole.position)
       .sort((a, b) => b.position - a.position);
 
     const wikiNamesResolver = Args.make((arg) => Args.ok(arg.split(',').map((arg) => arg.trim())));
