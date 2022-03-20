@@ -4,7 +4,7 @@ import { Args, Command } from '@sapphire/framework';
 import { stringSimilarity } from 'string-similarity-js';
 import { env } from '../../lib';
 
-import type { MessagePage } from '@sapphire/discord.js-utilities';
+import type { PaginatedMessagePage } from '@sapphire/discord.js-utilities';
 import type { CommandOptions } from '@sapphire/framework';
 import type { Message, Role } from 'discord.js';
 
@@ -55,7 +55,7 @@ export class WikiSelfRolesCommand extends Command {
         .fill(null)
         .map((_) => assignableRoles.splice(0, rolesPerPage));
 
-      const pages: MessagePage[] = assignableRolesPages.map((roles, idx) => {
+      const pages: PaginatedMessagePage[] = assignableRolesPages.map((roles, idx) => {
         return {
           embeds: [
             {
