@@ -4,7 +4,7 @@ import { Args, Command } from '@sapphire/framework';
 import { stringSimilarity } from 'string-similarity-js';
 import { env } from '../../lib';
 
-import type { MessagePage } from '@sapphire/discord.js-utilities';
+import type { PaginatedMessagePage } from '@sapphire/discord.js-utilities';
 import type { CommandOptions } from '@sapphire/framework';
 import type { Message, Role } from 'discord.js';
 
@@ -19,7 +19,7 @@ export class WikiSelfRolesCommand extends Command {
     const guildRoles = message.guild.roles.cache;
     const wikiIndexRole = message.guild.roles.resolve(env.WIKI_ROLE_GROUP) as Role;
     const assignableRoles: Role[] = Array.from(guildRoles.values())
-      .filter((r) => r.editable && r.position < wikiIndexRole.position)
+      .filter((r) => r.editable && r.position < wikiIndexRole.position && r.position !== 0)
       .sort((a, b) => b.position - a.position);
 
     const wikiNamesResolver = Args.make((arg) => Args.ok(arg.split(',').map((arg) => arg.trim())));
@@ -54,7 +54,7 @@ export class WikiSelfRolesCommand extends Command {
         .fill(null)
         .map((_) => assignableRoles.splice(0, rolesPerPage));
 
-      const pages: MessagePage[] = assignableRolesPages.map((roles, idx) => {
+      const pages: PaginatedMessagePage[] = assignableRolesPages.map((roles, idx) => {
         return {
           embeds: [
             {
