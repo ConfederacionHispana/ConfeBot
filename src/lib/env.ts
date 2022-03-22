@@ -9,7 +9,14 @@ export const schema = {
     type: String,
     optional: true
   },
+  DISCORD_CLIENT_ID: String,
+  DISCORD_CLIENT_SECRET: String,
   DISCORD_TOKEN: String,
+  API_PORT: {
+    type: Number,
+    optional: true,
+    default: 4000
+  },
   HONEYBADGER_API_KEY: {
     type: String,
     optional: true
