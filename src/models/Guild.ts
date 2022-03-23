@@ -2,15 +2,16 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { Model } from '../lib';
 import type { PieceOptions } from '@sapphire/pieces';
 
-type SettingsChannels = 'starboard' | 'roles';
+type SettingsChannels = 'logs' | 'roles' | 'starboard';
 
 export interface IGuild {
     id: string;
     settings?: {
       prefix?: string;
       channels?: {
-        starboard?: string;
+        logs?: string;
         roles?: string;
+        starboard?: string;
       };
     };
     stats?: {
