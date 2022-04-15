@@ -1,5 +1,6 @@
 import '@bitomic/plugin-application-commands/register';
 import '@sapphire/plugin-logger/register';
+import '@sapphire/plugin-api/register';
 import Honeybadger from '@honeybadger-io/js';
 import { container, SapphireClient, SapphireClientOptions } from '@sapphire/framework';
 import { ScheduledTaskRedisStrategy } from '@sapphire/plugin-scheduled-tasks/register-redis';
@@ -24,6 +25,29 @@ export class ConfeBot extends SapphireClient {
         strategy: new ScheduledTaskRedisStrategy({
           bull: env.REDIS_URI
         })
+      },
+      api: {
+        auth: {
+          id: env.DISCORD_CLIENT_ID,
+          secret: env.DISCORD_CLIENT_SECRET,
+          cookie: 'CONFEBOT_AUTH',
+          // The URL that users should be redirected to after a successful authentication
+          redirect: 'http://localhost:4000/api/v1/oauth/callback',
+          // The scopes that should be given to the authentication.
+          scopes: ['guilds', 'identify'],
+          // Transformers to transform the raw data from Discord to a different structure.
+          transformers: []
+        },
+        // The prefix for all routes, e.g. / or v1/.
+        prefix: '/api/v1/',
+        // The origin header to be set on every request at 'Access-Control-Allow-Origin.
+        origin: '*',
+        // Any options passed to the NodeJS "net" internal server.listen function
+        // See https://nodejs.org/api/net.html#net_server_listen_options_callback
+        listenOptions: {
+          // The port the API will listen on.
+          port: env.API_PORT ?? 4000
+        }
       },
       ...options
     });
