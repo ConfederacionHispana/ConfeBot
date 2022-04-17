@@ -11,6 +11,7 @@ export class MessageUpdateListener extends Listener {
     const { client } = this.container;
 
     if (!oldMessage.guild || !newMessage.guild) return;
+    if (newMessage.author.bot) return;
 
     const guild = this.container.stores.get('models').get('guild'),
       logsChannelId = await guild.getChannel(newMessage.guild.id, 'logs'),
@@ -39,9 +40,11 @@ export class MessageUpdateListener extends Listener {
       embed.addField('Antes', oldMessage.content.length > 1024 ? `${oldMessage.content.slice(0, 1021)}...` : oldMessage.content, false);
     }
 
-    embed.addField('Después', newMessage.content.length > 1024 ? `${newMessage.content.slice(0, 1021)}...` : newMessage.content, false);
+    if (newMessage.content.length) {
+      embed.addField('Después', newMessage.content.length > 1024 ? `${newMessage.content.slice(0, 1021)}...` : newMessage.content, false);
+    }
 
-    if (oldMessage.content.length) {
+    if (oldMessage.content.length && newMessage.content.length) {
       embed.addField('Cambios', diff);
     }
 
