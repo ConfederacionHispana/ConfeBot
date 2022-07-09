@@ -1,5 +1,5 @@
 import { ApplyOptions } from '@sapphire/decorators';
-import { Args, Command, CommandOptions } from '@sapphire/framework';
+import { ApplicationCommandRegistry, Args, Command, CommandOptions } from '@sapphire/framework';
 import { CommandInteraction, GuildMember, MessageAttachment, ReplyMessageOptions, type Message } from 'discord.js';
 import { connect } from 'puppeteer-core';
 import { URL } from 'url';
@@ -7,26 +7,27 @@ import { env } from '../../lib/env';
 
 @ApplyOptions<CommandOptions>({
   aliases: ['arrest'],
-  chatInputApplicationOptions: {
-    options: [
-      {
-        description: 'Usuario a arrestar',
-        name: 'usuario',
-        required: true,
-        type: 'USER'
-      },
-      {
-        description: 'Motivo del arresto',
-        name: 'motivo',
-        required: true,
-        type: 'STRING'
-      }
-    ]
-  },
   description: 'Arresta a un usuario',
   name: 'arrestar'
 })
 export class ArrestCommand extends Command {
+  public override async registerApplicationCommands(registry: ApplicationCommandRegistry): Promise<void> {
+    registry.registerChatInputCommand(
+      builder => builder
+        .setName(this.name)
+        .setDescription(this.description)
+        .addUserOption(option => option
+          .setName('usuario')
+          .setDescription('Usuario a arrestar')
+          .setRequired(true))
+        .addStringOption(option => option
+          .setName('motivo')
+          .setDescription('Motivo del arresto')
+          .setRequired(true)),
+      await this.container.stores.get('models').get('command').getData(this.name)
+    );
+  }
+
   public async evaluate({ member, place, reason }: { member: GuildMember, place: string, reason: string }): Promise<ReplyMessageOptions> {
     if (!env.CHROMIUM_URI) {
       return {
@@ -106,7 +107,7 @@ export class ArrestCommand extends Command {
     void reaction.remove();
   }
 
-  public async chatInputApplicationRun(interaction: CommandInteraction<'present'>): Promise<void> {
+  public async chatInputRun(interaction: CommandInteraction<'cached' | 'raw'>): Promise<void> {
     const user = interaction.options.getUser('usuario', true);
     const reason = interaction.options.getString('motivo', true);
     const guild = interaction.guild ?? await this.container.client.guilds.fetch(interaction.guildId);

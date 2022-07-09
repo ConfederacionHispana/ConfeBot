@@ -1,7 +1,8 @@
 import type { AnyChannel, CommandInteraction, NewsChannel, TextChannel } from 'discord.js';
 import { getInteractionGuild } from './get-interaction-guild';
 
-export const getInteractionChannel = async (interaction: CommandInteraction<'present'>): Promise<NewsChannel | TextChannel | null> => {
+export const getInteractionChannel = async (interaction: CommandInteraction): Promise<NewsChannel | TextChannel | null> => {
+  if (!interaction.guildId) return null;
   let { channel }: {
 		channel: AnyChannel | null
 	} = interaction;

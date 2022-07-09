@@ -1,25 +1,28 @@
 import { ApplyOptions } from '@sapphire/decorators';
-import { Command } from '@sapphire/framework';
+import { ApplicationCommandRegistry, Command } from '@sapphire/framework';
 
 import type { Args, CommandOptions } from '@sapphire/framework';
 import type { CommandInteraction, Message, ReplyMessageOptions } from 'discord.js';
 
 @ApplyOptions<CommandOptions>({
   aliases: ['reverselookup', 'finduser'],
-  chatInputApplicationOptions: {
-    options: [
-      {
-        description: 'Usuario a buscar',
-        name: 'usuario',
-        required: true,
-        type: 'STRING'
-      }
-    ]
-  },
   description: 'Encuentra a un usuario a partir de su nombre en Fandom',
   name: 'reverse-lookup'
 })
 export class ReverseLookupCommand extends Command {
+  public override async registerApplicationCommands(registry: ApplicationCommandRegistry): Promise<void> {
+    registry.registerChatInputCommand(
+      builder => builder
+        .setName(this.name)
+        .setDescription(this.description)
+        .addStringOption(option => option
+          .setName('usuario')
+          .setDescription('Usuario a buscar')
+          .setRequired(true)),
+      await this.container.stores.get('models').get('command').getData(this.name)
+    );
+  }
+
   public async evaluate(username: string): Promise<string | ReplyMessageOptions> {
     const model = this.container.stores.get('models').get('user');
     const dbUser = await model.findUserByName(username)
@@ -50,7 +53,7 @@ export class ReverseLookupCommand extends Command {
     void message.reply(reply);
   }
 
-  public async chatInputApplicationRun(interaction: CommandInteraction): Promise<void> {
+  public async chatInputRun(interaction: CommandInteraction): Promise<void> {
     await interaction.deferReply();
     const username = interaction.options.getString('usuario', true);
     const reply = await this.evaluate(username);

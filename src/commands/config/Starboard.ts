@@ -1,26 +1,30 @@
 import { ApplyOptions } from '@sapphire/decorators';
-import { Args, Command, CommandOptions } from '@sapphire/framework';
+import { ApplicationCommandRegistry, Args, Command, CommandOptions } from '@sapphire/framework';
 import { CommandInteraction, Permissions } from 'discord.js';
+import { ChannelType } from 'discord-api-types/v9';
 
 import type { Message } from 'discord.js';
 
 @ApplyOptions<CommandOptions>({
-  chatInputApplicationOptions: {
-    options: [
-      {
-        channelTypes: ['GUILD_TEXT'],
-        description: 'Configurar canal de pines',
-        name: 'canal',
-        required: false,
-        type: 'CHANNEL'
-      }
-    ]
-  },
   description: 'Configura (o consulta) el canal de pines',
   name: 'starboard',
   runIn: 'GUILD_ANY'
 })
 export class StarboardCommand extends Command {
+  public override async registerApplicationCommands(registry: ApplicationCommandRegistry): Promise<void> {
+    registry.registerChatInputCommand(
+      builder => builder
+        .setName(this.name)
+        .setDescription(this.description)
+        .addChannelOption(option => option
+          .setName('canal')
+          .setDescription('Configurar canal de pines')
+          .setRequired(true)
+          .addChannelTypes(ChannelType.GuildText)),
+      await this.container.stores.get('models').get('command').getData(this.name)
+    );
+  }
+
   public async evaluate(guildId: string, channelId?: string, permissions?: Permissions): Promise<string> {
     const model = this.container.stores.get('models').get('guild');
     const oldChannel = await model.getChannel(guildId, 'starboard');
@@ -47,7 +51,7 @@ export class StarboardCommand extends Command {
     void message.reply(reply);
   }
 
-  public async chatInputApplicationRun(interaction: CommandInteraction<'present'>): Promise<void> {
+  public async chatInputRun(interaction: CommandInteraction<'cached' | 'raw'>): Promise<void> {
     await interaction.deferReply();
     const channel = interaction.options.getChannel('canal');
     const guild = interaction.guild ?? await this.container.client.guilds.fetch(interaction.guildId);

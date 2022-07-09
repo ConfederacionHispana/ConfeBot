@@ -1,5 +1,5 @@
 import { ApplyOptions } from '@sapphire/decorators';
-import { Args, Command } from '@sapphire/framework';
+import { ApplicationCommandRegistry, Args, Command } from '@sapphire/framework';
 import { URL } from 'url';
 import { format as formatDate } from 'date-fns';
 import { env, UserVerification } from '../../lib';
@@ -9,21 +9,24 @@ import type { CommandInteraction, Guild, GuildMember, Message, ReplyMessageOptio
 
 @ApplyOptions<CommandOptions>({
   aliases: ['verify'],
-  chatInputApplicationOptions: {
-    options: [
-      {
-        description: 'Nombre de usuario en Fandom',
-        name: 'usuario',
-        required: true,
-        type: 'STRING'
-      }
-    ]
-  },
   description: 'Verifícate usando tu cuenta de Fandom',
   name: 'verificar',
   runIn: 'GUILD_ANY'
 })
 export class UserVerifyCommand extends Command {
+  public override async registerApplicationCommands(registry: ApplicationCommandRegistry): Promise<void> {
+    registry.registerChatInputCommand(
+      builder => builder
+        .setName(this.name)
+        .setDescription(this.description)
+        .addStringOption(option => option
+          .setName('usuario')
+          .setDescription('Nombre de usuario en Fandom')
+          .setRequired(true)),
+      await this.container.stores.get('models').get('command').getData(this.name)
+    );
+  }
+
   public async evaluate(guild: Guild, channel: string, member: GuildMember, username: string): Promise<ReplyMessageOptions | string> {
     const model = this.container.stores.get('models').get('user');
     const dbUser = await model.findUserBySnowflake(member.user.id);
@@ -140,7 +143,7 @@ export class UserVerifyCommand extends Command {
     void message.reply(reply);
   }
 
-  public async chatInputApplicationRun(interaction: CommandInteraction<'present'>): Promise<void> {
+  public async chatInputRun(interaction: CommandInteraction<'cached' | 'raw'>): Promise<void> {
     await interaction.deferReply();
     const username = interaction.options.getString('usuario', true);
 

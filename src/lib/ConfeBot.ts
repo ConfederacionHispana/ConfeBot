@@ -1,4 +1,3 @@
-import '@bitomic/plugin-application-commands/register';
 import '@sapphire/plugin-logger/register';
 import '@sapphire/plugin-api/register';
 import Honeybadger from '@honeybadger-io/js';
@@ -18,7 +17,6 @@ export class ConfeBot extends SapphireClient {
       allowedMentions: {
         parse: ['roles', 'users']
       },
-      applicationCommandsHintProvider: () => ({ guildIds: [env.GUILD_ID] }),
       defaultPrefix: 'c!',
       intents: ['GUILDS', 'GUILD_PRESENCES', 'GUILD_MEMBERS', 'GUILD_MESSAGES', 'GUILD_MESSAGE_REACTIONS'],
       tasks: {

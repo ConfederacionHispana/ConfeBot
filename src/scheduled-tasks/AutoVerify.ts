@@ -1,12 +1,7 @@
-import type { PieceContext } from '@sapphire/framework';
 import { ScheduledTask } from '@sapphire/plugin-scheduled-tasks';
 import { env } from '../lib/env';
 
 export class AutoVerifyTask extends ScheduledTask {
-  public constructor(context: PieceContext) {
-    super(context, {});
-  }
-
   public async run(payload: { userId: string }): Promise<void> {
     const { client, logger } = this.container;
     const { userId } = payload;
