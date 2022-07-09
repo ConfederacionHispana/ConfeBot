@@ -1,4 +1,3 @@
-import '@bitomic/plugin-application-commands/register';
 import '@sapphire/plugin-logger/register';
 import '@sapphire/plugin-api/register';
 import Honeybadger from '@honeybadger-io/js';
