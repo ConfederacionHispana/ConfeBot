@@ -5,19 +5,6 @@ __metadata:
   version: 6
   cacheKey: 8
 
-"@bitomic/plugin-application-commands@npm:^1.1.1":
-  version: 1.1.1
-  resolution: "@bitomic/plugin-application-commands@npm:1.1.1"
-  dependencies:
-    "@sapphire/decorators": 4.2.5
-    "@sapphire/pieces": 3.2.0
-  peerDependencies:
-    "@sapphire/framework": "*"
-    discord.js: "*"
-  checksum: 4aa5650e39ff9680c18c1d16c216b4be1e1c67bbadddc7284b1df7df9f34574026c12549b4698aea8de51c05ac0e87bf6d760c730edf444d705d4f585ec01842
-  languageName: node
-  linkType: hard
-
 "@cspotcode/source-map-consumer@npm:0.8.0":
   version: 0.8.0
   resolution: "@cspotcode/source-map-consumer@npm:0.8.0"
@@ -180,15 +167,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sapphire/decorators@npm:4.2.5":
-  version: 4.2.5
-  resolution: "@sapphire/decorators@npm:4.2.5"
-  dependencies:
-    tslib: ^2.3.1
-  checksum: 658041ebdf2ab7e6223b3b8c844ad6d9ebf179518e60d7a85c2e176996ca53d3cbaea11fb410911b44d64a830cfc1950765268dd091181304d9eec5be3a7f16e
-  languageName: node
-  linkType: hard
-
 "@sapphire/decorators@npm:^4.3.3":
   version: 4.3.3
   resolution: "@sapphire/decorators@npm:4.3.3"
@@ -270,7 +248,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sapphire/pieces@npm:3.2.0, @sapphire/pieces@npm:^3.2.0":
+"@sapphire/pieces@npm:^3.2.0":
   version: 3.2.0
   resolution: "@sapphire/pieces@npm:3.2.0"
   dependencies:
@@ -1290,7 +1268,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "confebot@workspace:."
   dependencies:
-    "@bitomic/plugin-application-commands": ^1.1.1
     "@honeybadger-io/js": ^3.2.8
     "@sapphire/decorators": ^4.3.3
     "@sapphire/discord.js-utilities": ^4.9.3
