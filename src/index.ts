@@ -11,6 +11,7 @@ let client: ConfeBot;
   client.logger.info('Environment', env);
   await client.login(env.DISCORD_TOKEN);
 })().catch((err) => {
-  client.logException(err);
+  if (client) client.logException(err);
+  else console.error(err);
   process.exit(1);
 });
