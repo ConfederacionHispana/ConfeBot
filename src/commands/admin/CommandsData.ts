@@ -34,7 +34,7 @@ export class UserCommand extends Command {
       await commandsData.addIdHint(command.name, id);
     }
     const guilds = await this.container.client.guilds.fetch();
-    for (const [_, guild] of guilds) { // eslint-disable-line @typescript-eslint/no_unused_vars
+    for (const [_, guild] of guilds) { // eslint-disable-line @typescript-eslint/no-unused-vars
       const guildCommands = await (await guild.fetch()).commands.fetch();
       for (const [id, command] of guildCommands) {
         await commandsData.addIdHint(command.name, id);

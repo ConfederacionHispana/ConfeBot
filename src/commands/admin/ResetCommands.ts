@@ -30,7 +30,7 @@ export class UserCommand extends Command {
 
     await this.container.client.application?.commands.set([]);
     const guilds = await this.container.client.guilds.fetch();
-    for (const [_, guild] of guilds) { // eslint-disable-line @typescript-eslint/no_unused_vars
+    for (const [_, guild] of guilds) { // eslint-disable-line @typescript-eslint/no-unused-vars
       const fetchGuild = await guild.fetch();
       const guildCommands = await fetchGuild.commands.fetch();
       if (guildCommands.size === 0) continue;
