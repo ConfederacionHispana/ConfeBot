@@ -1,5 +1,5 @@
 import { ApplyOptions } from '@sapphire/decorators';
-import { Command } from '@sapphire/framework';
+import { ApplicationCommandRegistry, Command } from '@sapphire/framework';
 import { CommandInteraction, Guild, GuildMember, MessageEmbed, ReplyMessageOptions, User } from 'discord.js';
 
 import type { Args, CommandOptions } from '@sapphire/framework';
@@ -7,16 +7,6 @@ import type { Message } from 'discord.js';
 
 @ApplyOptions<CommandOptions>({
   aliases: ['lookup', 'userlookup', 'userinfo'],
-  chatInputApplicationOptions: {
-    options: [
-      {
-        description: 'Usuario a consultar',
-        name: 'usuario',
-        required: true,
-        type: 'USER'
-      }
-    ]
-  },
   description: 'Consulta la información de un miembro del servidor',
   name: 'user-lookup',
   runIn: 'GUILD_ANY'
@@ -30,6 +20,19 @@ export class UserLookupCommand extends Command {
     invisible: 'Invisible',
     unknown: 'Desconocido'
   };
+
+  public override async registerApplicationCommands(registry: ApplicationCommandRegistry): Promise<void> {
+    registry.registerChatInputCommand(
+      builder => builder
+        .setName(this.name)
+        .setDescription(this.description)
+        .addUserOption(option => option
+          .setName('usuario')
+          .setDescription('Usuario a consultar')
+          .setRequired(true)),
+      await this.container.stores.get('models').get('command').getData(this.name)
+    );
+  }
 
   public async evaluate(user: User, guild: Guild): Promise<ReplyMessageOptions>
   public async evaluate(user: GuildMember): Promise<ReplyMessageOptions>
@@ -81,7 +84,7 @@ export class UserLookupCommand extends Command {
     void message.reply(reply);
   }
 
-  public async chatInputApplicationRun(interaction: CommandInteraction<'present'>): Promise<void> {
+  public async chatInputRun(interaction: CommandInteraction<'raw' | 'cached'>): Promise<void> {
     await interaction.deferReply();
     const user = interaction.options.getUser('usuario', true);
     const guild = interaction.guild ?? await this.container.client.guilds.fetch(interaction.guildId);

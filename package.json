@@ -27,6 +27,7 @@
     "axios": "^0.26.0",
     "bull": "^4.6.2",
     "date-fns": "^2.28.0",
+    "discord-api-types": "^0.36.1",
     "discord.js": "^13.8.1",
     "fs-extra": "^10.0.1",
     "mongodb": "^4.4.0",

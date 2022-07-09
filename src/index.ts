@@ -12,6 +12,6 @@ let client: ConfeBot;
   await client.login(env.DISCORD_TOKEN);
 })().catch((err) => {
   if (client) client.logException(err);
-  else console.error(err);
+  else console.error(err); // eslint-disable-line no-console
   process.exit(1);
 });
