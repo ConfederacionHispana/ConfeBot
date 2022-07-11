@@ -17,7 +17,7 @@ export class UserPrecondition extends Precondition {
       });
   }
 
-  public run(message: Message): PreconditionResult {
+  public messageRun(message: Message): PreconditionResult {
     return this.evaluate(message.member && message.member.roles.cache.has(env.STAFF_ROLE));
   }
 }
