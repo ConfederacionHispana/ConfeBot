@@ -21,7 +21,6 @@ export const schema = {
     type: String,
     optional: true
   },
-  OWNER_ID: String,
   NODE_ENV: {
     type: String,
     default: 'development',
