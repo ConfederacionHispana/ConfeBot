@@ -2,7 +2,7 @@
 #    Base Stage    #
 # ================ #
 
-FROM node:16-alpine3.15 as base
+FROM node:19-alpine3.15 as base
 
 WORKDIR /home/node/app
 
