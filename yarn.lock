@@ -117,13 +117,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@honeybadger-io/js@npm:^3.2.8":
-  version: 3.2.8
-  resolution: "@honeybadger-io/js@npm:3.2.8"
+"@honeybadger-io/core@npm:^4.6.0":
+  version: 4.6.0
+  resolution: "@honeybadger-io/core@npm:4.6.0"
   dependencies:
-    "@types/express": ^4.17.13
     stacktrace-parser: ^0.1.10
-  checksum: 1d5adddf6fff79d0795295112b4cec23b17468a5d1e255ab3a255653d41776a1db03903b215bfbddeb572e5e351b1d7c271abc70119de9637bae4c29affe4fad
+  checksum: a2b1cdcf2f87aec1383d4b8738cd1943dd2289ed328af71a030f485d53e5b8eab00e912d9f06534db12db8868fca01c1365befb3a17a2dcb41d5a2204c434928
+  languageName: node
+  linkType: hard
+
+"@honeybadger-io/js@npm:^4.6.2":
+  version: 4.6.2
+  resolution: "@honeybadger-io/js@npm:4.6.2"
+  dependencies:
+    "@honeybadger-io/core": ^4.6.0
+    "@types/aws-lambda": ^8.10.89
+    "@types/express": ^4.17.13
+  checksum: 0c976b5e2463f1a70f22032b97396d835ed590f764553ce6455ec2a233ad024124eb954e0a6ddd0aa5b1ec5ef275885a056d1b0dd1c8752bc0f21ad2dfdd61fe
   languageName: node
   linkType: hard
 
@@ -482,6 +492,13 @@ __metadata:
   version: 1.0.2
   resolution: "@tsconfig/node16@npm:1.0.2"
   checksum: ca94d3639714672bbfd55f03521d3f56bb6a25479bd425da81faf21f13e1e9d15f40f97377dedbbf477a5841c5b0c8f4cd1b391f33553d750b9202c54c2c07aa
+  languageName: node
+  linkType: hard
+
+"@types/aws-lambda@npm:^8.10.89":
+  version: 8.10.108
+  resolution: "@types/aws-lambda@npm:8.10.108"
+  checksum: 648a6cc8e627e6170fbfa523c918cea6b06cdb0a66e25aa35da99a78ed1b7345e4f2921e25f96cb2547f0a13bbd77a90823c37c650db6e9ad8e3b03752e21570
   languageName: node
   linkType: hard
 
@@ -1481,7 +1498,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "confebot@workspace:."
   dependencies:
-    "@honeybadger-io/js": ^3.2.8
+    "@honeybadger-io/js": ^4.6.2
     "@sapphire/decorators": ^4.3.7
     "@sapphire/discord.js-utilities": ^4.11.3
     "@sapphire/eslint-config": ^4.3.7

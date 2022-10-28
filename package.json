@@ -15,7 +15,7 @@
   "author": "TheNozomi <13172293+TheNozomi@users.noreply.github.com>",
   "license": "MIT",
   "dependencies": {
-    "@honeybadger-io/js": "^3.2.8",
+    "@honeybadger-io/js": "^4.6.2",
     "@sapphire/decorators": "^4.3.7",
     "@sapphire/discord.js-utilities": "^4.11.3",
     "@sapphire/framework": "^3.0.0-next.961e0bf.0",
