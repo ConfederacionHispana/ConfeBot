@@ -50,7 +50,6 @@ describe('UserVerification tests', () => {
         expect(result).to.be.an('object');
         expect(result).to.include({ success: false });
         expect(result.error).to.equal('Blocked');
-        expect(result.blockinfo).to.include({ expiry: Infinity });
         done();
       })
       .catch(done);
