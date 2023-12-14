@@ -26,7 +26,7 @@ jobs:
       deploy_tag: ${{ steps.save_tag.outputs.tag }}
     steps:
       - name: Checkout Project
-        uses: actions/checkout@f25a3a9f25bd5f4c5d77189cab02ff357b5aedeb # tag=v2
+        uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5 # v2
         with:
           submodules: true
       - name: Extract version from package.json
@@ -71,7 +71,7 @@ jobs:
     needs: [Publish]
     steps:
       - name: Checkout Project
-        uses: actions/checkout@f25a3a9f25bd5f4c5d77189cab02ff357b5aedeb # tag=v2
+        uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5 # v2
         with:
           submodules: true
       - name: Deploy image to production server
